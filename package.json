@@ -1,0 +1,24 @@
+{
+  "name": "generator-mykode",
+  "version": "1.0.0",
+  "description": "Generator for myKode framework applications",
+  "files": [
+    "generators"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "generator-mykode"
+  },
+  "keywords": [
+    "yeoman-generator",
+    "mykode",
+    "application"
+  ],
+  "author": "Gaetano Lazzo",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^8.24.0",
+    "grunt": "^1.5.3",
+    "yeoman-generator": "^5.7.0"
+  }
+}
