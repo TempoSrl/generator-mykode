@@ -14,8 +14,23 @@ module.exports = class extends Generator {
         this.log(opts);
     }
 
+    async prompting() {
+        this.answers = await this.prompt([
+            {
+                type: "input",
+                name: "name",
+                message: "Your project name (must follow identifiers name)",
+                default: this.appname // Default to current folder name
+            }
+
+        ]);
+
+        this.log("app name", this.answers.name);
+    }
+
     updateDependencies(){
         const pkgJson = {
+            name: this.answers.name,
             dependencies: {
                 "jsmetabackend":"latest",
             },
@@ -68,8 +83,12 @@ module.exports = class extends Generator {
                         if (fs.lstatSync(f).isDirectory()) {
                             return true;
                         }
-                        if (path.extname(f) === ".js") return true;
-                        if (path.extname(f) === ".html") return true;
+                        if (path.extname(f) === ".js"){
+                            return true;
+                        }
+                        if (path.extname(f) === ".html") {
+                            return true;
+                        }
                     }
                 },
                 (err) => {
@@ -77,7 +96,7 @@ module.exports = class extends Generator {
                         console.error(err);
                     }
                 });
-        })
+        });
     }
 
 
