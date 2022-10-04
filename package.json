@@ -17,8 +17,9 @@
   "author": "Gaetano Lazzo",
   "license": "ISC",
   "dependencies": {
-    "eslint": "^8.24.0",
-    "grunt": "^1.5.3",
-    "yeoman-generator": "^5.7.0"
+    "jsmetabackend": "latest",
+    "grunt": "1.5.3",
+    "yeoman-generator": "^5.7.0",
+    "lodash": "4.17.4"
   }
 }

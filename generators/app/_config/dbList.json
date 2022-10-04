@@ -1,0 +1,48 @@
+{
+  "main": {
+    "server": "192.168.10.122,1434",
+    "useTrustedConnection": false,
+    "user": "nino ",
+    "pwd": "falcomatrix.A2",
+    "database": "riccardo",
+    "sqlModule": "jsSqlServerDriver",
+    "test": true,
+    "userkindUserPassw":3,
+    "userkindSSO": 5,
+    "defaultSchema": "amministrazione",
+    "EnableSSORegistration": true
+  },
+  "test_sqlServer": {
+    "server": "192.168.10.122,1434",
+    "useTrustedConnection": false,
+    "user": "nino ",
+    "pwd": "falcomatrix.A2",
+    "database": "test",
+    "sqlModule": "jsSqlServerDriver",
+    "test": true,
+    "userkindUserPassw":3,
+    "userkindSSO": 5,
+    "defaultSchema": "amministrazione",
+    "EnableSSORegistration": true
+  },
+  "test_sqlServer_anonymous": {
+    "server": "192.168.10.122,1434",
+    "useTrustedConnection": false,
+    "user": "nino ",
+    "pwd": "falcomatrix.A2",
+    "database": "test",
+    "sqlModule": "jsSqlServerDriver",
+    "test": false,
+    "userkindUserPassw":3,
+    "userkindSSO": 5,
+    "defaultSchema": "amministrazione",
+    "EnableSSORegistration": true
+  },
+
+  "test_mySql":  { "server": "localhost",
+    "dbName": "test",
+    "user": "user1",
+    "pwd": "user1user1"
+  }
+
+}
