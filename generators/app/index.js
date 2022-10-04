@@ -17,8 +17,7 @@ module.exports = class extends Generator {
     updateDependencies(){
         const pkgJson = {
             dependencies: {
-                "lodash": "4.17.21",
-                "jquery": "1.7.4"
+                "jsmetabackend":"latest",
             },
             devdependencies: {
                 "jasmine-core": "~2.2.1"
@@ -47,14 +46,12 @@ module.exports = class extends Generator {
     init() {
         const folders=["client",
             "client/components",
-            "client/datasets",
-            "routes",
-            "meta"
-        ];
+            "client/dataset",
+            "routes"];
         folders.forEach(f=> this._checkCreateFolder(f));
 
-        //_.extend(Generator.prototype, require('yeoman-generator/lib/actions/install'));
-
+        // _.extend(Generator.prototype, require('yeoman-generator/lib/actions/install'));
+        //
         // this.installDependencies({
         //     bower: true,
         //     npm: true
@@ -62,16 +59,25 @@ module.exports = class extends Generator {
 
 
         let packagePath = path.dirname(require.resolve("jsmetabackend/package.json"));
-
-        console.log("Copying from "+path.join(packagePath,"routes"));
-        fs.cp(path.join(packagePath,"routes"),"routes",
-            { recursive: true },
-            (err) => {
-                if (err) {
-                    console.error(err);
-                }
-            });
-
+        console.log("Copying from "+path.join(packagePath,"routes","spec","src"));
+        ["routes","client"].forEach(folder => {
+            fs.cp(path.join(packagePath, folder), folder,
+                {
+                    recursive: true,
+                    filter: f => {
+                        if (fs.lstatSync(f).isDirectory()) {
+                            return true;
+                        }
+                        if (path.extname(f) === ".js") return true;
+                        if (path.extname(f) === ".html") return true;
+                    }
+                },
+                (err) => {
+                    if (err) {
+                        console.error(err);
+                    }
+                });
+        })
     }
 
 

@@ -2,7 +2,7 @@ module.exports = {
     options: {
         // Options for module express-jwt
         //The "iss" (issuer) claim identifies the principal that issued the JWT.
-        issuer: "MetaWebLibrary",   // >> iss
+        issuer: "myKode",   // >> iss
 
         authType: "bearer",
         algorithm: "HS512",
