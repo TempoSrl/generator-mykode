@@ -1,21 +1,24 @@
-(function(_,Deferred, MetaData, jsDataSet, jsDataQuery) {
-	/** Detect free variable `global` from Node.js. */
-	let freeGlobal = typeof global === 'object' && global && global.Object === Object && global;
-	/** Detect free variable `self`. */
-	let freeSelf = typeof self === 'object' && self && self.Object === Object && self;
-	/** Used as a reference to the global object. */
-	let root = freeGlobal || freeSelf || Function('return this')();
-	/** Detect free variable `exports`. */
-	let freeExports = typeof exports === 'object' && exports && !exports.nodeType && exports;
-	/** Detect free variable `module`. */
-	let freeModule = freeExports && typeof module === 'object' && module && !module.nodeType && module;
+/*global define,MetaData */
+(function(_,metaModel,localResource,Deferred,
+		getDataUtils,logger,logType,getMeta,
+		  getDataExt,/*{CType}*/ CType,securityExt,MetaData,jsDataQuery) {
+		/** Detect free variable `global` from Node.js. */
+		let freeGlobal = typeof global === 'object' && global && global.Object === Object && global;
+		/** Detect free variable `self`. */
+		let freeSelf = typeof self === 'object' && self && self.Object === Object && self;
+		/** Used as a reference to the global object. */
+		let root = freeGlobal || freeSelf || Function('return this')();
+		/** Detect free variable `exports`. */
+		let freeExports = typeof exports === 'object' && exports && !exports.nodeType && exports;
+		/** Detect free variable `module`. */
+		let freeModule = freeExports && typeof module === 'object' && module && !module.nodeType && module;
 
 
-	//noinspection JSUnresolvedVariable
-	/** Detect free variable `global` from Node.js or Browserified code and use it as `root`. (thanks lodash)*/
-	let moduleExports = freeModule && freeModule.exports === freeExports;
+		//noinspection JSUnresolvedVariable
+		/** Detect free variable `global` from Node.js or Browserified code and use it as `root`. (thanks lodash)*/
+		let moduleExports = freeModule && freeModule.exports === freeExports;
 
-	function MetaXData() {
+		function MetaXData() {
 		MetaData.apply(this, arguments);
 		// var di sicurezza notevoli
 		this.q = jsDataQuery;
@@ -27,9 +30,9 @@
 			constructor: MetaXData,
 			superClass: MetaData.prototype,
 			getNewRow: function (parentRow, dt) {
-				var def = Deferred("getNewRow-MetaEasyData");
-				var realParentObjectRow = parentRow ? parentRow.current : undefined;
-				var objRow = dt.newRow({}, realParentObjectRow);
+				let def = Deferred("getNewRow-MetaXData");
+				let realParentObjectRow = parentRow ? parentRow.current : undefined;
+				let objRow = dt.newRow({}, realParentObjectRow);
 				// torno la dataRow creata
 				return def.resolve(objRow.getRow());
 			},
@@ -39,10 +42,10 @@
 			 * @param {DataTable} dt
 			 */
 			setDefaults: function (dt) {
-				var logUserClos = ['cu', 'lu'];
-				var logTimeClos = ['ct', 'lt'];
-				var numericColumnsType = ['Decimal','Int32','Int16','Int64','Double','Float','Single'];
-				var objDefaults = {};
+				let logUserClos = ['cu', 'lu'];
+				let logTimeClos = ['ct', 'lt'];
+				let numericColumnsType = ['Decimal','Int32','Int16','Int64','Double','Float','Single'];
+				let objDefaults = {};
 				_.forEach(dt.columns, (c) => {
 					if (logUserClos.includes(c.name)){
 						objDefaults[c.name] = this.security.sys('user');
@@ -88,10 +91,16 @@
 		}
 		// Check for `exports` after `define` in case a build optimizer adds an `exports` object.
 		else if (freeExports && freeModule) {
-			if (moduleExports) { // Export for Node.js or RingoJS.
-				(freeModule.exports = MetaXData).MetaXData = MetaXData;
-			} else { // Export for Narwhal or Rhino -require.
-				freeExports.MetaXData = MetaXData;
+			if (typeof root.appMeta !== "undefined") {
+				root.appMeta.MetaXData = MetaXData;
+			}
+			else{
+				if (moduleExports){ // Export for Node.js or RingoJS.
+					(freeModule.exports = MetaXData).MetaXData = MetaXData;
+				}
+				else{ // Export for Narwhal or Rhino -require.
+					freeExports.MetaXData = MetaXData;
+				}
 			}
 		} else {
 			// Export for a browser or Rhino.
@@ -103,10 +112,18 @@
 		}
 
 	}(  (typeof _ === 'undefined') ? require('lodash') : _,
-		(typeof appMeta === 'undefined') ? require('./../client/components/metadata/EventManager').Deferred : appMeta.Deferred,
-		(typeof appMeta === 'undefined') ? require('./../client/components/metadata/MetaData') : appMeta.MetaData,
-		(typeof jsDataSet === 'undefined') ? require('./../client/components/metadata/jsDataSet') : jsDataSet,
-		(typeof jsDataQuery === 'undefined') ? require('./../client/components/metadata/jsDataQuery') : jsDataQuery
+		(typeof appMeta === 'undefined') ? require('./MetaModel').metaModel : appMeta.metaModel,
+		(typeof appMeta === 'undefined') ? require('./LocalResource').localResource : appMeta.LocalResource,
+		(typeof appMeta === 'undefined') ? require('./EventManager').Deferred : appMeta.Deferred,
+		(typeof appMeta === 'undefined') ? require('./GetDataUtils') : appMeta.getDataUtils,
+		(typeof appMeta === 'undefined') ? require('./Logger').logger : appMeta.logger,
+		(typeof appMeta === 'undefined') ? require('./Logger').logTypeEnum : appMeta.logTypeEnum,
+		(typeof appMeta === 'undefined') ? undefined : appMeta.getMeta.bind(appMeta),
+		(typeof appMeta === 'undefined') ? undefined : appMeta.getData,
+		(typeof jsDataSet === 'undefined') ? require('./../metadata/jsDataSet').CType : jsDataSet.CType,
+		(typeof appMeta === 'undefined') ? undefined : appMeta.security,
+		(typeof appMeta === 'undefined') ? require('./../metadata/MetaData') : appMeta.MetaData,
+		(typeof appMeta === 'undefined') ? require('./jsDataQuery') : appMeta.jsDataQuery
+
 	)
 );
-

@@ -1,0 +1,1952 @@
+﻿<!DOCTYPE html>
+<html lang="it-it">
+<head>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <meta name="author" content="">
+    <title>Client side of Portale base project</title>
+
+    <!-- INIZIO stili librerie terze parti-->
+    <!--<link href="../bower_components/bootstrap4/dist/css/bootstrap.css" rel="stylesheet" type="text/css"> COMMENTATO PERCHE' SOSTITUITO CON QUELLO ITALIA-->
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.min.css" />
+    <link rel="stylesheet" href="../bower_components/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.css" />
+    <link rel="stylesheet" href="../bower_components/fullcalendar/dist/fullcalendar.min.css" />
+    <link rel="stylesheet" href="../bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet" />
+
+    <!-- icone bandiere del mondo, utilizzate nel menù localizzazione -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
+
+    <!-- Stili per jsTree -->
+    <link rel="stylesheet" href="../bower_components/jstree/dist/themes/default/style.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" />
+    <!-- FINE Stili per jsTree -->
+    <!-- FINE stili librerie terze parti -->
+    <!-- INIZIO stili framework-->
+    <!-- lib per visualizzazione json -->
+    <script src="../components/styles/json/json-viewer.js"></script>
+    <link rel="stylesheet" href="../components/styles/json/json-viewer.css">
+    <!-- FINE lib per visualizzazione json -->
+    <!-- FINE stili framework-->
+    <!-- INIZIO Stili della applicazione -->
+    <link rel="stylesheet" href="styles/italia/bootstrap-italia.min.css">
+    <link rel="stylesheet" href="styles/italia/italia-icon-font.css">
+
+
+    <link rel="stylesheet" href="../components/styles/app.css">
+    <link rel="stylesheet" href="styles/custom.css">
+
+
+    <link rel="stylesheet" href="../components/styles/jquery.toast.css">
+    <link rel="stylesheet" href="../components/styles/select2.min.css">
+
+
+    <!-- FINE Stili della applicazione -->
+    <!-- INIZIO librerie terze parti-->
+    <script src="../bower_components/font-awesome/js/all.min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/observe-js/src/observe.js"></script>
+    <script src="../bower_components/jsDataQuery/src/jsDataQuery.js"></script>
+    <script src="../bower_components/jsDataSet/src/jsDataSet.js"></script>
+    <script src="../bower_components/bootstrap4/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../bower_components/jstree/dist/jstree.js"></script>
+    <script src="../bower_components/moment/min/moment.min.js"></script>
+    <script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="../bower_components/fullcalendar/dist/locale-all.js"></script>
+    <script src="../bower_components/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="../bower_components/jqueryui-timepicker-addon/dist/i18n/jquery-ui-timepicker-addon-i18n.js"></script>
+
+    <script src="../components/utility/jquery.toast.js"></script>
+    <script src="../components/utility/select2.min.js"></script>
+
+    <!-- read excel -->
+    <script src="https://unpkg.com/xlsx/dist/shim.min.js"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- External files for exporting -->
+    <script src="https://www.igniteui.com/js/external/FileSaver.js"></script>
+    <script src="https://www.igniteui.com/js/external/Blob.js"></script>
+
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/infragistics.core.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_core.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_collections.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_text.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_io.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_ui.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.documents.core_core.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_collectionsextended.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.excel_core.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_threading.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.ext_web.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.xml.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.documents.core_openxml.js"></script>
+    <script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
+
+    <!-- FINE librerie terze parti -->
+    <!-- INIZIO librerie framewrok -->
+    <!-- <script src="../dist/mdlw_bundle.js"></script> -->
+    <!-- FINE librerie terze parti -->
+    <!-- INIZIO librerie framewrok -->
+    <!-- <script src="../dist/mdlw_bundle.js"></script> -->
+    <!-- FINE librerie terze parti -->
+    <!-- INIZIO librerie framewrok -->
+    <script src="../components/metadata/MetaApp.js"></script>
+    <script src="../app_segreterie/metadata/MetaSegreterieApp.js"></script>
+    <script src="../components/metadata/Enum.js"></script>
+    <!-- File per la localizzazione -->
+    <script src="../components/metadata/LocalResource.js"></script>
+    <script src="../components/i18n/LocalResourceIt.js"></script>
+    <script src="../components/i18n/LocalResourceFr.js"></script>
+    <script src="../components/i18n/LocalResourceEn.js"></script>
+    <!-- fine file di risorse per localizzazione -->
+    <script src="../components/metadata/Config.js"></script>
+    <script src="../components/metadata/Logger.js"></script>
+    <script src="../components/metadata/DbProcedureMessage.js"></script>
+    <script src="../components/metadata/Routing.js"></script>
+    <script src="../components/metadata/EventManager.js"></script>
+    <script src="../components/metadata/Utils.js"></script>
+    <script src="../components/metadata/GetDataUtils.js"></script>
+    <script src="../components/metadata/GetDataUtilsDotNet.js"></script>
+    <script src="../components/metadata/ConnWebService.js"></script>
+    <script src="../components/metadata/ConnWebSocket.js"></script>
+    <script src="../components/metadata/Connection.js"></script>
+    <script src="../components/metadata/MetaModel.js"></script>
+    <script src="../components/metadata/GetData.js"></script>
+    <script src="../components/metadata/Security.js"></script>
+    <script src="../components/metadata/AuthManager.js"></script>
+    <script src="../components/metadata/PostData.js"></script>
+    <script src="../components/metadata/BootstrapContainerTab.js"></script>
+    <script src="../components/metadata/FormProcedureMessages.js"></script>
+    <script src="../components/metadata/BootstrapModal.js"></script>
+    <script src="../components/metadata/LoaderControl.js"></script>
+    <script src="../components/metadata/ModalLoaderControl.js"></script>
+    <script src="../components/metadata/ListManager.js"></script>
+    <script src="../components/metadata/ListManagerCalendar.js"></script>
+    <script src="../components/metadata/CssDefault.js"></script>
+    <script src="../components/metadata/TypedObject.js"></script>
+    <script src="../components/metadata/MetaPageState.js"></script>
+    <script src="../components/metadata/HelpForm.js"></script>
+    <script src="../components/metadata/CheckBoxListControl.js"></script>
+    <script src="../components/metadata/GridControl.js"></script>
+    <script src="../components/metadata/GridControlX.js"></script>
+    <script src="../components/metadata/GridControlXMultiSelect.js"></script>
+    <script src="../components/metadata/ListManagerMultiSelect.js"></script>
+    <script src="../components/metadata/GridControlXChild.js"></script>
+    <script src="../components/metadata/GridControlXEdit.js"></script>
+    <script src="../components/metadata/CalendarControl.js"></script>
+    <script src="../components/metadata/SliderControl.js"></script>
+    <script src="../components/metadata/MetaData.js"></script>
+    <script src="../components/metadata/MetaPage.js"></script>
+    <script src="../components/metadata/ComboManager.js"></script>
+    <script src="../components/metadata/MainToolBarManager.js"></script>
+    <script src="../components/metadata/DropDownGridControl.js"></script>
+    <script src="../components/metadata/GridControlXScrollable.js"></script>
+    <script src="../components/metadata/ListManagerScrollable.js"></script>
+
+    <!-- classi base treeview -->
+    <script src="../components/metadata/TreeNode.js"></script>
+    <script src="../components/metadata/TreeNode_Dispatcher.js"></script>
+    <script src="../components/metadata/TreeViewManager.js"></script>
+    <!-- FINE classi base treeview -->
+    <!-- classi specializzate treeview -->
+    <script src="../components/metadata/TreeNodeUnLeveled.js"></script>
+    <script src="../components/metadata/TreeNodeLeveled.js"></script>
+    <script src="../components/metadata/TreeNodeUnLeveled_Dispatcher.js"></script>
+    <script src="../components/metadata/TreeNodeLeveled_Dispatcher.js"></script>
+
+    <script src="../components/metadata/tree/SimpleUnLeveled_TreeNode.js"></script>
+    <script src="../components/metadata/tree/SimpleUnLeveled_TreeNode_Dispatcher.js"></script>
+    <script src="../components/metadata/tree/SimpleUnLeveled_TreeViewManager.js"></script>
+    <script src="../components/metadata/tree/TreeControl.js"></script>
+
+    <!-- tachimetro -->
+    <script src="../components/metadata/thirdpart/gauge.js"></script>
+    <script src="../components/metadata/tachimetro/TachimetroControl.js"></script>
+    <!-- grafici -->
+    <script src="../components/metadata/thirdpart/chart.min.js"></script>
+    <script src="../components/metadata/graph/GraphControl.js"></script>
+    <!-- export pdf -->
+    <script src="../components/metadata/thirdpart/jspdf.umd.min.js"></script>
+    <script src="../components/metadata/thirdpart/jspdf.plugin.autotable.js"></script>
+    <script src="../components/metadata/PdfExport.js"></script>
+
+    <!-- FINE  classi specializzate treeview -->
+    <!-- FINE librerie framewrok -->
+    <!-- INIZIO librerie della applicazione  -->
+    <!-- localizzazione main -->
+    <script src="assets/i18n/LocalResourceIt.js"></script>
+    <script src="assets/i18n/LocalResourceEn.js"></script>
+    <script src="Localization.js"></script>
+
+    <!-- classi derivazione del framework -->
+    <script src="metadata/Timesheet.js"></script>
+    <script src="metadata/Lezioni.js"></script>
+    <script src="metadata/ImportExcel.js"></script>
+    <script src="../componentsEasy/metadata/MetaEasyPage.js"></script>
+    <script src="../componentsEasy/metadata/MetaEasyData.js"></script>
+    <script src="metadata/MetaSegreteriePage.js"></script>
+    <script src="metadata/MetaSegreterieData.js"></script>
+    <script src="metadata/Toast.js"></script>
+
+    <script src="cambioruolo.js"></script>
+    <script src="custom.js"></script>
+    <!-- utility per costruzione del menu -->
+    <script src="menubuilder/menuBuilder.js"></script>
+    <!-- utility per gestione attach -->
+    <script src="../components/metadata/Attachment.js"></script>
+    <script src="../components/metadata/UploadControl.js"></script>
+
+
+    <script src="../components/metadata/DropDownGridControl.js"></script>
+
+    <!-- FINE librerie della applicazione  -->
+    <!-- meta dati -->
+	<script src="metadata/mese/meta_mese.js"></script>
+	<script src="metadata/year/meta_year.js"></script>
+	<script src="metadata/salprogettoassetworkpackage/meta_salprogettoassetworkpackage.js"></script>
+    <script src="metadata/ricostruzioneattach/meta_ricostruzioneattach.js"></script>
+    <script src="metadata/pcspeoview/meta_pcspeoview.js"></script>
+    <script src="metadata/perfinterazioni/meta_perfinterazionidefaultview.js"></script>
+    <script src="metadata/stipendio/meta_stipendiodefaultview.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivita/meta_perfprogettoobiettivoattivitaelenchiview.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivo/meta_perfvalutazionepersonaleobiettivoconattivitaview.js"></script>
+    <script src="metadata/perfvalutazionepersonalevalresponsabile/meta_perfvalutazionepersonalevalresponsabile.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonalecampaniaview.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonalecampaniasintview.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivitaattach/meta_perfprogettoobiettivoattivitaattachperfprogview.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivitaattach/meta_perfprogettoobiettivoattivitaattachdefaultview.js"></script>
+    <script src="metadata/accountminusable/meta_accountminusabledefaultview.js"></script>
+    <script src="metadata/accountminusable/meta_accountminusable.js"></script>
+    <script src="metadata/perfprogettoaccountprevisionview/meta_perfprogettoaccountprevisionview.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivita/meta_perfprogettoobiettivoattivitadefaultview.js"></script>
+    <script src="metadata/perfprogettoattivitainterazione/meta_perfprogettoattivitainterazionedefaultview.js"></script>
+    <script src="metadata/perfprogettoattivitainterazione/meta_perfprogettoattivitainterazione.js"></script>
+    <script src="metadata/importcontrattistipendiview/meta_importcontrattistipendiview.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonaletusciasintview.js"></script>
+    <script src="metadata/progettoregistry_docenti/meta_progettoregistry_docenti.js"></script>
+    <script src="metadata/progettoregistry_amministrativi/meta_progettoregistry_amministrativi.js"></script>
+    <script src="metadata/progettoreport/meta_progettoreportdefaultview.js"></script>
+    <script src="metadata/progettoreport/meta_progettoreport.js"></script>
+    <script src="metadata/progettoreportprogettoactivitykind/meta_progettoreportprogettoactivitykind.js"></script>
+    <script src="metadata/progettoreportprogettokind/meta_progettoreportprogettokind.js"></script>
+    <script src="metadata/progettoreportregistryprogfin/meta_progettoreportregistryprogfin.js"></script>
+    <script src="metadata/progettoreportstruttura/meta_progettoreportstruttura.js"></script>
+    <script src="metadata/progettoreportprogettostatuskind/meta_progettoreportprogettostatuskind.js"></script>
+    <script src="metadata/progettosegreportview/meta_progettosegreportview.js"></script>
+    <script src="metadata/progettokeyword/meta_progettokeyword.js"></script>
+    <script src="metadata/macroareadidattica/meta_macroareadidattica.js"></script>
+    <script src="metadata/struttura/meta_strutturaperfelenchiparentview.js"></script>
+    <script src="metadata/perfprogetto/meta_perfprogettoresponsabiliview.js"></script>
+    <script src="metadata/sal/meta_saldefaultview.js"></script>
+    <script src="metadata/progetto/meta_progettocataniaview.js"></script>
+    <script src="metadata/stipendiocomplemento/meta_stipendiocomplemento.js"></script>
+    <script src="metadata/stipendiocomplementokind/meta_stipendiocomplementokinddefaultview.js"></script>
+    <script src="metadata/stipendiocomplementokind/meta_stipendiocomplementokind.js"></script>
+    <script src="metadata/contrattostipendioview/meta_contrattostipendioviewdefaultview.js"></script>
+    <script src="metadata/contrattostipendioview/meta_contrattostipendioview.js"></script>
+    <script src="metadata/ricostruzioneanniaccademici/meta_ricostruzioneanniaccademici.js"></script>
+    <script src="metadata/ricostruzionenonvaliditaview/meta_ricostruzionenonvaliditaviewdefaultview.js"></script>
+    <script src="metadata/ricostruzionenonvaliditaview/meta_ricostruzionenonvaliditaview.js"></script>
+    <script src="metadata/mansionekind/meta_mansionekinddefaultview.js"></script>
+    <script src="metadata/getdocentiamministrativiresponsabili/meta_getdocentiamministrativiresponsabilinomcognview.js"></script>
+    <script src="metadata/getregistrydocentiamministrativi/meta_getregistrydocentiamministrativinomcognview.js"></script>
+    <script src="metadata/perfruolomansionekind/meta_perfruolomansionekind.js"></script>
+    <script src="metadata/perfcomportamento/meta_perfcomportamentodefaultview.js"></script>
+    <script src="metadata/perfprogettostatuschanges/meta_perfprogettostatuschanges.js"></script>
+    <script src="metadata/sdgoals/meta_sdgoalsdefaultview.js"></script>
+    <script src="metadata/sdgoals/meta_sdgoals.js"></script>
+    <script src="metadata/progettosdgoals/meta_progettosdgoals.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonaleonlycomportamentaliview.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonaleonlyprestazionaliview.js"></script>
+    <script src="metadata/perfvalutazioneateneores/meta_perfvalutazioneateneorespersonaleview.js"></script>
+    <script src="metadata/perfvalutazioneateneo/meta_perfvalutazioneateneoconsoglieview.js"></script>
+    <script src="metadata/perfvalutazioneateneoressoglia/meta_perfvalutazioneateneoressoglia.js"></script>
+    <script src="metadata/perfgiudizio/meta_perfgiudiziodefaultview.js"></script>
+    <script src="metadata/perfgiudizio/meta_perfgiudizio.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonaletusciaview.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivo/meta_perfvalutazionepersonaleobiettivotusciaview.js"></script>
+    <script src="metadata/perfprogettoobiettivopersonaleview/meta_perfprogettoobiettivopersonaleviewdefaultview.js"></script>
+    <script src="metadata/perfvalutazioneuoufficiview/meta_perfvalutazioneuoufficiviewdefaultview.js"></script>
+    <script src="metadata/perfvalutazioneuoufficiview/meta_perfvalutazioneuoufficiview.js"></script>
+    <script src="metadata/perfprogettoobiettivouoview/meta_perfprogettoobiettivouoviewdefaultview.js"></script>
+    <script src="metadata/congiuntokind/meta_congiuntokinddefaultview.js"></script>
+    <script src="metadata/congiuntokind/meta_congiuntokind.js"></script>
+    <script src="metadata/registrycongiunto/meta_registrycongiuntodefaultview.js"></script>
+    <script src="metadata/registrycongiunto/meta_registrycongiunto.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivo/meta_perfvalutazionepersonaleobiettivodefaultview.js"></script>
+    <script src="metadata/apppagestemplate/meta_apppagestemplatedefaultview.js"></script>
+    <script src="metadata/apppagestemplate/meta_apppagestemplate.js"></script>
+    <script src="metadata/ptarichiestaagile/meta_ptarichiestaagiledefaultview.js"></script>
+    <script src="metadata/ptarichiestaagile/meta_ptarichiestaagile.js"></script>
+    <script src="metadata/ptarichiestariposi/meta_ptarichiestariposidefaultview.js"></script>
+    <script src="metadata/ptarichiestariposi/meta_ptarichiestariposi.js"></script>
+    <script src="metadata/ptarichiestamaternita/meta_ptarichiestamaternitadefaultview.js"></script>
+    <script src="metadata/ptarichiestamaternita/meta_ptarichiestamaternita.js"></script>
+    <script src="metadata/ptarichiesta104/meta_ptarichiesta104defaultview.js"></script>
+    <script src="metadata/ptarichiesta104/meta_ptarichiesta104.js"></script>
+    <script src="metadata/ptarichiestamalattiafiglio/meta_ptarichiestamalattiafigliodefaultview.js"></script>
+    <script src="metadata/ptarichiestamalattiafiglio/meta_ptarichiestamalattiafiglio.js"></script>
+    <script src="metadata/ptarichiestaastensionematernita/meta_ptarichiestaastensionematernitadefaultview.js"></script>
+    <script src="metadata/ptarichiestaastensionematernita/meta_ptarichiestaastensionematernita.js"></script>
+    <script src="metadata/ptarichiestacongedo/meta_ptarichiestacongedodefaultview.js"></script>
+    <script src="metadata/ptarichiestacongedo/meta_ptarichiestacongedo.js"></script>
+    <script src="metadata/ptadichiarazioneassenzapermessi/meta_ptadichiarazioneassenzapermessidefaultview.js"></script>
+    <script src="metadata/ptadichiarazioneassenzapermessi/meta_ptadichiarazioneassenzapermessi.js"></script>
+    <script src="metadata/ptadichiarazioneassenzapermessifiglio/meta_ptadichiarazioneassenzapermessifigliodefaultview.js"></script>
+    <script src="metadata/ptadichiarazioneassenzapermessifiglio/meta_ptadichiarazioneassenzapermessifiglio.js"></script>
+    <script src="metadata/ptadichiarazionemansioni/meta_ptadichiarazionemansionidefaultview.js"></script>
+    <script src="metadata/ptadichiarazionemansioni/meta_ptadichiarazionemansioni.js"></script>
+    <script src="metadata/ptarichiestastatuskind/meta_ptarichiestastatuskind.js"></script>
+    <script src="metadata/ptarichiestaagilereportstatus/meta_ptarichiestaagilereportstatus.js"></script>
+    <script src="metadata/ptadichiarazionepermessi/meta_ptadichiarazionepermessidefaultview.js"></script>
+    <script src="metadata/ptadichiarazionepermessi/meta_ptadichiarazionepermessi.js"></script>
+    <script src="metadata/ptarichiestaagilereport/meta_ptarichiestaagilereport.js"></script>
+    <script src="metadata/ptarichiestaagileattivita/meta_ptarichiestaagileattivitadefaultview.js"></script>
+    <script src="metadata/ptarichiestaagileattivita/meta_ptarichiestaagileattivita.js"></script>
+    <script src="metadata/ptarichiestaagilereportptarichiestaagileattivita/meta_ptarichiestaagilereportptarichiestaagileattivita.js"></script>
+    <script src="metadata/perfvalutazioneuo/meta_perfvalutazioneuoonlyunatantumview.js"></script>
+    <script src="metadata/getdocentiamministrativiresponsabili/meta_getdocentiamministrativiresponsabilidefaultview.js"></script>
+    <script src="metadata/getdocentiamministrativiresponsabili/meta_getdocentiamministrativiresponsabili.js"></script>
+    <script src="metadata/strutturaparentresponsabiliview/meta_strutturaparentresponsabiliviewdefaultview.js"></script>
+    <script src="metadata/strutturaparentresponsabiliview/meta_strutturaparentresponsabiliview.js"></script>
+    <script src="metadata/perfvalutazioneateneoresattach/meta_perfvalutazioneateneoresattach.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivoattach/meta_perfvalutazionepersonaleobiettivoattach.js"></script>
+    <script src="metadata/perfobiettiviuoattach/meta_perfobiettiviuoattach.js"></script>
+    <script src="metadata/registry/meta_registryserviziview.js"></script>
+    <script src="metadata/ricostruzione/meta_ricostruzionedefaultview.js"></script>
+    <script src="metadata/ricostruzione/meta_ricostruzione.js"></script>
+    <script src="metadata/ricostruzionekind/meta_ricostruzionekinddefaultview.js"></script>
+    <script src="metadata/ricostruzionekind/meta_ricostruzionekind.js"></script>
+    <script src="metadata/nonvalutabilitakind/meta_nonvalutabilitakinddefaultview.js"></script>
+    <script src="metadata/nonvalutabilitakind/meta_nonvalutabilitakind.js"></script>
+    <script src="metadata/servizioruolo/meta_servizioruolo.js"></script>
+    <script src="metadata/serviziopreruolotesoro/meta_serviziopreruolotesoro.js"></script>
+    <script src="metadata/serviziopreruoloinps/meta_serviziopreruoloinps.js"></script>
+    <script src="metadata/serviziocontributi/meta_serviziocontributi.js"></script>
+    <script src="metadata/serviziomilitare/meta_serviziomilitare.js"></script>
+    <script src="metadata/servizioricongiunzioni/meta_servizioricongiunzioni.js"></script>
+    <script src="metadata/servizioaltro/meta_servizioaltro.js"></script>
+    <script src="metadata/ricostruzioneperiodonv/meta_ricostruzioneperiodonv.js"></script>
+    <script src="metadata/progettostatuskind/meta_progettostatuskinddefaultview.js"></script>
+    <script src="metadata/perfruolocontrattokind/meta_perfruolocontrattokind.js"></script>
+    <script src="metadata/perfobiettivokind/meta_perfobiettivokinddefaultview.js"></script>
+    <script src="metadata/perfruoloperfobiettivokind/meta_perfruoloperfobiettivokind.js"></script>
+    <script src="metadata/perfobiettivokind/meta_perfobiettivokind.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivita/meta_perfprogettoobiettivoattivitadocentiview.js"></script>
+    <script src="metadata/perfruolo/meta_perfruolodefaultview.js"></script>
+    <script src="metadata/afferenza/meta_afferenzaammview.js"></script>
+    <script src="metadata/afferenza/meta_afferenzastruview.js"></script>
+    <script src="metadata/struttura/meta_strutturaperfelenchiview.js"></script>
+    <script src="metadata/pcsassunzionisimulate/meta_pcsassunzionisimulate.js"></script>
+    <script src="metadata/registry/meta_registrypersoneview.js"></script>
+    <script src="metadata/contratto/meta_contrattoprevview.js"></script>
+    <script src="metadata/income/meta_incomedefaultview.js"></script>
+    <script src="metadata/income/meta_income.js"></script>
+    <script src="metadata/didprogporzannokind/meta_didprogporzannokind.js"></script>
+    <script src="metadata/didprogsuddannokind/meta_didprogsuddannokinddefaultview.js"></script>
+    <script src="metadata/didprogsuddannokind/meta_didprogsuddannokind.js"></script>
+    <script src="metadata/titolokind/meta_titolokinddefaultview.js"></script>
+    <script src="metadata/titolokind/meta_titolokind.js"></script>
+    <script src="metadata/didprognumchiusokind/meta_didprognumchiusokind.js"></script>
+    <script src="metadata/registry/meta_registryuncategorizedview.js"></script>
+    <script src="metadata/getcontratti/meta_getcontrattidefaultview.js"></script>
+    <script src="metadata/getcontratti/meta_getcontratti.js"></script>
+    <script src="metadata/strutturaparentresponsabiliafferenzaview/meta_strutturaparentresponsabiliafferenzaview.js"></script>
+    <script src="metadata/pcscessazioniview/meta_pcscessazioniview.js"></script>
+    <script src="metadata/getcontrattikindview/meta_getcontrattikindviewdefaultview.js"></script>
+    <script src="metadata/getcontrattikindview/meta_getcontrattikindview.js"></script>
+    <script src="metadata/strutturaresponsabile/meta_strutturaresponsabile.js"></script>
+    <script src="metadata/contratto/meta_contrattoammview.js"></script>
+    <script src="metadata/sasd/meta_sasdintegrandiview.js"></script>
+    <script src="metadata/inquadramento/meta_inquadramentoelencoview.js"></script>
+    <script src="metadata/progettotiporicavokindcontrattokind/meta_progettotiporicavokindcontrattokind.js"></script>
+    <script src="metadata/cedolino/meta_cedolino.js"></script>
+    <script src="metadata/progettotiporicavocontrattokind/meta_progettotiporicavocontrattokind.js"></script>
+    <script src="metadata/progettoricavo/meta_progettoricavo.js"></script>
+    <script src="metadata/progettotiporicavoaccmotive/meta_progettotiporicavoaccmotive.js"></script>
+    <script src="metadata/progettotiporicavokindaccmotive/meta_progettotiporicavokindaccmotive.js"></script>
+    <script src="metadata/pcsbilancio/meta_pcsbilancio.js"></script>
+    <script src="metadata/pcspuntiorganicoview/meta_pcspuntiorganicoview.js"></script>
+    <script src="metadata/pcsassunzioni/meta_pcsassunzioni.js"></script>
+    <script src="metadata/analisiannuale/meta_analisiannuale.js"></script>
+    <script src="metadata/contratto/meta_contrattodefaultview.js"></script>
+    <script src="metadata/stipendioannuo/meta_stipendioannuo.js"></script>
+    <script src="metadata/perfrequestobbindividuale/meta_perfrequestobbindividualedefaultview.js"></script>
+    <script src="metadata/perfrequestobbindividuale/meta_perfrequestobbindividuale.js"></script>
+    <script src="metadata/perfrequestobbunatantum/meta_perfrequestobbunatantumdefaultview.js"></script>
+    <script src="metadata/perfrequestobbunatantum/meta_perfrequestobbunatantum.js"></script>
+    <script src="metadata/perfrequestobbindividualesoglia/meta_perfrequestobbindividualesoglia.js"></script>
+    <script src="metadata/perfrequestobbunatantumsoglia/meta_perfrequestobbunatantumsoglia.js"></script>
+    <script src="metadata/position/meta_positiondefaultview.js"></script>
+    <script src="metadata/mansionekindcomportamento/meta_mansionekindcomportamento.js"></script>
+    <script src="metadata/perfschedacambiostatoperfruolo/meta_perfschedacambiostatoperfruolo.js"></script>
+    <script src="metadata/perfprogettocambiostatoperfruolo/meta_perfprogettocambiostatoperfruolo.js"></script>
+    <script src="metadata/mansionekind/meta_mansionekind.js"></script>
+    <script src="metadata/perfvalutazioneateneoresvalidatori/meta_perfvalutazioneateneoresvalidatori.js"></script>
+    <script src="metadata/perfvalutazionepersonalecomportamentosoglia/meta_perfvalutazionepersonalecomportamentosoglia.js"></script>
+    <script src="metadata/perfvalutazioneuoindicatorisoglia/meta_perfvalutazioneuoindicatorisoglia.js"></script>
+    <script src="metadata/registry/meta_registryaziende_roview.js"></script>
+    <script src="metadata/perfprogettocostovarbudget/meta_perfprogettocostovarbudget.js"></script>
+    <script src="metadata/perfinterazioni/meta_perfinterazioni.js"></script>
+    <script src="metadata/perfinterazionekind/meta_perfinterazionekind.js"></script>
+    <script src="metadata/timesheettemplate/meta_timesheettemplate.js"></script>
+    <script src="metadata/perfprogettoobiettivopersonaleview/meta_perfprogettoobiettivopersonaleview.js"></script>
+    <script src="metadata/perfprogettocostobudgetview/meta_perfprogettocostobudgetviewdefaultview.js"></script>
+    <script src="metadata/perfprogettocostobudgetview/meta_perfprogettocostobudgetview.js"></script>
+    <script src="metadata/restrictedfunction/meta_restrictedfunctionsegview.js"></script>
+    <script src="metadata/assetdiary/meta_assetdiarydocenteview.js"></script>
+    <script src="metadata/registry/meta_registrydocenti_docenteview.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/meta_rendicontattivitaprogettodocenteview.js"></script>
+    <script src="metadata/affidamento/meta_affidamentodocenteview.js"></script>
+    <script src="metadata/perfobiettiviuosoglia/meta_perfobiettiviuosoglia.js"></script>
+    <script src="metadata/position/meta_positionsegview.js"></script>
+    <script src="metadata/stipendio/meta_stipendio.js"></script>
+    <script src="metadata/getcostoview/meta_getcostoview.js"></script>
+    <script src="metadata/allegatirichiesti/meta_allegatirichiestidefaultview.js"></script>
+    <script src="metadata/allegatirichiesti/meta_allegatirichiesti.js"></script>
+    <script src="metadata/requisito/meta_requisitosegview.js"></script>
+    <script src="metadata/requisito/meta_requisito.js"></script>
+    <script src="metadata/partnerkind/meta_partnerkinddefaultview.js"></script>
+    <script src="metadata/partnerkind/meta_partnerkind.js"></script>
+    <script src="metadata/progettofinanziamento/meta_progettofinanziamento.js"></script>
+    <script src="metadata/perfvalutazionepersonalesoglia/meta_perfvalutazionepersonalesoglia.js"></script>
+    <script src="metadata/strumentofin/meta_strumentofindefaultview.js"></script>
+    <script src="metadata/strumentofin/meta_strumentofin.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivo/meta_perfvalutazionepersonaleobiettivo.js"></script>
+    <script src="metadata/perfobiettiviuo/meta_perfobiettiviuo.js"></script>
+    <script src="metadata/perfvalutazionepersonaleateneo/meta_perfvalutazionepersonaleateneo.js"></script>
+    <script src="metadata/perfvalutazionepersonaleuo/meta_perfvalutazionepersonaleuo.js"></script>
+    <script src="metadata/perfvalutazionepersonalecomportamento/meta_perfvalutazionepersonalecomportamento.js"></script>
+    <script src="metadata/perfstrutturaperfindicatore/meta_perfstrutturaperfindicatore.js"></script>
+    <script src="metadata/perfvalutazioneuoindicatori/meta_perfvalutazioneuoindicatori.js"></script>
+    <script src="metadata/perfprogettoobiettivouoview/meta_perfprogettoobiettivouoview.js"></script>
+    <script src="metadata/perfindicatore/meta_perfindicatoredefaultview.js"></script>
+    <script src="metadata/perfruolo/meta_perfruolo.js"></script>
+    <script src="metadata/menuweb/meta_menuwebtreeview.js"></script>
+    <script src="metadata/perfprogettoobiettivosoglia/meta_perfprogettoobiettivosoglia.js"></script>
+    <script src="metadata/afferenza/meta_afferenza.js"></script>
+    <script src="metadata/perfprogettocambiostato/meta_perfprogettocambiostatodefaultview.js"></script>
+    <script src="metadata/perfprogettocambiostato/meta_perfprogettocambiostato.js"></script>
+    <script src="metadata/perfindicatorekind/meta_perfindicatorekind.js"></script>
+    <script src="metadata/perfvalutazioneuoattach/meta_perfvalutazioneuoattach.js"></script>
+    <script src="metadata/perfvalutazioneuo/meta_perfvalutazioneuodefaultview.js"></script>
+    <script src="metadata/perfvalutazioneuo/meta_perfvalutazioneuo.js"></script>
+    <script src="metadata/perfmission/meta_perfmission.js"></script>
+    <script src="metadata/validatori/meta_validatori.js"></script>
+    <script src="metadata/perfvalutazioneateneo/meta_perfvalutazioneateneodefaultview.js"></script>
+    <script src="metadata/perfvalutazioneateneo/meta_perfvalutazioneateneo.js"></script>
+    <script src="metadata/perfvalutazioneateneores/meta_perfvalutazioneateneores.js"></script>
+    <script src="metadata/perfvalutazioneateneovalidatore/meta_perfvalutazioneateneovalidatore.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivitaattach/meta_perfprogettoobiettivoattivitaattach.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivita/meta_perfprogettoobiettivoattivita.js"></script>
+    <script src="metadata/perfprogettoobiettivo/meta_perfprogettoobiettivo.js"></script>
+    <script src="metadata/perfprogettoavanzamento/meta_perfprogettoavanzamento.js"></script>
+    <script src="metadata/perfprogettoattach/meta_perfprogettoattach.js"></script>
+    <script src="metadata/perfprogettocosto/meta_perfprogettocosto.js"></script>
+    <script src="metadata/perfschedastatus/meta_perfschedastatusdefaultview.js"></script>
+    <script src="metadata/perfschedastatus/meta_perfschedastatus.js"></script>
+    <script src="metadata/perfschedacambiostato/meta_perfschedacambiostatodefaultview.js"></script>
+    <script src="metadata/perfschedacambiostato/meta_perfschedacambiostato.js"></script>
+    <script src="metadata/perfprogettouo/meta_perfprogettouo.js"></script>
+    <script src="metadata/perfprogettouomembro/meta_perfprogettouomembro.js"></script>
+    <script src="metadata/perfprogettostatus/meta_perfprogettostatusdefaultview.js"></script>
+    <script src="metadata/perfprogettostatus/meta_perfprogettostatus.js"></script>
+    <script src="metadata/perfprogetto/meta_perfprogettodefaultview.js"></script>
+    <script src="metadata/perfprogetto/meta_perfprogetto.js"></script>
+    <script src="metadata/perfindicatore/meta_perfindicatore.js"></script>
+    <script src="metadata/perfindicatoresoglia/meta_perfindicatoresoglia.js"></script>
+    <script src="metadata/position/meta_positionperfview.js"></script>
+    <script src="metadata/position/meta_position.js"></script>
+    <script src="metadata/perfpositionattach/meta_perfpositionattach.js"></script>
+    <script src="metadata/perfpositioncomportamento/meta_perfpositioncomportamento.js"></script>
+    <script src="metadata/perfpositionsoglieindividuali/meta_perfpositionsoglieindividuali.js"></script>
+    <script src="metadata/perfcomportamento/meta_perfcomportamento.js"></script>
+    <script src="metadata/perfcomportamentosoglia/meta_perfcomportamentosoglia.js"></script>
+    <script src="metadata/perfsogliakind/meta_perfsogliakind.js"></script>
+    <script src="metadata/perfsoglia/meta_perfsogliadefaultview.js"></script>
+    <script src="metadata/perfsoglia/meta_perfsoglia.js"></script>
+    <script src="metadata/sasdaffini/meta_sasdaffini.js"></script>
+    <script src="metadata/flowchart/meta_flowchartsegammview.js"></script>
+    <script src="metadata/restrictedfunction/meta_restrictedfunction.js"></script>
+    <script src="metadata/customuser/meta_customuser.js"></script>
+    <script src="metadata/flowchartrestrictedfunction/meta_flowchartrestrictedfunction.js"></script>
+    <script src="metadata/flowchartuser/meta_flowchartuser.js"></script>
+    <script src="metadata/istanza/meta_istanzatri_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_tri.js"></script>
+    <script src="metadata/istanza/meta_istanzaabbr_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_abbr.js"></script>
+    <script src="metadata/istanza/meta_istanzapas_segview.js"></script>
+    <script src="metadata/pratica/meta_praticasegistpassview.js"></script>
+    <script src="metadata/istanza/meta_istanzasegstuelencoview.js"></script>
+    <script src="metadata/pratica/meta_praticasegstuelencoview.js"></script>
+    <script src="metadata/deliberapratica/meta_deliberapraticasegview.js"></script>
+    <script src="metadata/deliberapratica/meta_deliberapratica.js"></script>
+    <script src="metadata/tesikind/meta_tesikinddefaultview.js"></script>
+    <script src="metadata/debito/meta_debitosegview.js"></script>
+    <script src="metadata/pagamento/meta_pagamentosegview.js"></script>
+    <script src="metadata/credito/meta_creditosegview.js"></script>
+    <script src="metadata/credito/meta_credito.js"></script>
+    <script src="metadata/appello/meta_appellosegview.js"></script>
+    <script src="metadata/tesikind/meta_tesikindsegview.js"></script>
+    <script src="metadata/tesikind/meta_tesikind.js"></script>
+    <script src="metadata/relatore/meta_relatore.js"></script>
+    <script src="metadata/relatorekind/meta_relatorekinddefaultview.js"></script>
+    <script src="metadata/relatorekind/meta_relatorekind.js"></script>
+    <script src="metadata/debito/meta_debito.js"></script>
+    <script src="metadata/pagamento/meta_pagamento.js"></script>
+    <script src="metadata/pagamentokind/meta_pagamentokindsegview.js"></script>
+    <script src="metadata/tesi/meta_tesi.js"></script>
+    <script src="metadata/tesikeyword/meta_tesikeyword.js"></script>
+    <script src="metadata/richitesi/meta_richitesi.js"></script>
+    <script src="metadata/istanza/meta_istanzaconseg_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_conseg.js"></script>
+    <script src="metadata/istanza/meta_istanzarimb_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_rimb.js"></script>
+    <script src="metadata/creditoistanza_rimb/meta_creditoistanza_rimb.js"></script>
+    <script src="metadata/pratica/meta_praticasegistreinview.js"></script>
+    <script src="metadata/istanza/meta_istanzarein_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_rein.js"></script>
+    <script src="metadata/assetdiaryora/meta_assetdiaryorasegsalview.js"></script>
+    <script src="metadata/flowchart/meta_flowchartsegview.js"></script>
+    <script src="metadata/registrationuserstatus/meta_registrationuserstatus.js"></script>
+    <script src="metadata/registrationuser/meta_registrationuserusrview.js"></script>
+    <script src="metadata/registrationuser/meta_registrationuserauthview.js"></script>
+    <script src="metadata/registrationuser/meta_registrationuser.js"></script>
+    <script src="metadata/flowchart/meta_flowchart.js"></script>
+    <script src="metadata/registrationuserflowchart/meta_registrationuserflowchart.js"></script>
+    <script src="metadata/rendicontattivitaprogettoora/meta_rendicontattivitaprogettoorasegview.js"></script>
+    <script src="metadata/rendicontattivitaprogettoyear/meta_rendicontattivitaprogettoyear.js"></script>
+    <script src="metadata/rendicontattivitaprogettoitineration/meta_rendicontattivitaprogettoitineration.js"></script>
+    <script src="metadata/salrendicontattivitaprogettoora/meta_salrendicontattivitaprogettoora.js"></script>
+    <script src="metadata/assetdiaryora/meta_assetdiaryorasegview.js"></script>
+    <script src="metadata/progettocosto/meta_progettocostosegsalview.js"></script>
+    <script src="metadata/progettocosto/meta_progettocostosegprgview.js"></script>
+    <script src="metadata/progettocosto/meta_progettocostosegview.js"></script>
+    <script src="metadata/salassetdiaryora/meta_salassetdiaryora.js"></script>
+    <script src="metadata/salprogettocosto/meta_salprogettocosto.js"></script>
+    <script src="metadata/contrattokindposition/meta_contrattokindposition.js"></script>
+    <script src="metadata/progettotimesheetprogetto/meta_progettotimesheetprogetto.js"></script>
+    <script src="metadata/progettotimesheet/meta_progettotimesheet.js"></script>
+    <script src="metadata/pratica/meta_praticaseganagstuview.js"></script>
+    <script src="metadata/location/meta_locationdefaultview.js"></script>
+    <script src="metadata/accordoscambiomidettaz/meta_accordoscambiomidettazsegview.js"></script>
+    <script src="metadata/accordoscambiomidett/meta_accordoscambiomidettsegview.js"></script>
+    <script src="metadata/bandodsiscresitokind/meta_bandodsiscresitokinddefaultview.js"></script>
+    <script src="metadata/bandodsiscresitokind/meta_bandodsiscresitokind.js"></script>
+    <script src="metadata/tirocinioapprkind/meta_tirocinioapprkind.js"></script>
+    <script src="metadata/geo_city/meta_geo_cityseg5view.js"></script>
+    <script src="metadata/registry/meta_registryamministrativi_personaleview.js"></script>
+    <script src="metadata/getprogettocostoview/meta_getprogettocostoview.js"></script>
+    <script src="metadata/progettorp/meta_progettorp.js"></script>
+    <script src="metadata/sal/meta_sal.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/meta_rendicontattivitaprogettodocview.js"></script>
+    <script src="metadata/affidamento/meta_affidamentodocview.js"></script>
+    <script src="metadata/progettobudgetvariazione/meta_progettobudgetvariazione.js"></script>
+    <script src="metadata/progettoudrmembrokind/meta_progettoudrmembrokinddefaultview.js"></script>
+    <script src="metadata/progettoudrmembrokind/meta_progettoudrmembrokind.js"></script>
+    <script src="metadata/publicaz/meta_publicazdocentiview.js"></script>
+    <script src="metadata/publicaz/meta_publicazdefaultview.js"></script>
+    <script src="metadata/progettoattachkindprogettostatuskind/meta_progettoattachkindprogettostatuskind.js"></script>
+    <script src="metadata/progettotestokindprogettostatuskind/meta_progettotestokindprogettostatuskind.js"></script>
+    <script src="metadata/assetacquire/meta_assetacquiresegview.js"></script>
+    <script src="metadata/assetacquire/meta_assetacquire.js"></script>
+    <script src="metadata/currency/meta_currency.js"></script>
+    <script src="metadata/accmotive/meta_accmotivedefaultview.js"></script>
+    <script src="metadata/affidamentokindcostoora/meta_affidamentokindcostoora.js"></script>
+    <script src="metadata/getregistrydocentiamministrativi/meta_getregistrydocentiamministratividefaultview.js"></script>
+    <script src="metadata/getregistrydocentiamministrativi/meta_getregistrydocentiamministrativi.js"></script>
+    <script src="metadata/getcostididattica/meta_getcostididatticadefaultview.js"></script>
+    <script src="metadata/getcostididattica/meta_getcostididattica.js"></script>
+    <script src="metadata/getdocentiperssd/meta_getdocentiperssdsegview.js"></script>
+    <script src="metadata/getdocentiperssd/meta_getdocentiperssd.js"></script>
+    <script src="metadata/accordoscambiomidettlangkind/meta_accordoscambiomidettlangkind.js"></script>
+    <script src="metadata/istanzaattach/meta_istanzaattachsegview.js"></script>
+    <script src="metadata/deliberaistanza/meta_deliberaistanza.js"></script>
+    <script src="metadata/delibera/meta_deliberasegview.js"></script>
+    <script src="metadata/delibera/meta_delibera.js"></script>
+    <script src="metadata/istanzaattach/meta_istanzaattachsegview.js"></script>
+    <script src="metadata/istanzaattach/meta_istanzaattach.js"></script>
+    <script src="metadata/istanza/meta_istanzasosp_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_sosp.js"></script>
+    <script src="metadata/istanza/meta_istanzacert_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_cert.js"></script>
+    <script src="metadata/istanza/meta_istanzaeq_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_eq.js"></script>
+    <script src="metadata/istanza/meta_istanzatru_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_tru.js"></script>
+    <script src="metadata/istanza/meta_istanzarin_segview.js"></script>
+    <script src="metadata/istanza/meta_istanza_rin.js"></script>
+    <script src="metadata/dichiar/meta_dichiartitolo_segview.js"></script>
+    <script src="metadata/dichiar/meta_dichiar_titolo.js"></script>
+    <script src="metadata/dichiaraltrekind/meta_dichiaraltrekinddefaultview.js"></script>
+    <script src="metadata/dichiaraltrekind/meta_dichiaraltrekind.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentosegconsview.js"></script>
+    <script src="metadata/dichiar/meta_dichiarisee_segview.js"></script>
+    <script src="metadata/dichiar/meta_dichiardisabil_segview.js"></script>
+    <script src="metadata/dichiardisabilsuppkind/meta_dichiardisabilsuppkinddefaultview.js"></script>
+    <script src="metadata/dichiardisabilsuppkind/meta_dichiardisabilsuppkind.js"></script>
+    <script src="metadata/dichiardisabilkind/meta_dichiardisabilkinddefaultview.js"></script>
+    <script src="metadata/dichiardisabilkind/meta_dichiardisabilkind.js"></script>
+    <script src="metadata/dichiar/meta_dichiardisabil_seganagstuview.js"></script>
+    <script src="metadata/dichiar/meta_dichiar_disabil.js"></script>
+    <script src="metadata/dichiar/meta_dichiarisee_seganagstuview.js"></script>
+    <script src="metadata/dichiar/meta_dichiar_isee.js"></script>
+    <script src="metadata/dichiar/meta_dichiaraltre_segview.js"></script>
+    <script src="metadata/dichiar/meta_dichiar_altre.js"></script>
+    <script src="metadata/dichiar/meta_dichiaraltrititoli_segview.js"></script>
+    <script src="metadata/dichiar/meta_dichiar_altrititoli.js"></script>
+    <script src="metadata/convalidakind/meta_convalidakind.js"></script>
+    <script src="metadata/learningagrtrainer/meta_learningagrtrainersegview.js"></script>
+    <script src="metadata/learningagrstud/meta_learningagrstudsegview.js"></script>
+    <script src="metadata/iscrizionebmirequisito/meta_iscrizionebmirequisito.js"></script>
+    <script src="metadata/iscrizionebmiattach/meta_iscrizionebmiattachsegview.js"></script>
+    <script src="metadata/learningagrtrainer/meta_learningagrtrainer.js"></script>
+    <script src="metadata/staffagrteaching/meta_staffagrteaching.js"></script>
+    <script src="metadata/learningagrstud/meta_learningagrstud.js"></script>
+    <script src="metadata/iscrizionebmiattach/meta_iscrizionebmiattach.js"></script>
+    <script src="metadata/tipologiastudentestruttura/meta_tipologiastudentestruttura.js"></script>
+    <script src="metadata/bandodsiscresito/meta_bandodsiscresito.js"></script>
+    <script src="metadata/accreditokind/meta_accreditokinddefaultview.js"></script>
+    <script src="metadata/accreditokind/meta_accreditokind.js"></script>
+    <script src="metadata/bandodsserviziodatepres/meta_bandodsserviziodatepres.js"></script>
+    <script src="metadata/bandodsserviziorequisito/meta_bandodsserviziorequisito.js"></script>
+    <script src="metadata/bandodsservizioattach/meta_bandodsservizioattach.js"></script>
+    <script src="metadata/tipologiastudente/meta_tipologiastudente.js"></script>
+    <script src="metadata/bandodsiscr/meta_bandodsiscr.js"></script>
+    <script src="metadata/bandodsservizio/meta_bandodsservizio.js"></script>
+    <script src="metadata/bandods/meta_bandodssegview.js"></script>
+    <script src="metadata/bandods/meta_bandods.js"></script>
+    <script src="metadata/iscrizionebmiattach/meta_iscrizionebmiattach.js"></script>
+    <script src="metadata/iscrizionebmi/meta_iscrizionebmisegview.js"></script>
+    <script src="metadata/bandomobilitaintkind/meta_bandomobilitaintkinddefaultview.js"></script>
+    <script src="metadata/bandomobilitaintkind/meta_bandomobilitaintkind.js"></script>
+    <script src="metadata/assicurazione/meta_assicurazionedefaultview.js"></script>
+    <script src="metadata/assicurazione/meta_assicurazione.js"></script>
+    <script src="metadata/iscrizionebmi/meta_iscrizionebmi.js"></script>
+    <script src="metadata/cefrlanglevel/meta_cefrlangleveldefaultview.js"></script>
+    <script src="metadata/bandomirequisito/meta_bandomirequisito.js"></script>
+    <script src="metadata/cefrlanglevel/meta_cefrlanglevel.js"></script>
+    <script src="metadata/bandomiallegati/meta_bandomiallegati.js"></script>
+    <script src="metadata/cefr/meta_cefrdefaultview.js"></script>
+    <script src="metadata/bandomiistitutiesteri/meta_bandomiistitutiesteri.js"></script>
+    <script src="metadata/cefr/meta_cefr.js"></script>
+    <script src="metadata/bandomistruttureto/meta_bandomistruttureto.js"></script>
+    <script src="metadata/isced2013/meta_isced2013.js"></script>
+    <script src="metadata/bandomistrutturefrom/meta_bandomistrutturefrom.js"></script>
+    <script src="metadata/accordoscambiomiporzanno/meta_accordoscambiomiporzanno.js"></script>
+    <script src="metadata/bandomiinsegn/meta_bandomiinsegn.js"></script>
+    <script src="metadata/bandomipropedeut/meta_bandomipropedeut.js"></script>
+    <script src="metadata/accordoscambiomidett/meta_accordoscambiomidett.js"></script>
+    <script src="metadata/bandomididprogfrom/meta_bandomididprogfrom.js"></script>
+    <script src="metadata/bandomididprogto/meta_bandomididprogto.js"></script>
+    <script src="metadata/bandomi/meta_bandomisegview.js"></script>
+    <script src="metadata/bandomi/meta_bandomi.js"></script>
+    <script src="metadata/accordoscambiomidettaz/meta_accordoscambiomidettaz.js"></script>
+    <script src="metadata/accordoscambiomi/meta_accordoscambiomisegview.js"></script>
+    <script src="metadata/accordoscambiomi/meta_accordoscambiomi.js"></script>
+    <script src="metadata/programmami/meta_programmami.js"></script>
+    <script src="metadata/inventorytree/meta_inventorytreesegview.js"></script>
+    <script src="metadata/inventorytree/meta_inventorytree.js"></script>
+    <script src="metadata/numerodip/meta_numerodip.js"></script>
+    <script src="metadata/naturagiur/meta_naturagiurdefaultview.js"></script>
+    <script src="metadata/naturagiur/meta_naturagiur.js"></script>
+    <script src="metadata/duratakind/meta_duratakinddefaultview.js"></script>
+    <script src="metadata/duratakind/meta_duratakind.js"></script>
+    <script src="metadata/stipendiokind/meta_stipendiokinddefaultview.js"></script>
+    <script src="metadata/stipendiokind/meta_stipendiokind.js"></script>
+    <script src="metadata/inquadramento/meta_inquadramentodefaultview.js"></script>
+    <script src="metadata/inquadramento/meta_inquadramento.js"></script>
+    <script src="metadata/contrattokindperiodo/meta_contrattokindperiodo.js"></script>
+    <script src="metadata/tirociniorelazione/meta_tirociniorelazione.js"></script>
+    <script src="metadata/tirocinioproposto/meta_tirociniopropostosegview.js"></script>
+    <script src="metadata/tirocinioproposto/meta_tirocinioproposto.js"></script>
+    <script src="metadata/tirocinioprogetto/meta_tirocinioprogettosegview.js"></script>
+    <script src="metadata/tirocinioinvioazienda/meta_tirocinioinvioazienda.js"></script>
+    <script src="metadata/tirociniodiario/meta_tirociniodiario.js"></script>
+    <script src="metadata/tirocinioprogetto/meta_tirocinioprogetto.js"></script>
+    <script src="metadata/tirociniocandidatura/meta_tirociniocandidatura.js"></script>
+    <script src="metadata/tirocinioappr/meta_tirocinioappr.js"></script>
+    <script src="metadata/convenzioneattach/meta_convenzioneattach.js"></script>
+    <script src="metadata/convenzione/meta_convenzionesegview.js"></script>
+    <script src="metadata/convenzione/meta_convenzione.js"></script>
+    <script src="metadata/accmotive/meta_accmotivesegview.js"></script>
+    <script src="metadata/accmotive/meta_accmotive.js"></script>
+    <script src="metadata/prova/meta_provastatoview.js"></script>
+    <script src="metadata/prova/meta_provadotmasview.js"></script>
+    <script src="metadata/pratica/meta_praticasegstudview.js"></script>
+    <script src="metadata/convalidato/meta_convalidato.js"></script>
+    <script src="metadata/convalidante/meta_convalidante.js"></script>
+    <script src="metadata/convalida/meta_convalida.js"></script>
+    <script src="metadata/changeskind/meta_changeskinddefaultview.js"></script>
+    <script src="metadata/changeskind/meta_changeskind.js"></script>
+    <script src="metadata/changes/meta_changes.js"></script>
+    <script src="metadata/decadenza/meta_decadenzasegview.js"></script>
+    <script src="metadata/decadenza/meta_decadenza.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/meta_rendicontattivitaprogettosegview.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/meta_rendicontattivitaprogettoanagammview.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/meta_rendicontattivitaprogettoanagview.js"></script>
+    <script src="metadata/pettycash/meta_pettycashsegview.js"></script>
+    <script src="metadata/pettycash/meta_pettycash.js"></script>
+    <script src="metadata/expense/meta_expensesegview.js"></script>
+    <script src="metadata/expense/meta_expense.js"></script>
+    <script src="metadata/tax/meta_taxsegview.js"></script>
+    <script src="metadata/itineration/meta_itinerationsegview.js"></script>
+    <script src="metadata/itineration/meta_itineration.js"></script>
+    <script src="metadata/tax/meta_tax.js"></script>
+    <script src="metadata/progettotipocostokindtax/meta_progettotipocostokindtax.js"></script>
+    <script src="metadata/progettotipocostokindinventorytree/meta_progettotipocostokindinventorytree.js"></script>
+    <script src="metadata/progettotipocostocontrattokind/meta_progettotipocostocontrattokind.js"></script>
+    <script src="metadata/progettotipocostotax/meta_progettotipocostotax.js"></script>
+    <script src="metadata/progettotipocostoinventorytree/meta_progettotipocostoinventorytree.js"></script>
+    <script src="metadata/progettotipocostoaccmotive/meta_progettotipocostoaccmotive.js"></script>
+    <script src="metadata/progettoasset/meta_progettoasset.js"></script>
+    <script src="metadata/progettoactivitykind/meta_progettoactivitykinddefaultview.js"></script>
+    <script src="metadata/progettoactivitykind/meta_progettoactivitykind.js"></script>
+    <script src="metadata/progettobudget/meta_progettobudget.js"></script>
+    <script src="metadata/progettocosto/meta_progettocosto.js"></script>
+    <script src="metadata/fonteindicebibliometrico/meta_fonteindicebibliometricosegview.js"></script>
+    <script src="metadata/fonteindicebibliometrico/meta_fonteindicebibliometrico.js"></script>
+    <script src="metadata/settoreerc/meta_settoreercsegview.js"></script>
+    <script src="metadata/settoreerc/meta_settoreerc.js"></script>
+    <script src="metadata/registryprogfinbando/meta_registryprogfinbandosegview.js"></script>
+    <script src="metadata/progettostatuskind/meta_progettostatuskind.js"></script>
+    <script src="metadata/progettoattachkind/meta_progettoattachkind.js"></script>
+    <script src="metadata/registryprogfinbandoattach/meta_registryprogfinbandoattach.js"></script>
+    <script src="metadata/registryprogfinbando/meta_registryprogfinbando.js"></script>
+    <script src="metadata/registryprogfin/meta_registryprogfinsegview.js"></script>
+    <script src="metadata/registryprogfin/meta_registryprogfin.js"></script>
+    <script src="metadata/assetdiaryora/meta_assetdiaryora.js"></script>
+    <script src="metadata/asset/meta_assetsegview.js"></script>
+    <script src="metadata/upb/meta_upbsegview.js"></script>
+    <script src="metadata/progettoregistry_aziende/meta_progettoregistry_aziende.js"></script>
+    <script src="metadata/asset/meta_asset.js"></script>
+    <script src="metadata/affidamentoattach/meta_affidamentoattachseganagview.js"></script>
+    <script src="metadata/affidamentoattach/meta_affidamentoattachdefaultview.js"></script>
+    <script src="metadata/progettotipocostokindaccmotive/meta_progettotipocostokindaccmotive.js"></script>
+    <script src="metadata/progettotipocostokindcontrattokind/meta_progettotipocostokindcontrattokind.js"></script>
+    <script src="metadata/progettoproroga/meta_progettoproroga.js"></script>
+    <script src="metadata/progettokind/meta_progettokindsegview.js"></script>
+    <script src="metadata/progettoattach/meta_progettoattach.js"></script>
+    <script src="metadata/progettosettoreerc/meta_progettosettoreerc.js"></script>
+    <script src="metadata/assetdiary/meta_assetdiary.js"></script>
+    <script src="metadata/workpackageupb/meta_workpackageupb.js"></script>
+    <script src="metadata/registry/meta_registryamministrativiview.js"></script>
+    <script src="metadata/registry/meta_registry_amministrativi.js"></script>
+    <script src="metadata/progettoudrmembro/meta_progettoudrmembro.js"></script>
+    <script src="metadata/progettoudr/meta_progettoudr.js"></script>
+    <script src="metadata/progettotestokind/meta_progettotestokind.js"></script>
+    <script src="metadata/progettotesto/meta_progettotesto.js"></script>
+    <script src="metadata/workpackagekind/meta_workpackagekind.js"></script>
+    <script src="metadata/progettotipocosto/meta_progettotipocosto.js"></script>
+    <script src="metadata/workpackage/meta_workpackagesegview.js"></script>
+    <script src="metadata/progettotipocostokind/meta_progettotipocostokind.js"></script>
+    <script src="metadata/progettokind/meta_progettokind.js"></script>
+    <script src="metadata/orakind/meta_orakindsegview.js"></script>
+    <script src="metadata/rendicontattivitaprogettoora/meta_rendicontattivitaprogettoora.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/meta_rendicontattivitaprogetto.js"></script>
+    <script src="metadata/workpackage/meta_workpackage.js"></script>
+    <script src="metadata/progetto/meta_progettosegview.js"></script>
+    <script src="metadata/progetto/meta_progetto.js"></script>
+    <script src="metadata/ambitoareadisc/meta_ambitoareadiscdefaultview.js"></script>
+    <script src="metadata/ambitoareadisc/meta_ambitoareadisc.js"></script>
+    <script src="metadata/classescuolakind/meta_classescuolakinddefaultview.js"></script>
+    <script src="metadata/classescuolakind/meta_classescuolakind.js"></script>
+    <script src="metadata/classescuolaarea/meta_classescuolaarea.js"></script>
+    <script src="metadata/sasdgruppo/meta_sasdgruppodefaultview.js"></script>
+    <script src="metadata/sasdgruppo/meta_sasdgruppo.js"></script>
+    <script src="metadata/canale/meta_canaleerogataview.js"></script>
+    <script src="metadata/insegninteg/meta_insegnintegdefaultview.js"></script>
+    <script src="metadata/didprogori/meta_didprogorisceltacorsoview.js"></script>
+    <script src="metadata/nullaosta/meta_nullaostaimm_seganagsturinview.js"></script>
+    <script src="metadata/nullaosta/meta_nullaostaimm_seganagstuview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentoseganagstustatoview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentoseganagstuconsmastview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentoseganagstuaccview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentosegstudview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentoseganagstusingview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentoseganagstuview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentoingressoview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentodidprogview.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimentodefaultview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizionedefaultview.js"></script>
+    <script src="metadata/pratica/meta_pratica.js"></script>
+    <script src="metadata/istanza/meta_istanzapas_seganagstuview.js"></script>
+    <script src="metadata/istanza/meta_istanza_pas.js"></script>
+    <script src="metadata/istanza/meta_istanzaseganagstusonpreview.js"></script>
+    <script src="metadata/istanzadichiar/meta_istanzadichiar.js"></script>
+    <script src="metadata/dichiarkind/meta_dichiarkinddefaultview.js"></script>
+    <script src="metadata/dichiarkind/meta_dichiarkind.js"></script>
+    <script src="metadata/dichiar/meta_dichiarsegview.js"></script>
+    <script src="metadata/dichiar/meta_dichiar.js"></script>
+    <script src="metadata/istanza/meta_istanzaimm_segrinview.js"></script>
+    <script src="metadata/istanza/meta_istanzaimm_seganagsturinview.js"></script>
+    <script src="metadata/istanza/meta_istanzaimm_seganagstuview.js"></script>
+    <script src="metadata/istanza/meta_istanzaimm_segview.js"></script>
+    <script src="metadata/istanza/meta_istanzaimm_segpreview.js"></script>
+    <script src="metadata/registryaddress/meta_registryaddressuserview.js"></script>
+    <script src="metadata/registryaddress/meta_registryaddresssegview.js"></script>
+    <script src="metadata/protocollorifkind/meta_protocollorifkindsegview.js"></script>
+    <script src="metadata/protocollorifkind/meta_protocollorifkind.js"></script>
+    <script src="metadata/protocollodockind/meta_protocollodockindsegview.js"></script>
+    <script src="metadata/protocollodockind/meta_protocollodockind.js"></script>
+    <script src="metadata/protocollodocelement/meta_protocollodocelement.js"></script>
+    <script src="metadata/protocollodoc/meta_protocollodoc.js"></script>
+    <script src="metadata/protocollodestinatario/meta_protocollodestinatario.js"></script>
+    <script src="metadata/protocollo/meta_protocollosegview.js"></script>
+    <script src="metadata/protocollo/meta_protocollo.js"></script>
+    <script src="metadata/nullaosta/meta_nullaostaimm_seganagstupreview.js"></script>
+    <script src="metadata/nullaosta/meta_nullaosta.js"></script>
+    <script src="metadata/nullaosta/meta_nullaosta_imm.js"></script>
+    <script src="metadata/istanza/meta_istanzaimm_seganagstupreview.js"></script>
+    <script src="metadata/istanza/meta_istanza_imm.js"></script>
+    <script src="metadata/istanza/meta_istanza.js"></script>
+    <script src="metadata/diniego/meta_diniego.js"></script>
+    <script src="metadata/appelloazionekind/meta_appelloazionekinddefaultview.js"></script>
+    <script src="metadata/costoscontodefdettaglio/meta_costoscontodefdettaglioscontiview.js"></script>
+    <script src="metadata/costoscontodefdettaglio/meta_costoscontodefdettaglioriepilogoview.js"></script>
+    <script src="metadata/ofakind/meta_ofakinddefaultview.js"></script>
+    <script src="metadata/ateco/meta_atecodefaultview.js"></script>
+    <script src="metadata/ateco/meta_ateco.js"></script>
+    <script src="metadata/nace/meta_nacedefaultview.js"></script>
+    <script src="metadata/nace/meta_nace.js"></script>
+    <script src="metadata/graduatoriaesiti/meta_graduatoriaesitistatoview.js"></script>
+    <script src="metadata/graduatoriaesiti/meta_graduatoriaesitidefaultview.js"></script>
+    <script src="metadata/graduatoriaesiti/meta_graduatoriaesiti.js"></script>
+    <script src="metadata/graduatoriadesc/meta_graduatoriadesc.js"></script>
+    <script src="metadata/graduatoria/meta_graduatoria.js"></script>
+    <script src="metadata/graduatoriaesitipos/meta_graduatoriaesitipos.js"></script>
+    <script src="metadata/insegn/meta_insegndefaultview.js"></script>
+    <script src="metadata/prova/meta_provaingressoview.js"></script>
+    <script src="metadata/prova/meta_provadefaultview.js"></script>
+    <script src="metadata/prova/meta_provaaulaview.js"></script>
+    <script src="metadata/tipoattform/meta_tipoattformdefaultview.js"></script>
+    <script src="metadata/pianostudioattivform/meta_pianostudioattivformsegstudview.js"></script>
+    <script src="metadata/pianostudioattivform/meta_pianostudioattivformseganagstusingview.js"></script>
+    <script src="metadata/pianostudio/meta_pianostudiosegstudview.js"></script>
+    <script src="metadata/pianostudio/meta_pianostudioseganagstusingview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizioneseganagstusingview.js"></script>
+    <script src="metadata/pianostudioattivform/meta_pianostudioattivformdidprogview.js"></script>
+    <script src="metadata/pianostudio/meta_pianostudiodidprogview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizionedidprogview.js"></script>
+    <script src="metadata/iscrizioneanno/meta_iscrizioneanno.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizionesegview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizionestatoview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizionedotmasview.js"></script>
+    <script src="metadata/didprog/meta_didprogstatoview.js"></script>
+    <script src="metadata/didprog/meta_didprogdotmasview.js"></script>
+    <script src="metadata/corsostudio/meta_corsostudiostatoview.js"></script>
+    <script src="metadata/corsostudio/meta_corsostudiodotmasview.js"></script>
+    <script src="metadata/struttura/meta_strutturaseg_childview.js"></script>
+    <script src="metadata/struttura/meta_strutturaprincview.js"></script>
+    <script src="metadata/struttura/meta_strutturaperfview.js"></script>
+    <script src="metadata/sostenimentoesito/meta_sostenimentoesitodefaultview.js"></script>
+    <script src="metadata/sostenimentoesito/meta_sostenimentoesito.js"></script>
+    <script src="metadata/sede/meta_sedeseg_child_aziendaview.js"></script>
+    <script src="metadata/sede/meta_sedeseg_childview.js"></script>
+    <script src="metadata/rendicontlezionestud/meta_rendicontlezionestuddefaultview.js"></script>
+    <script src="metadata/ratadef/meta_ratadefscontiview.js"></script>
+    <script src="metadata/ratadef/meta_ratadefmoreview.js"></script>
+    <script src="metadata/ratadef/meta_ratadefdefaultview.js"></script>
+    <script src="metadata/geo_nation/meta_geo_nationsegchildview.js"></script>
+    <script src="metadata/geo_country/meta_geo_countrysegchildview.js"></script>
+    <script src="metadata/geo_city/meta_geo_citysegchildview.js"></script>
+    <script src="metadata/geo_city/meta_geo_citydefaultview.js"></script>
+    <script src="metadata/edificio/meta_edificioseg_childview.js"></script>
+    <script src="metadata/didprogporzanno/meta_didprogporzannodefaultview.js"></script>
+    <script src="metadata/didprogori/meta_didprogoridefaultview.js"></script>
+    <script src="metadata/didproganno/meta_didprogannodefaultview.js"></script>
+    <script src="metadata/aoo/meta_aooprincview.js"></script>
+    <script src="metadata/affidamento/meta_affidamentosegview.js"></script>
+    <script src="metadata/affidamento/meta_affidamentodefaultview.js"></script>
+    <script src="metadata/titolostudio/meta_titolostudiodocentiview.js"></script>
+    <script src="metadata/provaaula/meta_provaaulaprovaview.js"></script>
+    <script src="metadata/provaaula/meta_provaaulaaulaview.js"></script>
+    <script src="metadata/provaaula/meta_provaaulaappelliview.js"></script>
+    <script src="metadata/pianostudioattivform/meta_pianostudioattivformseganagstuview.js"></script>
+    <script src="metadata/pianostudio/meta_pianostudioseganagstuview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizioneseganagstustatoview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizioneseganagstumastview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizioneseganagstuaccview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizioneseganagstuview.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizioneingressoview.js"></script>
+    <script src="metadata/didprog/meta_didprogingressoview.js"></script>
+    <script src="metadata/aula/meta_aulaseg_childview.js"></script>
+    <script src="metadata/attivform/meta_attivformpropedview.js"></script>
+    <script src="metadata/attivform/meta_attivformgruppoview.js"></script>
+    <script src="metadata/attivform/meta_attivformerogataview.js"></script>
+    <script src="metadata/attivform/meta_attivformdefaultview.js"></script>
+    <script src="metadata/pianostudiostatus/meta_pianostudiostatusdefaultview.js"></script>
+    <script src="metadata/pianostudiostatus/meta_pianostudiostatus.js"></script>
+    <script src="metadata/pianostudioattivform/meta_pianostudioattivform.js"></script>
+    <script src="metadata/appello/meta_appelloerogataview.js"></script>
+    <script src="metadata/attivform/meta_attivformappelloview.js"></script>
+    <script src="metadata/pianostudio/meta_pianostudio.js"></script>
+    <script src="metadata/iscrizione/meta_iscrizione.js"></script>
+    <script src="metadata/commissregistry_docenti/meta_commissregistry_docenti.js"></script>
+    <script src="metadata/sostenimento/meta_sostenimento.js"></script>
+    <script src="metadata/prenotappello/meta_prenotappello.js"></script>
+    <script src="metadata/commiss/meta_commiss.js"></script>
+    <script src="metadata/appelloazionekind/meta_appelloazionekind.js"></script>
+    <script src="metadata/tirociniostato/meta_tirociniostatodefaultview.js"></script>
+    <script src="metadata/tirociniostato/meta_tirociniostato.js"></script>
+    <script src="metadata/tirociniocandidaturakind/meta_tirociniocandidaturakinddefaultview.js"></script>
+    <script src="metadata/tirociniocandidaturakind/meta_tirociniocandidaturakind.js"></script>
+    <script src="metadata/questionariokind/meta_questionariokinddefaultview.js"></script>
+    <script src="metadata/questionariokind/meta_questionariokind.js"></script>
+    <script src="metadata/questionariodomkind/meta_questionariodomkinddefaultview.js"></script>
+    <script src="metadata/questionariodomkind/meta_questionariodomkind.js"></script>
+    <script src="metadata/ofakind/meta_ofakind.js"></script>
+    <script src="metadata/istanzakind/meta_istanzakinddefaultview.js"></script>
+    <script src="metadata/istanzakind/meta_istanzakind.js"></script>
+    <script src="metadata/fasciaiseedef/meta_fasciaiseedefmoreview.js"></script>
+    <script src="metadata/fasciaiseedef/meta_fasciaiseedefscontiview.js"></script>
+    <script src="metadata/fasciaiseedef/meta_fasciaiseedefdefaultview.js"></script>
+    <script src="metadata/costoscontodefkind/meta_costoscontodefkinddefaultview.js"></script>
+    <script src="metadata/costoscontodefkind/meta_costoscontodefkind.js"></script>
+    <script src="metadata/tassaistanzaconf/meta_tassaistanzaconfdefaultview.js"></script>
+    <script src="metadata/tassaistanzaconf/meta_tassaistanzaconf.js"></script>
+    <script src="metadata/tassaiscrizioneconf/meta_tassaiscrizioneconfdefaultview.js"></script>
+    <script src="metadata/tassaiscrizioneconf/meta_tassaiscrizioneconf.js"></script>
+    <script src="metadata/tassacsingconf/meta_tassacsingconfdefaultview.js"></script>
+    <script src="metadata/tassacsingconf/meta_tassacsingconf.js"></script>
+    <script src="metadata/tassaconfkind/meta_tassaconfkinddefaultview.js"></script>
+    <script src="metadata/tassaconfkind/meta_tassaconfkind.js"></script>
+    <script src="metadata/tassaconf/meta_tassaconfdefaultview.js"></script>
+    <script src="metadata/tassaconf/meta_tassaconf.js"></script>
+    <script src="metadata/ratakind/meta_ratakinddefaultview.js"></script>
+    <script src="metadata/ratakind/meta_ratakind.js"></script>
+    <script src="metadata/pagamentokind/meta_pagamentokinddefaultview.js"></script>
+    <script src="metadata/pagamentokind/meta_pagamentokind.js"></script>
+    <script src="metadata/ratadef/meta_ratadef.js"></script>
+    <script src="metadata/fasciaisee/meta_fasciaisee.js"></script>
+    <script src="metadata/esonero/meta_esonerotitolostudioview.js"></script>
+    <script src="metadata/esonero/meta_esonero_titolostudio.js"></script>
+    <script src="metadata/esonero/meta_esonerodisabilview.js"></script>
+    <script src="metadata/esonero/meta_esonero_disabil.js"></script>
+    <script src="metadata/esonero/meta_esonerocarrieraview.js"></script>
+    <script src="metadata/esonero/meta_esonero_carriera.js"></script>
+    <script src="metadata/esonero/meta_esonerodefaultview.js"></script>
+    <script src="metadata/esonero/meta_esonero.js"></script>
+    <script src="metadata/costoscontodefdettagliokind/meta_costoscontodefdettagliokind.js"></script>
+    <script src="metadata/costoscontodefdettaglio/meta_costoscontodefdettaglio.js"></script>
+    <script src="metadata/costoscontodef/meta_costoscontodefmoreview.js"></script>
+    <script src="metadata/costoscontodef/meta_costoscontodefscontiview.js"></script>
+    <script src="metadata/fasciaiseedef/meta_fasciaiseedef.js"></script>
+    <script src="metadata/costoscontodef/meta_costoscontodef.js"></script>
+    <script src="metadata/registry/meta_registryistituti_princview.js"></script>
+    <script src="metadata/upb/meta_upbdefaultview.js"></script>
+    <script src="metadata/studprenotkind/meta_studprenotkinddefaultview.js"></script>
+    <script src="metadata/studdirittokind/meta_studdirittokinddefaultview.js"></script>
+    <script src="metadata/strutturakind/meta_strutturakinddefaultview.js"></script>
+    <script src="metadata/struttura/meta_strutturadefaultview.js"></script>
+    <script src="metadata/sessionekind/meta_sessionekinddefaultview.js"></script>
+    <script src="metadata/sessione/meta_sessionedefaultview.js"></script>
+    <script src="metadata/sede/meta_sededefaultview.js"></script>
+    <script src="metadata/sasd/meta_sasddefaultview.js"></script>
+    <script src="metadata/rendicontaltrokind/meta_rendicontaltrokinddefaultview.js"></script>
+    <script src="metadata/registryclass/meta_registryclassaziendeview.js"></script>
+    <script src="metadata/registryclass/meta_registryclasspersoneview.js"></script>
+    <script src="metadata/registryclass/meta_registryclassdefaultview.js"></script>
+    <script src="metadata/registry/meta_registryuserview.js"></script>
+    <script src="metadata/registry/meta_registrystudentiview.js"></script>
+    <script src="metadata/registry/meta_registryistitutiesteriview.js"></script>
+    <script src="metadata/registry/meta_registryistitutiview.js"></script>
+    <script src="metadata/registry/meta_registrydocentiview.js"></script>
+    <script src="metadata/registry/meta_registryaziendeview.js"></script>
+    <script src="metadata/registry/meta_registrydefaultview.js"></script>
+    <script src="metadata/publicazkind/meta_publicazkinddefaultview.js"></script>
+    <script src="metadata/istitutoprinc/meta_istitutoprinc.js"></script>
+    <script src="metadata/graduatoriavar/meta_graduatoriavardefaultview.js"></script>
+    <script src="metadata/graduatoriavar/meta_graduatoriavar.js"></script>
+    <script src="metadata/geo_region/meta_geo_regionsegview.js"></script>
+    <script src="metadata/geo_nation/meta_geo_nationsegview.js"></script>
+    <script src="metadata/geo_nation/meta_geo_nationlingueview.js"></script>
+    <script src="metadata/geo_country/meta_geo_countrysegview.js"></script>
+    <script src="metadata/geo_city/meta_geo_citysegview.js"></script>
+    <script src="metadata/erogazkind/meta_erogazkinddefaultview.js"></script>
+    <script src="metadata/edificio/meta_edificiodefaultview.js"></script>
+    <script src="metadata/didprog/meta_didprogdefaultview.js"></script>
+    <script src="metadata/diderog/meta_diderogdefaultview.js"></script>
+    <script src="metadata/corsostudionorma/meta_corsostudionormadefaultview.js"></script>
+    <script src="metadata/corsostudiolivello/meta_corsostudiolivellodefaultview.js"></script>
+    <script src="metadata/corsostudiokind/meta_corsostudiokinddefaultview.js"></script>
+    <script src="metadata/corsostudio/meta_corsostudioingressoview.js"></script>
+    <script src="metadata/corsostudio/meta_corsostudiodefaultview.js"></script>
+    <script src="metadata/contrattokind/meta_contrattokinddefaultview.js"></script>
+    <script src="metadata/classescuola/meta_classescuoladefaultview.js"></script>
+    <script src="metadata/classconsorsuale/meta_classconsorsualedefaultview.js"></script>
+    <script src="metadata/ccnl/meta_ccnldefaultview.js"></script>
+    <script src="metadata/aulakind/meta_aulakinddefaultview.js"></script>
+    <script src="metadata/aula/meta_auladefaultview.js"></script>
+    <script src="metadata/areadidattica/meta_areadidatticadefaultview.js"></script>
+    <script src="metadata/appellokind/meta_appellokinddefaultview.js"></script>
+    <script src="metadata/appello/meta_appellodefaultview.js"></script>
+    <script src="metadata/aoo/meta_aoodefaultview.js"></script>
+    <script src="metadata/affidamentokind/meta_affidamentokinddefaultview.js"></script>
+    <script src="metadata/address/meta_addresssegview.js"></script>
+    <script src="metadata/questionario/meta_questionariodefaultview.js"></script>
+    <script src="metadata/questionariodomrisp/meta_questionariodomrisp.js"></script>
+    <script src="metadata/questionariodom/meta_questionariodom.js"></script>
+    <script src="metadata/questionario/meta_questionario.js"></script>
+    <script src="metadata/ccnlregistry_aziende/meta_ccnlregistry_aziende.js"></script>
+    <script src="metadata/affidamentoattach/meta_affidamentoattach.js"></script>
+    <script src="metadata/appellokind/meta_appellokind.js"></script>
+    <script src="metadata/sessionekind/meta_sessionekind.js"></script>
+    <script src="metadata/sessione/meta_sessione.js"></script>
+    <script src="metadata/erogazkind/meta_erogazkind.js"></script>
+    <script src="metadata/affidamentokind/meta_affidamentokind.js"></script>
+    <script src="metadata/aulakind/meta_aulakind.js"></script>
+    <script src="metadata/orakind/meta_orakind.js"></script>
+    <script src="metadata/edificio/meta_edificio.js"></script>
+    <script src="metadata/diderog/meta_diderog.js"></script>
+    <script src="metadata/aula/meta_aula.js"></script>
+    <script src="metadata/appello/meta_appello.js"></script>
+    <script src="metadata/appelloattivform/meta_appelloattivform.js"></script>
+    <script src="metadata/tipoattform/meta_tipoattform.js"></script>
+    <script src="metadata/struttura/meta_struttura.js"></script>
+    <script src="metadata/corsostudiostruttura/meta_corsostudiostruttura.js"></script>
+    <script src="metadata/corsostudiolivello/meta_corsostudiolivello.js"></script>
+    <script src="metadata/sede/meta_sede.js"></script>
+    <script src="metadata/valutazionekind/meta_valutazionekind.js"></script>
+    <script src="metadata/upb/meta_upb.js"></script>
+    <script src="metadata/studprenotkind/meta_studprenotkind.js"></script>
+    <script src="metadata/studdirittokind/meta_studdirittokind.js"></script>
+    <script src="metadata/strutturakind/meta_strutturakind.js"></script>
+    <script src="metadata/sospensione/meta_sospensione.js"></script>
+    <script src="metadata/sasd/meta_sasd.js"></script>
+    <script src="metadata/rendicontlezionestud/meta_rendicontlezionestud.js"></script>
+    <script src="metadata/rendicontaltrokind/meta_rendicontaltrokind.js"></script>
+    <script src="metadata/registryreference/meta_registryreference.js"></script>
+    <script src="metadata/registryclass/meta_registryclass.js"></script>
+    <script src="metadata/address/meta_address.js"></script>
+    <script src="metadata/registry/meta_registry_studenti.js"></script>
+    <script src="metadata/registry/meta_registry_istitutiesteri.js"></script>
+    <script src="metadata/registry/meta_registry_istituti.js"></script>
+    <script src="metadata/titolostudio/meta_titolostudio.js"></script>
+    <script src="metadata/rendicont/meta_rendicont.js"></script>
+    <script src="metadata/registry/meta_registry_docenti.js"></script>
+    <script src="metadata/registry/meta_registry_aziende.js"></script>
+    <script src="metadata/publicazkind/meta_publicazkind.js"></script>
+    <script src="metadata/publicazkeyword/meta_publicazkeyword.js"></script>
+    <script src="metadata/istitutokind/meta_istitutokind.js"></script>
+    <script src="metadata/istattitolistudio/meta_istattitolistudio.js"></script>
+    <script src="metadata/insegn/meta_insegn.js"></script>
+    <script src="metadata/geo_region/meta_geo_region.js"></script>
+    <script src="metadata/geo_nation/meta_geo_nation.js"></script>
+    <script src="metadata/geo_country/meta_geo_country.js"></script>
+    <script src="metadata/geo_continent/meta_geo_continent.js"></script>
+    <script src="metadata/geo_city/meta_geo_city.js"></script>
+    <script src="metadata/corsostudionorma/meta_corsostudionorma.js"></script>
+    <script src="metadata/corsostudiokind/meta_corsostudiokind.js"></script>
+    <script src="metadata/corsostudio/meta_corsostudio.js"></script>
+    <script src="metadata/contratto/meta_contratto.js"></script>
+    <script src="metadata/classescuola/meta_classescuola.js"></script>
+    <script src="metadata/classconsorsuale/meta_classconsorsuale.js"></script>
+    <script src="metadata/ccnl/meta_ccnl.js"></script>
+    <script src="metadata/attach/meta_attach.js"></script>
+    <script src="metadata/areadidattica/meta_areadidattica.js"></script>
+    <script src="metadata/aoo/meta_aoo.js"></script>
+    <script src="metadata/affidamento/meta_affidamento.js"></script>
+    <script src="metadata/annoaccademico/meta_annoaccademico.js"></script>
+    <script src="metadata/registryaddress/meta_registryaddress.js"></script>
+    <script src="metadata/location/meta_location.js"></script>
+    <script src="metadata/mutuazionecaratteristicaora/meta_mutuazionecaratteristicaora.js"></script>
+    <script src="metadata/mutuazionecaratteristica/meta_mutuazionecaratteristica.js"></script>
+    <script src="metadata/didprogaccesso/meta_didprogaccesso.js"></script>
+    <script src="metadata/didprogdatepiano/meta_didprogdatepiano.js"></script>
+    <script src="metadata/didprograppstud/meta_didprograppstud.js"></script>
+    <script src="metadata/corsostudioclassescuola/meta_corsostudioclassescuola.js"></script>
+    <script src="metadata/attivformcaratteristicaora/meta_attivformcaratteristicaora.js"></script>
+    <script src="metadata/affidamentocaratteristicaora/meta_affidamentocaratteristicaora.js"></script>
+    <script src="metadata/affidamentocaratteristica/meta_affidamentocaratteristica.js"></script>
+    <script src="metadata/insegnintegcaratteristica/meta_insegnintegcaratteristica.js"></script>
+    <script src="metadata/insegninteg/meta_insegninteg.js"></script>
+    <script src="metadata/sasdistitutokind/meta_sasdistitutokind.js"></script>
+    <script src="metadata/lezione/meta_lezione.js"></script>
+    <script src="metadata/rendicontaltro/meta_rendicontaltro.js"></script>
+    <script src="metadata/publicaz/meta_publicaz.js"></script>
+    <script src="metadata/publicazkindpublicaz/meta_publicazkindpublicaz.js"></script>
+    <script src="metadata/prova/meta_prova.js"></script>
+    <script src="metadata/mutuazione/meta_mutuazione.js"></script>
+    <script src="metadata/attivformvalutazionekind/meta_attivformvalutazionekind.js"></script>
+    <script src="metadata/canale/meta_canale.js"></script>
+    <script src="metadata/insegncaratteristica/meta_insegncaratteristica.js"></script>
+    <script src="metadata/didproganno/meta_didproganno.js"></script>
+    <script src="metadata/attivform/meta_attivform.js"></script>
+    <script src="metadata/didprogcurrcaratteristica/meta_didprogcurrcaratteristica.js"></script>
+    <script src="metadata/didprogori/meta_didprogori.js"></script>
+    <script src="metadata/didprog/meta_didprog.js"></script>
+    <script src="metadata/didprogporzanno/meta_didprogporzanno.js"></script>
+    <script src="metadata/corsostudiocaratteristica/meta_corsostudiocaratteristica.js"></script>
+    <script src="metadata/classescuolacaratteristica/meta_classescuolacaratteristica.js"></script>
+    <script src="metadata/didproggrupp/meta_didproggrupp.js"></script>
+    <script src="metadata/didprogcurr/meta_didprogcurr.js"></script>
+    <script src="metadata/provaaula/meta_provaaula.js"></script>
+    <script src="metadata/didproggruppcaratteristica/meta_didproggruppcaratteristica.js"></script>
+    <script src="metadata/didprogclassconsorsuale/meta_didprogclassconsorsuale.js"></script>
+    <script src="metadata/attivformproped/meta_attivformproped.js"></script>
+    <script src="metadata/attivformcaratteristica/meta_attivformcaratteristica.js"></script>
+    <script src="metadata/publicazregistry_aziende/meta_publicazregistry_aziende.js"></script>
+    <script src="metadata/contrattokind/meta_contrattokind.js"></script>
+    <script src="metadata/registry/meta_registry.js"></script>
+    <script src="metadata/registrypaymethod/meta_registrypaymethod.js"></script>
+    <script src="metadata/publicazregistry_docenti/meta_publicazregistry_docenti.js"></script>
+    <script src="metadata/virtualuser/meta_virtualuser.js"></script>
+
+
+    <script src="metadata/menuweb/meta_menuweb.js"></script>
+
+    <!-- script custom che non prevedono DOM -->
+    <script src="../config/app_segreterie/appMainConfig.js"></script>
+    <script src="appMain.js"></script>
+
+
+    <!-- meta page -->
+	<script src="metadata/salprogettoassetworkpackage/salprogettoassetworkpackage_default.js"></script>
+    <script src="metadata/ricostruzioneattach/ricostruzioneattach_default.js"></script>
+    <script src="metadata/pcspeoview/pcspeoview_default.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivo/perfvalutazionepersonaleobiettivo_conattivita.js"></script>
+    <script src="metadata/perfvalutazionepersonalevalresponsabile/perfvalutazionepersonalevalresponsabile_default.js"></script>
+    <script src="metadata/perfvalutazionepersonale/perfvalutazionepersonale_campania.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivitaattach/perfprogettoobiettivoattivitaattach_perfprog.js"></script>
+    <script src="metadata/perfprogettouomembro/perfprogettouomembro_default.js"></script>
+    <script src="metadata/perfprogettoaccountprevisionview/perfprogettoaccountprevisionview_default.js"></script>
+    <script src="metadata/perfprogettoattivitainterazione/perfprogettoattivitainterazione_default.js"></script>
+    <script src="metadata/importcontrattistipendiview/importcontrattistipendiview_default.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivitaattach/perfprogettoobiettivoattivitaattach_perfprogetto.js"></script>
+    <script src="metadata/perfvalutazionepersonale/perfvalutazionepersonale_tusciasint.js"></script>
+    <script src="metadata/progettoregistry_docenti/progettoregistry_docenti_default.js"></script>
+    <script src="metadata/progettoregistry_amministrativi/progettoregistry_amministrativi_default.js"></script>
+    <script src="metadata/progettoreport/progettoreport_default.js"></script>
+    <script src="metadata/progettoreportprogettoactivitykind/progettoreportprogettoactivitykind_default.js"></script>
+    <script src="metadata/progettoreportprogettokind/progettoreportprogettokind_default.js"></script>
+    <script src="metadata/progettoreportregistryprogfin/progettoreportregistryprogfin_default.js"></script>
+    <script src="metadata/progettoreportstruttura/progettoreportstruttura_default.js"></script>
+    <script src="metadata/progettoreportprogettostatuskind/progettoreportprogettostatuskind_default.js"></script>
+    <script src="metadata/progettosegreportview/progettosegreportview_default.js"></script>
+    <script src="metadata/progettofinanziamento/progettofinanziamento_catania.js"></script>
+    <script src="metadata/progettokeyword/progettokeyword_default.js"></script>
+    <script src="metadata/macroareadidattica/macroareadidattica_default.js"></script>
+    <script src="metadata/perfprogetto/perfprogetto_responsabili.js"></script>
+    <script src="metadata/progettosettoreerc/progettosettoreerc_seg.js"></script>
+    <script src="metadata/progetto/progetto_catania.js"></script>
+    <script src="metadata/stipendiocomplemento/stipendiocomplemento_default.js"></script>
+    <script src="metadata/stipendiocomplementokind/stipendiocomplementokind_default.js"></script>
+    <script src="metadata/contrattostipendioview/contrattostipendioview_default.js"></script>
+    <script src="metadata/ricostruzioneanniaccademici/ricostruzioneanniaccademici_default.js"></script>
+    <script src="metadata/ricostruzionenonvaliditaview/ricostruzionenonvaliditaview_default.js"></script>
+    <script src="metadata/perfruolomansionekind/perfruolomansionekind_default.js"></script>
+    <script src="metadata/perfprogettostatuschanges/perfprogettostatuschanges_default.js"></script>
+    <script src="metadata/sdgoals/sdgoals_default.js"></script>
+    <script src="metadata/progettosdgoals/progettosdgoals_default.js"></script>
+    <script src="metadata/perfobiettiviuo/perfobiettiviuo_onlyprestazionali.js"></script>
+    <script src="metadata/perfvalutazionepersonale/perfvalutazionepersonale_onlycomportamentali.js"></script>
+    <script src="metadata/perfvalutazionepersonale/perfvalutazionepersonale_onlyprestazionali.js"></script>
+    <script src="metadata/perfvalutazioneateneores/perfvalutazioneateneores_personale.js"></script>
+    <script src="metadata/perfvalutazioneateneo/perfvalutazioneateneo_consoglie.js"></script>
+    <script src="metadata/perfvalutazioneateneores/perfvalutazioneateneores_consoglie.js"></script>
+    <script src="metadata/perfvalutazioneateneoressoglia/perfvalutazioneateneoressoglia_default.js"></script>
+    <script src="metadata/perfvalutazionepersonale/perfvalutazionepersonale_tuscia.js"></script>
+    <script src="metadata/perfvalutazionepersonalecomportamento/perfvalutazionepersonalecomportamento_giudizio.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivo/perfvalutazionepersonaleobiettivo_tuscia.js"></script>
+    <script src="metadata/perfvalutazioneuoufficiview/perfvalutazioneuoufficiview_default.js"></script>
+    <script src="metadata/congiuntokind/congiuntokind_default.js"></script>
+    <script src="metadata/registrycongiunto/registrycongiunto_default.js"></script>
+    <script src="metadata/apppagestemplate/apppagestemplate_default.js"></script>
+    <script src="metadata/ptarichiestaagile/ptarichiestaagile_default.js"></script>
+    <script src="metadata/ptarichiestariposi/ptarichiestariposi_default.js"></script>
+    <script src="metadata/ptarichiestamaternita/ptarichiestamaternita_default.js"></script>
+    <script src="metadata/ptarichiesta104/ptarichiesta104_default.js"></script>
+    <script src="metadata/ptarichiestamalattiafiglio/ptarichiestamalattiafiglio_default.js"></script>
+    <script src="metadata/ptadichiarazioneassenzapermessi/ptadichiarazioneassenzapermessi_default.js"></script>
+    <script src="metadata/ptadichiarazioneassenzapermessifiglio/ptadichiarazioneassenzapermessifiglio_default.js"></script>
+    <script src="metadata/ptadichiarazionemansioni/ptadichiarazionemansioni_default.js"></script>
+    <script src="metadata/ptarichiestacongedo/ptarichiestacongedo_default.js"></script>
+    <script src="metadata/ptarichiestaastensionematernita/ptarichiestaastensionematernita_default.js"></script>
+    <script src="metadata/ptarichiestastatuskind/ptarichiestastatuskind_default.js"></script>
+    <script src="metadata/ptarichiestaagilereportstatus/ptarichiestaagilereportstatus_default.js"></script>
+    <script src="metadata/ptadichiarazionepermessi/ptadichiarazionepermessi_default.js"></script>
+    <script src="metadata/ptarichiestaagilereport/ptarichiestaagilereport_default.js"></script>
+    <script src="metadata/ptarichiestaagileattivita/ptarichiestaagileattivita_default.js"></script>
+    <script src="metadata/ptarichiestaagilereportptarichiestaagileattivita/ptarichiestaagilereportptarichiestaagileattivita_default.js"></script>
+    <script src="metadata/perfvalutazioneuo/perfvalutazioneuo_onlyunatantum.js"></script>
+    <script src="metadata/perfobiettiviuo/perfobiettiviuo_onlyunatantum.js"></script>
+    <script src="metadata/perfvalutazioneateneoresattach/perfvalutazioneateneoresattach_default.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivoattach/perfvalutazionepersonaleobiettivoattach_default.js"></script>
+    <script src="metadata/perfobiettiviuoattach/perfobiettiviuoattach_default.js"></script>
+    <script src="metadata/registry/registry_servizi.js"></script>
+    <script src="metadata/ricostruzione/ricostruzione_default.js"></script>
+    <script src="metadata/ricostruzionekind/ricostruzionekind_default.js"></script>
+    <script src="metadata/nonvalutabilitakind/nonvalutabilitakind_default.js"></script>
+    <script src="metadata/servizioruolo/servizioruolo_default.js"></script>
+    <script src="metadata/serviziopreruolotesoro/serviziopreruolotesoro_default.js"></script>
+    <script src="metadata/serviziopreruoloinps/serviziopreruoloinps_default.js"></script>
+    <script src="metadata/serviziocontributi/serviziocontributi_default.js"></script>
+    <script src="metadata/serviziomilitare/serviziomilitare_default.js"></script>
+    <script src="metadata/servizioricongiunzioni/servizioricongiunzioni_default.js"></script>
+    <script src="metadata/servizioaltro/servizioaltro_default.js"></script>
+    <script src="metadata/ricostruzioneperiodonv/ricostruzioneperiodonv_default.js"></script>
+    <script src="metadata/perfruolocontrattokind/perfruolocontrattokind_default.js"></script>
+    <script src="metadata/perfruoloperfobiettivokind/perfruoloperfobiettivokind_default.js"></script>
+    <script src="metadata/perfobiettivokind/perfobiettivokind_default.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivita/perfprogettoobiettivoattivita_docenti.js"></script>
+    <script src="metadata/perfruolo/perfruolo_default.js"></script>
+    <script src="metadata/pcsassunzionisimulate/pcsassunzionisimulate_default.js"></script>
+    <script src="metadata/contratto/contratto_prev.js"></script>
+    <script src="metadata/didprogporzannokind/didprogporzannokind_default.js"></script>
+    <script src="metadata/didprogsuddannokind/didprogsuddannokind_default.js"></script>
+    <script src="metadata/titolokind/titolokind_default.js"></script>
+    <script src="metadata/didprognumchiusokind/didprognumchiusokind_default.js"></script>
+    <script src="metadata/registry/registry_uncategorized.js"></script>
+    <script src="metadata/pcscessazioniview/pcscessazioniview_default.js"></script>
+    <script src="metadata/strutturaresponsabile/strutturaresponsabile_default.js"></script>
+    <script src="metadata/afferenza/afferenza_stru.js"></script>
+    <script src="metadata/contratto/contratto_amm.js"></script>
+    <script src="metadata/progettotiporicavokindcontrattokind/progettotiporicavokindcontrattokind_default.js"></script>
+    <script src="metadata/cedolino/cedolino_default.js"></script>
+    <script src="metadata/progettotiporicavocontrattokind/progettotiporicavocontrattokind_default.js"></script>
+    <script src="metadata/progettoricavo/progettoricavo_default.js"></script>
+    <script src="metadata/progettotiporicavoaccmotive/progettotiporicavoaccmotive_seg.js"></script>
+    <script src="metadata/progettotiporicavokindaccmotive/progettotiporicavokindaccmotive_default.js"></script>
+    <script src="metadata/pcsassunzioni/pcsassunzioni_default.js"></script>
+    <script src="metadata/pcsbilancio/pcsbilancio_default.js"></script>
+    <script src="metadata/pcspuntiorganicoview/pcspuntiorganicoview_default.js"></script>
+    <script src="metadata/analisiannuale/analisiannuale_default.js"></script>
+    <script src="metadata/stipendioannuo/stipendioannuo_prev.js"></script>
+    <script src="metadata/stipendioannuo/stipendioannuo_default.js"></script>
+    <script src="metadata/perfrequestobbindividuale/perfrequestobbindividuale_default.js"></script>
+    <script src="metadata/perfrequestobbunatantum/perfrequestobbunatantum_default.js"></script>
+    <script src="metadata/perfrequestobbindividualesoglia/perfrequestobbindividualesoglia_default.js"></script>
+    <script src="metadata/perfrequestobbunatantumsoglia/perfrequestobbunatantumsoglia_default.js"></script>
+    <script src="metadata/position/position_default.js"></script>
+    <script src="metadata/perfprogettocambiostatoperfruolo/perfprogettocambiostatoperfruolo_default.js"></script>
+    <script src="metadata/perfschedacambiostatoperfruolo/perfschedacambiostatoperfruolo_default.js"></script>
+    <script src="metadata/mansionekind/mansionekind_default.js"></script>
+    <script src="metadata/perfvalutazioneateneoresvalidatori/perfvalutazioneateneoresvalidatori_default.js"></script>
+    <script src="metadata/perfvalutazioneateneovalidatore/perfvalutazioneateneovalidatore_default.js"></script>
+    <script src="metadata/perfvalutazionepersonalecomportamentosoglia/perfvalutazionepersonalecomportamentosoglia_default.js"></script>
+    <script src="metadata/perfvalutazioneuoindicatorisoglia/perfvalutazioneuoindicatorisoglia_default.js"></script>
+    <script src="metadata/perfindicatoresoglia/perfindicatoresoglia_valutazione.js"></script>
+    <script src="metadata/perfstrutturaperfindicatore/perfstrutturaperfindicatore_default.js"></script>
+    <script src="metadata/registry/registry_aziende_ro.js"></script>
+    <script src="metadata/perfinterazioni/perfinterazioni_default.js"></script>
+    <script src="metadata/perfinterazionekind/perfinterazionekind_default.js"></script>
+    <script src="metadata/perfprogettocostobudgetview/perfprogettocostobudgetview_default.js"></script>
+    <script src="metadata/assetdiary/assetdiary_docente.js"></script>
+    <script src="metadata/registry/registry_docenti_docente.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/rendicontattivitaprogetto_docente.js"></script>
+    <script src="metadata/affidamento/affidamento_docente.js"></script>
+    <script src="metadata/rendicontaltro/rendicontaltro_docente.js"></script>
+    <script src="metadata/afferenza/afferenza_docente.js"></script>
+    <script src="metadata/perfobiettiviuosoglia/perfobiettiviuosoglia_default.js"></script>
+    <script src="metadata/stipendio/stipendio_default.js"></script>
+    <script src="metadata/getcostoview/getcostoview_default.js"></script>
+    <script src="metadata/allegatirichiesti/allegatirichiesti_default.js"></script>
+    <script src="metadata/requisito/requisito_seg.js"></script>
+    <script src="metadata/progettoregistry_aziende/progettoregistry_aziende_seg.js"></script>
+    <script src="metadata/partnerkind/partnerkind_default.js"></script>
+    <script src="metadata/progettofinanziamento/progettofinanziamento_default.js"></script>
+    <script src="metadata/perfvalutazionepersonalesoglia/perfvalutazionepersonalesoglia_default.js"></script>
+    <script src="metadata/strumentofin/strumentofin_default.js"></script>
+    <script src="metadata/perfvalutazionepersonaleobiettivo/perfvalutazionepersonaleobiettivo_default.js"></script>
+    <script src="metadata/perfobiettiviuo/perfobiettiviuo_default.js"></script>
+    <script src="metadata/perfvalutazionepersonaleateneo/perfvalutazionepersonaleateneo_default.js"></script>
+    <script src="metadata/perfvalutazionepersonaleuo/perfvalutazionepersonaleuo_default.js"></script>
+    <script src="metadata/perfvalutazionepersonalecomportamento/perfvalutazionepersonalecomportamento_default.js"></script>
+    <script src="metadata/perfprogettoobiettivosoglia/perfprogettoobiettivosoglia_soglia.js"></script>
+    <script src="metadata/perfvalutazioneuoindicatori/perfvalutazioneuoindicatori_default.js"></script>
+    <script src="metadata/perfprogettoobiettivopersonaleview/perfprogettoobiettivopersonaleview_default.js"></script>
+    <script src="metadata/perfprogettoobiettivouoview/perfprogettoobiettivouoview_default.js"></script>
+    <script src="metadata/menuweb/menuweb_tree.js"></script>
+    <script src="metadata/perfprogettoobiettivosoglia/perfprogettoobiettivosoglia_default.js"></script>
+    <script src="metadata/afferenza/afferenza_amm.js"></script>
+    <script src="metadata/perfprogettocambiostato/perfprogettocambiostato_default.js"></script>
+    <script src="metadata/perfindicatorekind/perfindicatorekind_default.js"></script>
+    <script src="metadata/perfvalutazionepersonale/perfvalutazionepersonale_default.js"></script>
+    <script src="metadata/perfvalutazionepersonaleattach/perfvalutazionepersonaleattach_default.js"></script>
+    <script src="metadata/perfvalutazionepersonaleattach/meta_perfvalutazionepersonaleattach.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivitaattach/perfprogettoobiettivoattivitaattach_default.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonale.js"></script>
+    <script src="metadata/perfvalutazionepersonale/meta_perfvalutazionepersonaledefaultview.js"></script>
+    <script src="metadata/perfvalutazioneuoattach/perfvalutazioneuoattach_default.js"></script>
+    <script src="metadata/perfvalutazioneuo/perfvalutazioneuo_default.js"></script>
+    <script src="metadata/perfmission/perfmission_default.js"></script>
+    <script src="metadata/validatori/validatori_default.js"></script>
+    <script src="metadata/perfvalutazioneateneo/perfvalutazioneateneo_default.js"></script>
+    <script src="metadata/perfvalutazioneateneores/perfvalutazioneateneores_default.js"></script>
+    <script src="metadata/perfprogettoobiettivoattivita/perfprogettoobiettivoattivita_default.js"></script>
+    <script src="metadata/perfprogettoobiettivo/perfprogettoobiettivo_default.js"></script>
+    <script src="metadata/perfprogettoavanzamento/perfprogettoavanzamento_default.js"></script>
+    <script src="metadata/perfprogettoattach/perfprogettoattach_default.js"></script>
+    <script src="metadata/perfprogettocosto/perfprogettocosto_default.js"></script>
+    <script src="metadata/perfschedastatus/perfschedastatus_default.js"></script>
+    <script src="metadata/perfschedacambiostato/perfschedacambiostato_default.js"></script>
+    <script src="metadata/perfprogettouo/perfprogettouo_default.js"></script>
+    <script src="metadata/perfprogettostatus/perfprogettostatus_default.js"></script>
+    <script src="metadata/perfprogetto/perfprogetto_default.js"></script>
+    <script src="metadata/perfindicatore/perfindicatore_default.js"></script>
+    <script src="metadata/struttura/struttura_perf.js"></script>
+    <script src="metadata/perfindicatoresoglia/perfindicatoresoglia_default.js"></script>
+    <script src="metadata/perfpositionattach/perfpositionattach_default.js"></script>
+    <script src="metadata/perfpositionsoglieindividuali/perfpositionsoglieindividuali_default.js"></script>
+    <script src="metadata/perfcomportamento/perfcomportamento_default.js"></script>
+    <script src="metadata/perfcomportamentosoglia/perfcomportamentosoglia_default.js"></script>
+    <script src="metadata/perfsogliakind/perfsogliakind_default.js"></script>
+    <script src="metadata/perfsoglia/perfsoglia_default.js"></script>
+    <script src="metadata/flowchart/flowchart_segamm.js"></script>
+    <script src="metadata/flowchartrestrictedfunction/flowchartrestrictedfunction_seg.js"></script>
+    <script src="metadata/flowchartuser/flowchartuser_seg.js"></script>
+    <script src="metadata/convalida/convalida_segistabbr.js"></script>
+    <script src="metadata/istanza/istanza_tri_seg.js"></script>
+    <script src="metadata/istanza/istanza_abbr_seg.js"></script>
+    <script src="metadata/istanza/istanza_pas_seg.js"></script>
+    <script src="metadata/pratica/pratica_segistpass.js"></script>
+    <script src="metadata/convalida/convalida_segistpass.js"></script>
+    <script src="metadata/convalidante/convalidante_segistpass.js"></script>
+    <script src="metadata/convalidato/convalidato_segistpass.js"></script>
+    <script src="metadata/relatore/relatore_segistcons.js"></script>
+    <script src="metadata/relatore/relatore_default.js"></script>
+    <script src="metadata/tesikind/tesikind_default.js"></script>
+    <script src="metadata/relatorekind/relatorekind_default.js"></script>
+    <script src="metadata/richitesi/richitesi_segistcons.js"></script>
+    <script src="metadata/tesikeyword/tesikeyword_segistcons.js"></script>
+    <script src="metadata/istanza/istanza_conseg_seg.js"></script>
+    <script src="metadata/istanza/istanza_rimb_seg.js"></script>
+    <script src="metadata/creditoistanza_rimb/creditoistanza_rimb_segistrimb.js"></script>
+    <script src="metadata/convalidato/convalidato_segistrein.js"></script>
+    <script src="metadata/pratica/pratica_segistrein.js"></script>
+    <script src="metadata/convalida/convalida_segistrein.js"></script>
+    <script src="metadata/convalidante/convalidante_segistrein.js"></script>
+    <script src="metadata/nullaosta/nullaosta_segistrein.js"></script>
+    <script src="metadata/istanza/istanza_rein_seg.js"></script>
+    <script src="metadata/registrationuser/registrationuser_usr.js"></script>
+    <script src="metadata/registrationuser/registrationuser_auth.js"></script>
+    <script src="metadata/registrationuserflowchart/registrationuserflowchart_default.js"></script>
+    <script src="metadata/rendicontattivitaprogettoyear/rendicontattivitaprogettoyear_default.js"></script>
+    <script src="metadata/rendicontattivitaprogettoitineration/rendicontattivitaprogettoitineration_default.js"></script>
+    <script src="metadata/salrendicontattivitaprogettoora/salrendicontattivitaprogettoora_default.js"></script>
+    <script src="metadata/progettocosto/progettocosto_segprg.js"></script>
+    <script src="metadata/salassetdiaryora/salassetdiaryora_default.js"></script>
+    <script src="metadata/salprogettocosto/salprogettocosto_default.js"></script>
+    <script src="metadata/contrattokindposition/contrattokindposition_default.js"></script>
+    <script src="metadata/sal/sal_default.js"></script>
+    <script src="metadata/progettotimesheetprogetto/progettotimesheetprogetto_default.js"></script>
+    <script src="metadata/progettotimesheet/progettotimesheet_default.js"></script>
+    <script src="metadata/bandodsiscr/bandodsiscr_seganagstu.js"></script>
+    <script src="metadata/bandodsiscresitokind/bandodsiscresitokind_default.js"></script>
+    <script src="metadata/istanzaattach/istanzaattach_seg.js"></script>
+    <script src="metadata/registry/registry_amministrativi_personale.js"></script>
+    <script src="metadata/getprogettocostoview/getprogettocostoview_default.js"></script>
+    <script src="metadata/progettorp/progettorp_default.js"></script>
+    <script src="metadata/progettobudgetvariazione/progettobudgetvariazione_default.js"></script>
+    <script src="metadata/progettoudrmembrokind/progettoudrmembrokind_default.js"></script>
+    <script src="metadata/progettoattachkindprogettostatuskind/progettoattachkindprogettostatuskind_default.js"></script>
+    <script src="metadata/progettotestokindprogettostatuskind/progettotestokindprogettostatuskind_default.js"></script>
+    <script src="metadata/currency/currency_default.js"></script>
+    <script src="metadata/affidamentokindcostoora/affidamentokindcostoora_default.js"></script>
+    <script src="metadata/getcostididattica/getcostididattica_erogata.js"></script>
+    <script src="metadata/getcostididattica/getcostididattica_default.js"></script>
+    <script src="metadata/getdocentiperssd/getdocentiperssd_seg.js"></script>
+    <script src="metadata/cefrlanglevel/cefrlanglevel_accordoscambiomidettlang.js"></script>
+    <script src="metadata/delibera/delibera_seg.js"></script>
+    <script src="metadata/nullaosta/nullaosta_segistsosp.js"></script>
+    <script src="metadata/istanza/istanza_sosp_seg.js"></script>
+    <script src="metadata/istanza/istanza_cert_seg.js"></script>
+    <script src="metadata/istanza/istanza_eq_seg.js"></script>
+    <script src="metadata/nullaosta/nullaosta_segisttru.js"></script>
+    <script src="metadata/nullaosta/nullaosta_segistrin.js"></script>
+    <script src="metadata/nullaosta/nullaosta_segisteq.js"></script>
+    <script src="metadata/istanza/istanza_tru_seg.js"></script>
+    <script src="metadata/istanza/istanza_rin_seg.js"></script>
+    <script src="metadata/dichiar/dichiar_titolo_seg.js"></script>
+    <script src="metadata/dichiaraltrekind/dichiaraltrekind_elenchi.js"></script>
+    <script src="metadata/dichiaraltrekind/dichiaraltrekind_default.js"></script>
+    <script src="metadata/sostenimento/sostenimento_segcons.js"></script>
+    <script src="metadata/dichiar/dichiar_isee_seg.js"></script>
+    <script src="metadata/dichiar/dichiar_disabil_seg.js"></script>
+    <script src="metadata/dichiardisabilsuppkind/dichiardisabilsuppkind_default.js"></script>
+    <script src="metadata/dichiardisabilkind/dichiardisabilkind_default.js"></script>
+    <script src="metadata/dichiar/dichiar_isee_seganagstu.js"></script>
+    <script src="metadata/dichiar/dichiar_disabil_seganagstu.js"></script>
+    <script src="metadata/dichiar/dichiar_altre_seg.js"></script>
+    <script src="metadata/dichiar/dichiar_altrititoli_seg.js"></script>
+    <script src="metadata/convalidakind/convalidakind_default.js"></script>
+    <script src="metadata/staffagrteaching/staffagrteaching_seg.js"></script>
+    <script src="metadata/learningagrtrainer/learningagrtrainer_seg.js"></script>
+    <script src="metadata/learningagrstud/learningagrstud_seg.js"></script>
+    <script src="metadata/iscrizionebmirequisito/iscrizionebmirequisito_seg.js"></script>
+    <script src="metadata/iscrizionebmiattach/iscrizionebmiattach_seg.js"></script>
+    <script src="metadata/convalidato/convalidato_segmitr.js"></script>
+    <script src="metadata/convalidato/convalidato_segmi.js"></script>
+    <script src="metadata/convalidante/convalidante_segmi.js"></script>
+    <script src="metadata/convalida/convalida_segmitr.js"></script>
+    <script src="metadata/convalida/convalida_segmi.js"></script>
+    <script src="metadata/iscrizionebmi/iscrizionebmi_seg.js"></script>
+    <script src="metadata/tipologiastudentestruttura/tipologiastudentestruttura_seg.js"></script>
+    <script src="metadata/graduatoriaesitipos/graduatoriaesitipos_seg.js"></script>
+    <script src="metadata/graduatoriaesiti/graduatoriaesiti_seg.js"></script>
+    <script src="metadata/accreditokind/accreditokind_default.js"></script>
+    <script src="metadata/bandodsserviziodatepres/bandodsserviziodatepres_seg.js"></script>
+    <script src="metadata/bandodsserviziorequisito/bandodsserviziorequisito_seg.js"></script>
+    <script src="metadata/bandodsservizioattach/bandodsservizioattach_seg.js"></script>
+    <script src="metadata/tipologiastudente/tipologiastudente_seg.js"></script>
+    <script src="metadata/bandodsservizio/bandodsservizio_seg.js"></script>
+    <script src="metadata/bandodsiscr/bandodsiscr_seg.js"></script>
+    <script src="metadata/bandods/bandods_seg.js"></script>
+    <script src="metadata/iscrizionebmi/iscrizionebmi_seg.js"></script>
+    <script src="metadata/bandomobilitaintkind/bandomobilitaintkind_default.js"></script>
+    <script src="metadata/assicurazione/assicurazione_default.js"></script>
+    <script src="metadata/bandomistruttureto/bandomistruttureto_seg.js"></script>
+    <script src="metadata/cefrlanglevel/cefrlanglevel_default.js"></script>
+    <script src="metadata/bandomistrutturefrom/bandomistrutturefrom_seg.js"></script>
+    <script src="metadata/bandomirequisito/bandomirequisito_seg.js"></script>
+    <script src="metadata/bandomipropedeut/bandomipropedeut_seg.js"></script>
+    <script src="metadata/bandomiistitutiesteri/bandomiistitutiesteri_seg.js"></script>
+    <script src="metadata/bandomiinsegn/bandomiinsegn_seg.js"></script>
+    <script src="metadata/bandomididprogto/bandomididprogto_seg.js"></script>
+    <script src="metadata/bandomididprogfrom/bandomididprogfrom_seg.js"></script>
+    <script src="metadata/bandomiallegati/bandomiallegati_seg.js"></script>
+    <script src="metadata/bandomi/bandomi_seg.js"></script>
+    <script src="metadata/cefr/cefr_default.js"></script>
+    <script src="metadata/isced2013/isced2013_default.js"></script>
+    <script src="metadata/accordoscambiomiporzanno/accordoscambiomiporzanno_seg.js"></script>
+    <script src="metadata/accordoscambiomidett/accordoscambiomidett_seg.js"></script>
+    <script src="metadata/accordoscambiomidettaz/accordoscambiomidettaz_seg.js"></script>
+    <script src="metadata/accordoscambiomi/accordoscambiomi_seg.js"></script>
+    <script src="metadata/programmami/programmami_seg.js"></script>
+    <script src="metadata/inventorytree/inventorytree_seg.js"></script>
+    <script src="metadata/numerodip/numerodip_default.js"></script>
+    <script src="metadata/naturagiur/naturagiur_default.js"></script>
+    <script src="metadata/duratakind/duratakind_default.js"></script>
+    <script src="metadata/convalidato/convalidato_segstudprat.js"></script>
+    <script src="metadata/stipendiokind/stipendiokind_default.js"></script>
+    <script src="metadata/inquadramento/inquadramento_default.js"></script>
+    <script src="metadata/contrattokindperiodo/contrattokindperiodo_default.js"></script>
+    <script src="metadata/tirociniorelazione/tirociniorelazione_seg.js"></script>
+    <script src="metadata/tirocinioproposto/tirocinioproposto_seg.js"></script>
+    <script src="metadata/tirocinioprogetto/tirocinioprogetto_seg.js"></script>
+    <script src="metadata/tirocinioinvioazienda/tirocinioinvioazienda_seg.js"></script>
+    <script src="metadata/tirociniodiario/tirociniodiario_seg.js"></script>
+    <script src="metadata/tirociniocandidatura/tirociniocandidatura_seg.js"></script>
+    <script src="metadata/tirocinioappr/tirocinioappr_seg.js"></script>
+    <script src="metadata/convenzioneattach/convenzioneattach_seg.js"></script>
+    <script src="metadata/convenzione/convenzione_seg.js"></script>
+    <script src="metadata/prova/prova_stato.js"></script>
+    <script src="metadata/prova/prova_dotmas.js"></script>
+    <script src="metadata/pratica/pratica_segstud.js"></script>
+    <script src="metadata/convalidante/convalidante_segstudprat.js"></script>
+    <script src="metadata/convalida/convalida_segstudprat.js"></script>
+    <script src="metadata/changeskind/changeskind_default.js"></script>
+    <script src="metadata/changes/changes_default.js"></script>
+    <script src="metadata/decadenza/decadenza_seganagstu.js"></script>
+    <script src="metadata/decadenza/decadenza_seg.js"></script>
+    <script src="metadata/tax/tax_seg.js"></script>
+    <script src="metadata/settoreerc/settoreerc_segprog.js"></script>
+    <script src="metadata/progettotipocostotax/progettotipocostotax_seg.js"></script>
+    <script src="metadata/progettotipocostokindtax/progettotipocostokindtax_seg.js"></script>
+    <script src="metadata/progettotipocostokindinventorytree/progettotipocostokindinventorytree_seg.js"></script>
+    <script src="metadata/progettotipocostoinventorytree/progettotipocostoinventorytree_seg.js"></script>
+    <script src="metadata/progettotipocostocontrattokind/progettotipocostocontrattokind_seg.js"></script>
+    <script src="metadata/progettotipocostoaccmotive/progettotipocostoaccmotive_seg.js"></script>
+    <script src="metadata/progettocosto/progettocosto_seg.js"></script>
+    <script src="metadata/progettobudget/progettobudget_seg.js"></script>
+    <script src="metadata/progettoasset/progettoasset_default.js"></script>
+    <script src="metadata/progettoactivitykind/progettoactivitykind_default.js"></script>
+    <script src="metadata/fonteindicebibliometrico/fonteindicebibliometrico_seg.js"></script>
+    <script src="metadata/settoreerc/settoreerc_seg.js"></script>
+    <script src="metadata/progettostatuskind/progettostatuskind_default.js"></script>
+    <script src="metadata/progettoattachkind/progettoattachkind_seg.js"></script>
+    <script src="metadata/registryprogfinbandoattach/registryprogfinbandoattach_seg.js"></script>
+    <script src="metadata/registryprogfinbando/registryprogfinbando_seg.js"></script>
+    <script src="metadata/registryprogfin/registryprogfin_seg.js"></script>
+    <script src="metadata/assetdiary/assetdiary_seganag.js"></script>
+    <script src="metadata/assetdiaryora/assetdiaryora_seg.js"></script>
+    <script src="metadata/assetdiary/assetdiary_seg.js"></script>
+    <script src="metadata/affidamentoattach/affidamentoattach_seganag.js"></script>
+    <script src="metadata/progettotipocostokindcontrattokind/progettotipocostokindcontrattokind_seg.js"></script>
+    <script src="metadata/progettotipocostokindaccmotive/progettotipocostokindaccmotive_seg.js"></script>
+    <script src="metadata/progettoproroga/progettoproroga_seg.js"></script>
+    <script src="metadata/progettoattach/progettoattach_seg.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/rendicontattivitaprogetto_anagamm.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/rendicontattivitaprogetto_anag.js"></script>
+    <script src="metadata/registry/registry_amministrativi.js"></script>
+    <script src="metadata/progettoudrmembro/progettoudrmembro_seg.js"></script>
+    <script src="metadata/progettoudr/progettoudr_seg.js"></script>
+    <script src="metadata/progettotestokind/progettotestokind_seg.js"></script>
+    <script src="metadata/progettotesto/progettotesto_seg.js"></script>
+    <script src="metadata/workpackagekind/workpackagekind_seg.js"></script>
+    <script src="metadata/progettotipocosto/progettotipocosto_seg.js"></script>
+    <script src="metadata/progettotipocostokind/progettotipocostokind_seg.js"></script>
+    <script src="metadata/progettokind/progettokind_seg.js"></script>
+    <script src="metadata/orakind/orakind_seg.js"></script>
+    <script src="metadata/workpackage/workpackage_seg.js"></script>
+    <script src="metadata/rendicontattivitaprogettoora/rendicontattivitaprogettoora_seg.js"></script>
+    <script src="metadata/rendicontattivitaprogetto/rendicontattivitaprogetto_seg.js"></script>
+    <script src="metadata/progetto/progetto_seg.js"></script>
+    <script src="metadata/valutazionekind/valutazionekind_seg_child.js"></script>
+    <script src="metadata/valutazionekind/valutazionekind_default.js"></script>
+    <script src="metadata/upb/upb_default.js"></script>
+    <script src="metadata/titolostudio/titolostudio_docenti.js"></script>
+    <script src="metadata/tirociniostato/tirociniostato_default.js"></script>
+    <script src="metadata/tirociniocandidaturakind/tirociniocandidaturakind_default.js"></script>
+    <script src="metadata/tassaistanzaconf/tassaistanzaconf_default.js"></script>
+    <script src="metadata/tassaiscrizioneconf/tassaiscrizioneconf_default.js"></script>
+    <script src="metadata/tassacsingconf/tassacsingconf_default.js"></script>
+    <script src="metadata/tassaconfkind/tassaconfkind_default.js"></script>
+    <script src="metadata/tassaconf/tassaconf_default.js"></script>
+    <script src="metadata/studprenotkind/studprenotkind_default.js"></script>
+    <script src="metadata/studdirittokind/studdirittokind_default.js"></script>
+    <script src="metadata/strutturakind/strutturakind_default.js"></script>
+    <script src="metadata/struttura/struttura_princ.js"></script>
+    <script src="metadata/struttura/struttura_default.js"></script>
+    <script src="metadata/sostenimentoesito/sostenimentoesito_default.js"></script>
+    <script src="metadata/sostenimento/sostenimento_seganagstustato.js"></script>
+    <script src="metadata/sostenimento/sostenimento_seganagstusing.js"></script>
+    <script src="metadata/sostenimento/sostenimento_seganagstuconsmast.js"></script>
+    <script src="metadata/sostenimento/sostenimento_seganagstuacc.js"></script>
+    <script src="metadata/sostenimento/sostenimento_seganagstu.js"></script>
+    <script src="metadata/sostenimento/sostenimento_ingresso.js"></script>
+    <script src="metadata/sostenimento/sostenimento_didprog.js"></script>
+    <script src="metadata/sostenimento/sostenimento_default.js"></script>
+    <script src="metadata/sospensione/sospensione_princ.js"></script>
+    <script src="metadata/sospensione/sospensione_edifici.js"></script>
+    <script src="metadata/sospensione/sospensione_default.js"></script>
+    <script src="metadata/sospensione/sospensione_aula.js"></script>
+    <script src="metadata/sessionekind/sessionekind_default.js"></script>
+    <script src="metadata/sessione/sessione_default.js"></script>
+    <script src="metadata/sede/sede_seg_child_azienda.js"></script>
+    <script src="metadata/sede/sede_seg_child.js"></script>
+    <script src="metadata/sede/sede_default.js"></script>
+    <script src="metadata/sasdistitutokind/sasdistitutokind_default.js"></script>
+    <script src="metadata/registryreference/registryreference_seg.js"></script>
+    <script src="metadata/registryreference/registryreference_persone.js"></script>
+    <script src="metadata/registryclass/registryclass_default.js"></script>
+    <script src="metadata/registryaddress/registryaddress_seg.js"></script>
+    <script src="metadata/registry/registry_istitutiesteri.js"></script>
+    <script src="metadata/registry/registry_istituti_princ.js"></script>
+    <script src="metadata/registry/registry_admin.js"></script>
+    <script src="metadata/registry/registry_istituti.js"></script>
+    <script src="metadata/registry/registry_aziende.js"></script>
+    <script src="metadata/registry/registry_default.js"></script>
+    <script src="metadata/ratakind/ratakind_default.js"></script>
+    <script src="metadata/ratadef/ratadef_sconti.js"></script>
+    <script src="metadata/ratadef/ratadef_more.js"></script>
+    <script src="metadata/ratadef/ratadef_default.js"></script>
+    <script src="metadata/questionariokind/questionariokind_default.js"></script>
+    <script src="metadata/questionariodomrisp/questionariodomrisp_default.js"></script>
+    <script src="metadata/questionariodomkind/questionariodomkind_default.js"></script>
+    <script src="metadata/questionariodom/questionariodom_default.js"></script>
+    <script src="metadata/questionario/questionario_default.js"></script>
+    <script src="metadata/publicazkind/publicazkind_default.js"></script>
+    <script src="metadata/publicazkeyword/publicazkeyword_default.js"></script>
+    <script src="metadata/prova/prova_ingresso.js"></script>
+    <script src="metadata/protocollorifkind/protocollorifkind_seg.js"></script>
+    <script src="metadata/protocollodockind/protocollodockind_seg.js"></script>
+    <script src="metadata/protocollodocelement/protocollodocelement_seg.js"></script>
+    <script src="metadata/protocollodoc/protocollodoc_seg.js"></script>
+    <script src="metadata/protocollodestinatario/protocollodestinatario_seg.js"></script>
+    <script src="metadata/protocollo/protocollo_seg.js"></script>
+    <script src="metadata/prenotappello/prenotappello_appello.js"></script>
+    <script src="metadata/pratica/pratica_seganagstu.js"></script>
+    <script src="metadata/pianostudiostatus/pianostudiostatus_default.js"></script>
+    <script src="metadata/pianostudioattivform/pianostudioattivform_segstud.js"></script>
+    <script src="metadata/pianostudioattivform/pianostudioattivform_seganagstusing.js"></script>
+    <script src="metadata/pianostudioattivform/pianostudioattivform_seganagstu.js"></script>
+    <script src="metadata/pianostudioattivform/pianostudioattivform_didprog.js"></script>
+    <script src="metadata/pianostudio/pianostudio_seganagstusing.js"></script>
+    <script src="metadata/pianostudio/pianostudio_seganagstu.js"></script>
+    <script src="metadata/pianostudio/pianostudio_didprog.js"></script>
+    <script src="metadata/pagamentokind/pagamentokind_default.js"></script>
+    <script src="metadata/ofakind/ofakind_default.js"></script>
+    <script src="metadata/nullaosta/nullaosta_imm_seganagsturin.js"></script>
+    <script src="metadata/nullaosta/nullaosta_imm_seganagstu.js"></script>
+    <script src="metadata/nullaosta/nullaosta_segpratica.js"></script>
+    <script src="metadata/nace/nace_default.js"></script>
+    <script src="metadata/istitutokind/istitutokind_default.js"></script>
+    <script src="metadata/istattitolistudio/istattitolistudio_default.js"></script>
+    <script src="metadata/istanzakind/istanzakind_default.js"></script>
+    <script src="metadata/istanza/istanza_imm_segrin.js"></script>
+    <script src="metadata/istanza/istanza_imm_segpre.js"></script>
+    <script src="metadata/istanza/istanza_imm_seganagsturin.js"></script>
+    <script src="metadata/istanza/istanza_imm_seganagstu.js"></script>
+    <script src="metadata/istanza/istanza_imm_seg.js"></script>
+    <script src="metadata/istanza/istanza_seganagstusonpre.js"></script>
+    <script src="metadata/iscrizioneanno/iscrizioneanno_seganagstu.js"></script>
+    <script src="metadata/iscrizioneanno/iscrizioneanno_didprog.js"></script>
+    <script src="metadata/iscrizione/iscrizione_stato.js"></script>
+    <script src="metadata/iscrizione/iscrizione_seganagstustato.js"></script>
+    <script src="metadata/iscrizione/iscrizione_seganagstusing.js"></script>
+    <script src="metadata/iscrizione/iscrizione_seganagstumast.js"></script>
+    <script src="metadata/iscrizione/iscrizione_seg.js"></script>
+    <script src="metadata/iscrizione/iscrizione_dotmas.js"></script>
+    <script src="metadata/iscrizione/iscrizione_didprog.js"></script>
+    <script src="metadata/insegninteg/insegninteg_default.js"></script>
+    <script src="metadata/insegn/insegn_default.js"></script>
+    <script src="metadata/graduatoriavar/graduatoriavar_default.js"></script>
+    <script src="metadata/graduatoriaesitipos/graduatoriaesitipos_stato.js"></script>
+    <script src="metadata/graduatoriaesitipos/graduatoriaesitipos_default.js"></script>
+    <script src="metadata/graduatoriaesiti/graduatoriaesiti_stato.js"></script>
+    <script src="metadata/graduatoriaesiti/graduatoriaesiti_default.js"></script>
+    <script src="metadata/graduatoriadesc/graduatoriadesc_default.js"></script>
+    <script src="metadata/graduatoria/graduatoria_default.js"></script>
+    <script src="metadata/geo_region/geo_region_segchild.js"></script>
+    <script src="metadata/geo_region/geo_region_seg.js"></script>
+    <script src="metadata/geo_nation/geo_nation_segchild.js"></script>
+    <script src="metadata/geo_nation/geo_nation_seg.js"></script>
+    <script src="metadata/geo_country/geo_country_segchild.js"></script>
+    <script src="metadata/geo_country/geo_country_seg.js"></script>
+    <script src="metadata/geo_continent/geo_continent_default.js"></script>
+    <script src="metadata/geo_city/geo_city_segchild.js"></script>
+    <script src="metadata/geo_city/geo_city_seg.js"></script>
+    <script src="metadata/fasciaiseedef/fasciaiseedef_sconti.js"></script>
+    <script src="metadata/fasciaiseedef/fasciaiseedef_more.js"></script>
+    <script src="metadata/fasciaisee/fasciaisee_default.js"></script>
+    <script src="metadata/esonero/esonero_titolostudio.js"></script>
+    <script src="metadata/esonero/esonero_disabil.js"></script>
+    <script src="metadata/esonero/esonero_carriera.js"></script>
+    <script src="metadata/esonero/esonero_default.js"></script>
+    <script src="metadata/erogazkind/erogazkind_default.js"></script>
+    <script src="metadata/edificio/edificio_seg_child.js"></script>
+    <script src="metadata/edificio/edificio_default.js"></script>
+    <script src="metadata/diniego/diniego_segpratica.js"></script>
+    <script src="metadata/diniego/diniego_seganagsturin.js"></script>
+    <script src="metadata/diniego/diniego_seganagstupre.js"></script>
+    <script src="metadata/diniego/diniego_seganagstu.js"></script>
+    <script src="metadata/dichiarkind/dichiarkind_default.js"></script>
+    <script src="metadata/costoscontodefkind/costoscontodefkind_default.js"></script>
+    <script src="metadata/costoscontodefdettagliokind/costoscontodefdettagliokind_default.js"></script>
+    <script src="metadata/costoscontodefdettaglio/costoscontodefdettaglio_sconti.js"></script>
+    <script src="metadata/costoscontodefdettaglio/costoscontodefdettaglio_more.js"></script>
+    <script src="metadata/costoscontodef/costoscontodef_sconti.js"></script>
+    <script src="metadata/contrattokind/contrattokind_default.js"></script>
+    <script src="metadata/contratto/contratto_default.js"></script>
+    <script src="metadata/classconsorsuale/classconsorsuale_default.js"></script>
+    <script src="metadata/ccnl/ccnl_default.js"></script>
+    <script src="metadata/aulakind/aulakind_default.js"></script>
+    <script src="metadata/ateco/ateco_default.js"></script>
+    <script src="metadata/areadidattica/areadidattica_default.js"></script>
+    <script src="metadata/appellokind/appellokind_default.js"></script>
+    <script src="metadata/appelloazionekind/appelloazionekind_default.js"></script>
+    <script src="metadata/appello/appello_default.js"></script>
+    <script src="metadata/aoo/aoo_princ.js"></script>
+    <script src="metadata/aoo/aoo_default.js"></script>
+    <script src="metadata/rendicontlezionestud/rendicontlezionestud_default.js"></script>
+    <script src="metadata/rendicontaltrokind/rendicontaltrokind_default.js"></script>
+    <script src="metadata/rendicontaltro/rendicontaltro_default.js"></script>
+    <script src="metadata/rendicont/rendicont_default.js"></script>
+    <script src="metadata/lezione/lezione_seg.js"></script>
+    <script src="metadata/lezione/lezione_rendicont.js"></script>
+    <script src="metadata/lezione/lezione_default.js"></script>
+    <script src="metadata/lezione/lezione_attivform.js"></script>
+    <script src="metadata/aula/aula_seg_child.js"></script>
+    <script src="metadata/aula/aula_default.js"></script>
+    <script src="metadata/sasd/sasd_default.js"></script>
+    <script src="metadata/ambitoareadisc/ambitoareadisc_default.js"></script>
+    <script src="metadata/classescuolakind/classescuolakind_default.js"></script>
+    <script src="metadata/classescuolaarea/classescuolaarea_default.js"></script>
+    <script src="metadata/tipoattform/tipoattform_solosigla.js"></script>
+    <script src="metadata/tipoattform/tipoattform_default.js"></script>
+    <script src="metadata/corsostudionorma/corsostudionorma_default.js"></script>
+    <script src="metadata/corsostudiolivello/corsostudiolivello_default.js"></script>
+    <script src="metadata/corsostudiokind/corsostudiokind_default.js"></script>
+    <script src="metadata/classescuola/classescuola_default.js"></script>
+    <script src="metadata/corsostudio/corsostudio_stato.js"></script>
+    <script src="metadata/corsostudio/corsostudio_dotmas.js"></script>
+    <script src="metadata/corsostudio/corsostudio_default.js"></script>
+    <script src="metadata/sasdgruppo/sasdgruppo_default.js"></script>
+    <script src="metadata/mutuazionecaratteristicaora/mutuazionecaratteristicaora_default.js"></script>
+    <script src="metadata/mutuazione/mutuazione_default.js"></script>
+    <script src="metadata/mutuazionecaratteristica/mutuazionecaratteristica_default.js"></script>
+    <script src="metadata/insegnintegcaratteristica/insegnintegcaratteristica_default.js"></script>
+    <script src="metadata/insegncaratteristica/insegncaratteristica_default.js"></script>
+    <script src="metadata/corsostudiocaratteristica/corsostudiocaratteristica_default.js"></script>
+    <script src="metadata/classescuolacaratteristica/classescuolacaratteristica_classe.js"></script>
+    <script src="metadata/didprogori/didprogori_default.js"></script>
+    <script src="metadata/didproggruppcaratteristica/didproggruppcaratteristica_default.js"></script>
+    <script src="metadata/didprogdatepiano/didprogdatepiano_default.js"></script>
+    <script src="metadata/didprogcurrcaratteristica/didprogcurrcaratteristica_default.js"></script>
+    <script src="metadata/didprogcurr/didprogcurr_default.js"></script>
+    <script src="metadata/didproganno/didproganno_default.js"></script>
+    <script src="metadata/diderog/diderog_default.js"></script>
+    <script src="metadata/canale/canale_erogata.js"></script>
+    <script src="metadata/affidamentokind/affidamentokind_default.js"></script>
+    <script src="metadata/affidamentocaratteristicaora/affidamentocaratteristicaora_seg.js"></script>
+    <script src="metadata/affidamentocaratteristicaora/affidamentocaratteristicaora_default.js"></script>
+    <script src="metadata/affidamentocaratteristica/affidamentocaratteristica_seg.js"></script>
+    <script src="metadata/affidamentocaratteristica/affidamentocaratteristica_default.js"></script>
+    <script src="metadata/affidamentoattach/affidamentoattach_default.js"></script>
+    <script src="metadata/affidamento/affidamento_seg.js"></script>
+    <script src="metadata/affidamento/affidamento_default.js"></script>
+    <script src="metadata/attivformvalutazionekind/attivformvalutazionekind_default.js"></script>
+    <script src="metadata/attivformproped/attivformproped_default.js"></script>
+    <script src="metadata/attivformcaratteristicaora/attivformcaratteristicaora_erogata.js"></script>
+    <script src="metadata/attivformcaratteristicaora/attivformcaratteristicaora_default.js"></script>
+    <script src="metadata/attivformcaratteristica/attivformcaratteristica_erogata.js"></script>
+    <script src="metadata/attivformcaratteristica/attivformcaratteristica_default.js"></script>
+    <script src="metadata/attivform/attivform_gruppo.js"></script>
+    <script src="metadata/attivform/attivform_erogata.js"></script>
+    <script src="metadata/costoscontodefdettaglio/costoscontodefdettaglio_riepilogo.js"></script>
+    <script src="metadata/nullaosta/nullaosta_imm_seganagstupre.js"></script>
+    <script src="metadata/iscrizioneanno/iscrizioneanno_seg.js"></script>
+    <script src="metadata/registry/registry_studenti.js"></script>
+    <script src="metadata/pianostudio/pianostudio_segstud.js"></script>
+    <script src="metadata/MetaSegreteriePage.js"></script>
+    <script src="metadata/corsostudio/corsostudio_ingresso.js"></script>
+    <script src="metadata/costoscontodef/costoscontodef_default.js"></script>
+    <script src="metadata/fasciaiseedef/fasciaiseedef_default.js"></script>
+    <script src="metadata/iscrizione/iscrizione_seganagstuacc.js"></script>
+    <script src="metadata/iscrizione/iscrizione_seganagstu.js"></script>
+    <script src="metadata/iscrizione/iscrizione_ingresso.js"></script>
+    <script src="metadata/registry/registry_docenti.js"></script>
+    <script src="metadata/publicaz/publicaz_default.js"></script>
+    <script src="metadata/didprog/didprog_default.js"></script>
+    <script src="metadata/didproggrupp/didproggrupp_default.js"></script>
+    <script src="metadata/didprogporzanno/didprogporzanno_default.js"></script>
+    <script src="metadata/attivform/attivform_default.js"></script>
+    <script src="metadata/didproggrupp/didproggrupp_default.js"></script>
+    <script src="metadata/istanza/istanza_imm_seganagstupre.js"></script>
+    <script src="metadata/provaaula/provaaula_aula.js"></script>
+    <script src="metadata/prova/prova_default.js"></script>
+    <script src="metadata/istanza/istanza_pas_seganagstu.js"></script>
+    <script src="metadata/costoscontodef/costoscontodef_more.js"></script>
+    <script src="metadata/canale/canale_default.js"></script>
+    <!-- cusatom page -->
+    <script src="metadata/scheduler/scheduleConfig.js"></script>
+
+
+    <!-- dopo load della pagina lancio main -->
+    <script>
+        $(document).ready(function () {
+            appMeta.appMain.init();
+            appMeta.appMain.checkSSORedirect();
+            appMeta.appMain.checkResetPwd();
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <div id="appRoot">
+
+        <!-- Menu di navigazione INIZIO -->
+        <div id="menu">
+            <nav class="navbar-institutional navbar navbar-expand-lg navbar-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="#">
+                        <img class="portale_brand_logo_id" src="" alt="logo" />
+                        <span class="portale_brand_name_id">SegreGest</span>
+                    </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar11">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar11">
+                        <!-- inserisco  mdlmainmenu punto di ancoraggio di tutto il menù-->
+                        <ul class="navbar-nav mr-auto" id="mdl_mainmenu_id">
+                            <div id="mdl_menuloader_id" style="display:none">
+                                <span class="fa fa-spinner fa-spin fa-2x"></span>
+                            </div>
+                        </ul>
+                        <ul class="navbar-nav ml-auto" style="cursor: pointer;">
+                            <!--<li class="nav-item"> <a class="nav-link" href="#" id="menu_search_btn_id">Cerca</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="#" id="menu_info_btn_id">Info</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="#" id="menu_guide_btn_id">Guida</a> </li>-->
+                            <!-- Inizio menù scelta lingua -->
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" id="langctrl_id" data-toggle="dropdown">
+                                    <span class="flag-icon flag-icon-it" data-lang="it"></span> Italian
+                                </a>
+                                <div class="dropdown-menu">
+                                    <!--<a class="dropdown-item"><span class="flag-icon flag-icon-fr" data-lang="fr"> </span>  French</a>-->
+                                    <a class="dropdown-item"><span class="flag-icon flag-icon-gb" data-lang="en"> </span>  English</a>
+                                    <!--<a class="dropdown-item"><span class="flag-icon flag-icon-ru" data-lang="ru"> </span>  Russian</a>-->
+                                </div>
+                            </li>
+                            <!-- Fine menù scelta lingua -->
+                        </ul> <!--<a id="logoutButton" class="btn btn-primary navbar-btn ml-md-2">Esci</a>-->
+                        <!--<button id="gotoRegister_id" type="button" class="btn btn-primary">Registrati</button>-->
+                        <button id="gotoLogin_id" type="button" class="btn btn-primary">Accedi</button>
+                        <button id="logoutButton" type="button" class="btn btn-primary">Esci</button>
+                        <a class="navbar-brand" href="#">
+                            <img class="tempo_brand_logo_id" src="" alt="logo" />
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- FINE Menu di navigazione -->
+        <!-- INIZIO toolbar -->
+        <div id="toolbar"></div>
+        <!-- FINE toolbar -->
+        <!-- form di login per ora in spa -->
+        <div id="login" class="container">
+
+            <form>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <h4>Log in</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <input type="text" class="form-control" placeholder="Username" required="required" id="username">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3 oneRow">
+                        <input type="password" class="form-control" placeholder="Password" required="required" id="password0"
+                               style="border-bottom-right-radius: 0 !important; border-top-right-radius: 0; !important">
+                        <button type="button" class="btn btn-primary" id="btnshowPassword0"
+                                style="border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+                            <i class="fa fa-eye mr-1" id="iconPwd0"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <select id="yearsComboId" class="custom-select d-block w-100"></select>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row align-items-center justify-content-center">
+                <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
+            </div>
+
+            <div class="row align-items-center justify-content-center">
+                <a href="javascript:void(0)" class="btn-lg btn btn-link" id="resetPwdMailId">Password dimenticata?</a>
+            </div>
+
+        </div>
+
+        <div id="loginldap" class="container" style="display: none">
+
+            <form>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <h4>Login LDAP</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <input type="text" class="form-control" placeholder="Email" required="required" id="emailldap">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3 oneRow">
+                        <input type="password" class="form-control" placeholder="Password" required="required" id="password4"
+                               style="border-bottom-right-radius: 0 !important; border-top-right-radius: 0; !important">
+                        <button type="button" class="btn btn-primary" id="btnshowPassword4"
+                                style="border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+                            <i class="fa fa-eye mr-1" id="iconPwd4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" style="display: none">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <select id="yearsComboIdLDAP" class="custom-select d-block w-100"></select>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row align-items-center justify-content-center">
+                <button type="submit" class="btn btn-primary" id="loginButtonLDAP">Login LDAP</button>
+            </div>
+
+        </div>
+        <!--fine form di login ldap -->
+
+        <div class="row align-items-center justify-content-center">
+            <button type="submit" class="btn btn-primary" id="redirectSSO">Autenticazione Single Sign on</button>
+        </div>
+
+
+        <!-- INIZIO reset password -->
+        <div class="container">
+
+            <div id="resetPasswordMailId" style="display: none">
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <h4>Recupero password - inserisci mail</h4>
+                        <sup>Ti verrà inviata una mail con il link per il recupero password</sup>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                        <input type="text" class="form-control" placeholder="Email" required="required" id="emailId"
+                               style="border-bottom-right-radius: 0 !important; border-top-right-radius: 0; !important">
+                    </div>
+                </div>
+
+                <div class="row align-items-center justify-content-center">
+                    <button type="submit" class="btn btn-primary" id="resetPwdMailButton">Recupera password</button>
+                </div>
+            </div>
+
+            <div id="nuovaPasswordFormdId" style="display: none">
+                <div>
+                    <div class="row">
+                        <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                            <h4>Recupero password</h4>
+                            <h6>Inserisci una nuova password</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3 oneRow">
+                            <input type="password" class="form-control" placeholder="Nuova password" required="required" id="password1"
+                                   style="border-bottom-right-radius: 0 !important; border-top-right-radius: 0; !important">
+                            <button type="button" class="btn btn-primary" id="btnshowPassword1"
+                                    style="border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+                                <i class="fa fa-eye mr-1" id="iconPwd1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 offset-2 col-lg-4 offset-lg-4 col-md-6 offset-md-3 oneRow">
+                            <input type="password" class="form-control" placeholder="Ripeti Password" required="required" id="password2"
+                                   style="border-bottom-right-radius: 0 !important; border-top-right-radius: 0; !important">
+                            <button type="button" class="btn btn-primary" id="btnshowPassword2"
+                                    style="border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+                                <i class="fa fa-eye mr-1" id="iconPwd2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center justify-content-center">
+                        <button type="submit" class="btn btn-primary" id="bewPwdButton">Imposta nuova password</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- FINE reset password -->
+        <!--fine form di login -->
+        <!-- INIZIO MetaPage -->
+        <div class="container" id="metaRoot">
+            <BR>
+        </div>
+        <!-- FINE MetaPage -->
+        <br />
+        <br />
+        <!-- INIZIO footer -->
+        <div class="footer">
+            <div class="container">
+                <p class="text-center">© 2018-2019 Tempo s.r.l. All rights reserved</p>
+            </div>
+        </div>
+        <!-- FINE footer -->
+
+    </div>
+
+</body>
+</html>
+

@@ -2,7 +2,7 @@ module.exports = {
     options: {
         // Options for module express-jwt
         //The "iss" (issuer) claim identifies the principal that issued the JWT.
-        issuer: "myKode",   // >> iss
+        issuer: "<issuer>",   // >> iss
 
         authType: "bearer",
         algorithm: "HS512",
@@ -12,7 +12,7 @@ module.exports = {
         //  be accepted for processing.
         expiresIn: "4h" //>>exp  NumericDate
         //The "aud" (audience) claim identifies the recipients that the JWT is intended for.
-        // Each principal intended to process the JWT MUSTidentify itself with a value in the audience claim.
+        // Each principal intended to process the JWT MUST identify itself with a value in the audience claim.
         //audience >> aud
 
 
@@ -23,5 +23,5 @@ module.exports = {
         //notBefore  >> nbf
         //noTimestamp  >> if present, iat is not generated, otherwise iat is generated automatically
     },
-    AnonymousToken : "AnonymousToken123456789"
+    AnonymousToken : "<token>"
 };
