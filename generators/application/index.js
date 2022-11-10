@@ -85,8 +85,7 @@ module.exports = class extends Generator{
                 dbCode: this.answers.dbCode,
                 route: this.answers.route
             });
-            this.log("Route for "+exist.dbCode+" has been created.");
-
+            this.log("Route for "+this.answers.dbCode+" has been created.");
         }
         appListContent = JSON.stringify(appList,null,4);
         fs.writeFileSync(appListFileName,
@@ -137,7 +136,7 @@ module.exports = class extends Generator{
                 type: "list",
                 name: "driver",
                 message: "Driver for the database",
-                choices:['jsMySqlDriver',"jsSqlServerDriver"]
+                choices:['jsMySqlDriver',"jsSqlServerDriver","jsOracleDriver"]
             },
         ]);
         let useTrustedConnection= (!this.dbAnswers.user && !this.dbAnswers.password);

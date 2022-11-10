@@ -106,6 +106,8 @@ module.exports = class extends Generator{
 
         this.log("app name", this.answers.name);
         this.metaName = "Meta" + capitalizeFirstLetter(this.answers.name) + "Data";
+        this.metaPageName = "Meta" + capitalizeFirstLetter(this.answers.name) + "Page";
+        this.metaAppName = "Meta" + capitalizeFirstLetter(this.answers.name) + "App";
     }
 
     updateNodeDependencies(){
@@ -221,6 +223,9 @@ module.exports = class extends Generator{
             "client/dataset",
             "client/config",
             "client/pages", //metapages html & js
+            "client/meta",
+            "client/assets",
+            "config",
             //"routes",
             //"src",
             "meta"
@@ -234,12 +239,16 @@ module.exports = class extends Generator{
         //     bower: true,
         //     npm: true
         // });
-
+        //Server folders
         ["routes", "client", "src", "test"].forEach(folder => {
             copyFolder(backendPath(folder), folder, ["json", "js", "html", "sql"]);
         });
 
-        copyFolder(appPath(["meta"]), "meta", ["js", "html", "txt"]);
+        //Meta folder in client, MetaXData will be successively customized
+        copyFolder(appPath(["client", "meta"]), path.join("client","meta"), ["js", "html", "txt"]);
+
+        //Pages folder in client, MetaXPage will be successively customized
+        copyFolder(appPath(["client", "pages"]), path.join("client","pages"), ["js", "html", "txt"]);
 
         //copyFolder(appPath(["_config"]), "config", ["js", "json"]);
 
@@ -249,6 +258,7 @@ module.exports = class extends Generator{
         });
 
         copyFolder(appPath(["client", "config"]),path.join("client", "config"), ["js", "json"]);
+        copyFolder(appPath(["client", "assets"]),path.join("client", "assets"), ["js", "json"]);
 
         //
         ["metadata", "styles", "template", "utility"].forEach(folder => {
@@ -256,11 +266,15 @@ module.exports = class extends Generator{
                 path.join("client", "components", folder));
         });
 
+        //Copy test folders
         ["app", "common", "spec", "spec_midway"].forEach(folder => {
             copyFolder(frontendPath(["test", folder]), path.join("test", "client", folder));
         });
 
-
+        //Copy everything under app/app (file and folders, included MetaXApp
+        ["app"].forEach(folder => {
+            copyFolder(appPath([folder]),"client");
+        });
 
         fs.cpSync(frontendPath(["test"]), path.join("test", "client"),
             {
@@ -285,8 +299,8 @@ module.exports = class extends Generator{
         let generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
 
         //generatorPackagePath,"generators","app",
-        let oldFileName = path.join("meta", "MetaXData.js");
-        let newFileName = path.join("meta", capitalizeFirstLetter(this.metaName + ".js"));
+        let oldFileName = path.join("client","meta", "MetaXData.js");
+        let newFileName = path.join("client","meta", capitalizeFirstLetter(this.metaName + ".js"));
 
         //console.log("renaming " + oldFileName + " to " + newFileName);
         fs.renameSync(oldFileName, newFileName);
@@ -298,6 +312,37 @@ module.exports = class extends Generator{
 
     }
 
+    customizeMetaXPage(){
+        let generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
+
+        //generatorPackagePath,"generators","app",
+        let oldFileName = path.join("client","pages", "MetaXPage.js");
+        let newFileName = path.join("client","pages", capitalizeFirstLetter(this.metaPageName + ".js"));
+
+        //console.log("renaming " + oldFileName + " to " + newFileName);
+        fs.renameSync(oldFileName, newFileName);
+        //console.log("reading from ",oldFileName)
+        let metaPageContent = fs.readFileSync(newFileName, {encoding: 'utf-8'}).toString();
+        metaPageContent = metaPageContent.replaceAll("MetaXPage", this.metaPageName);
+        //console.log("writing to ",newFileName)
+        fs.writeFileSync(newFileName, new Buffer(metaPageContent), {encoding: 'utf-8'});
+    }
+
+    customizeXApp(){
+        let generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
+
+        //generatorPackagePath,"generators","app",
+        let oldFileName = path.join( "client", "MetaXApp.js");
+        let newFileName = path.join("client", capitalizeFirstLetter(this.metaAppName + ".js"));
+
+        //console.log("renaming " + oldFileName + " to " + newFileName);
+        fs.renameSync(oldFileName, newFileName);
+        //console.log("reading from ",oldFileName)
+        let metaPageContent = fs.readFileSync(newFileName, {encoding: 'utf-8'}).toString();
+        metaPageContent = metaPageContent.replaceAll("MetaXApp", this.metaAppName);
+        //console.log("writing to ",newFileName)
+        fs.writeFileSync(newFileName, new Buffer(metaPageContent), {encoding: 'utf-8'});
+    }
     runBower(){
         let oldPath=process.cwd();
         let clientPath= path.join(oldPath, "client");
