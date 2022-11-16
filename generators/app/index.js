@@ -226,9 +226,10 @@ module.exports = class extends Generator{
             "client/meta",
             "client/assets",
             "config",
+            "Uploads"
             //"routes",
             //"src",
-            "meta"
+            //"meta"
             //"test"
         ];
         folders.forEach(f => this._checkCreateFolder(f));
@@ -241,9 +242,9 @@ module.exports = class extends Generator{
         // });
         //Server folders
         ["routes", "client", "src", "test"].forEach(folder => {
-            copyFolder(backendPath(folder), folder, ["json", "js", "html", "sql"]);
+            copyFolder(backendPath(folder), folder, ["json", "js", "html", "sql","txt"]);
         });
-
+        fs.unlinkSync(path.join("client","meta","meta_registry.js"));
         //Meta folder in client, MetaXData will be successively customized
         copyFolder(appPath(["client", "meta"]), path.join("client","meta"), ["js", "html", "txt"]);
 

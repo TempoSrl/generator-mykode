@@ -1,6 +1,6 @@
 {
   "name": "generator-mykode",
-  "version": "1.0.6",
+  "version": "1.0.007",
   "description": "Generator for myKode framework applications",
   "files": [
     "generators"

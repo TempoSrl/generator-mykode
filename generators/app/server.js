@@ -24,7 +24,7 @@ DbList.init({
 let port = process.argv[2] || process.env.PORT || 3000;
 
 let GetMeta = require("./client/components/metadata/GetMeta");
-GetMeta.setPath("./../../../meta"); //all metadata must be stored here
+GetMeta.setPath("./../../meta"); //all metadata must be stored here
 
 // let GetDataSet = require("./client/components/metadata/GetDataSet");
 // GetDataSet.setPath("./dataset/"); //all metadata must be stored here
