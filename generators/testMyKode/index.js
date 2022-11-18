@@ -2,12 +2,28 @@ const Generator = require('yeoman-generator');
 let fs = require('fs');
 const path = require('path');
 
+
+function testPath(subfolders){
+    const generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
+    let basePath=path.join(generatorPackagePath,"generators","testMyKode");
+    return path.join(basePath, subfolders);
+}
+
 module.exports = class extends Generator {
     // The name `constructor` is important here
     constructor(args, opts) {
         // Calling the super constructor is important so our generator is correctly set up
         super(args, opts);
 
+    }
+    init(){
+        ["karma.conf.js","karma_midway.conf.js"].forEach(fileName=>{
+            fs.copyFileSync(
+                path.join(testPath("test"),fileName),
+                path.join("test",fileName)
+
+            );
+        });
     }
 
     async main_prompting(){
@@ -48,11 +64,27 @@ module.exports = class extends Generator {
                 message: "mySql pwd"
             },
         ]);
+        sqlConfig.sqlModule = "jsMySqlDriver";
 
         let mySqlDbString = JSON.stringify(sqlConfig,null,4);
 
         fs.writeFileSync(path.join("test","dbMySql.json"),
             new Buffer(mySqlDbString), {encoding: 'utf-8'});
+
+        let dbListFileName = path.join("config","dbList.json");
+        let dbListContent = fs.readFileSync(
+            dbListFileName,
+            {encoding: 'utf-8'}).toString();
+        let dbList = JSON.parse(dbListContent);
+
+        let exist1 = dbList.test_mySql;
+        if (!exist1) {
+            dbList.test_mySql=Object.assign({}, sqlConfig);
+            dbListContent = JSON.stringify(dbList, null, 4);
+            fs.writeFileSync(dbListFileName,
+                new Buffer(dbListContent), {encoding: 'utf-8'});
+        }
+
     }
 
     async sqlServerConfig(){
@@ -92,6 +124,7 @@ module.exports = class extends Generator {
         sqlConfig.EnableSSORegistration=true;
         sqlConfig.userkindSSO=5;
         sqlConfig.userkindUserPassw = 3;
+        sqlConfig.sqlModule = "jsSqlServerDriver";
 
         let dbListFileName = path.join("config","dbList.json");
         let dbListContent = fs.readFileSync(

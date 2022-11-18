@@ -39,7 +39,7 @@ const rep = JasmineClass.ConsoleReporter;  //require("jasmine.console_reporter.j
 const reporter = new JasmineConsoleReporter({
     colors: 2,           // (0|false)|(1|true)|2
     cleanStack: 1,       // (0|false)|(1|true)|2|3
-    verbosity: 3,        // (0|false)|1|2|(3|true)|4|Object
+    verbosity: 1,        // (0|false)|1|2|(3|true)|4|Object
     listStyle: 'indent', // "flat"|"indent"
     timeUnit: 'ms',      // "ms"|"ns"|"s"
     timeThreshold: { ok: 500, warn: 1000, ouch: 3000 }, // Object|Number
@@ -413,7 +413,7 @@ module.exports = function (grunt) {
             "node",
             ["test/runSql",
                 "config\\dbList.json",
-                "test\\data\\sqlServer\\setup.sql",
+                "test\\data\\jsApplication\\setup.sql",
                 "test_sqlServer"
             ],
             function (err, res, code, buffer) {
@@ -439,7 +439,7 @@ module.exports = function (grunt) {
             "node",
             ["test/runSql",
                 "config\\dbList.json",
-                "test\\data\\sqlServer\\Destroy.sql",
+                "test\\data\\jsApplication\\Destroy.sql",
                 "test_sqlServer"
             ],
             function (err, res, code, buffer) {
@@ -458,6 +458,7 @@ module.exports = function (grunt) {
             done();
         }, 5000);
     });
+
 
 
 

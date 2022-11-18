@@ -144,11 +144,12 @@ module.exports = class extends Generator{
                 "grunt-keepalive": "^1.0.0",
                 "grunt-open": "^0.2.4",
                 "grunt-shell": "^3.0.1",
-                "jasmine": "^4.1.0",
+                "jasmine": "^4.5.0",
                 "jasmine-console-reporter": "^3.1.0",
                 "jasmine-core": "3.6.0",
                 "jasmine-node": "^3.0.0",
                 "jasmine-spec-reporter": "^7.0.0",
+                "jasmine-collection-matchers":"*",
                 "jquery": "^3.6.0",
                 "jsdoc": "^3.6.10",
                 "jsdoc-summarize2": "^0.1.4",
@@ -289,7 +290,7 @@ module.exports = class extends Generator{
                 }
             }
         );
-        ["Gruntfile.js","index.js","server.js"].forEach(
+        ["Gruntfile.js","server.js"].forEach(
             (f)=>{
                 fs.copyFileSync(appPath(f),f);
             }
