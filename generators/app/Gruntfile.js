@@ -77,6 +77,40 @@ module.exports = function (grunt) {
 
     //this is used with grunt.initConfig(gruntConfig), that is equivalen to grunt.config.init
     let gruntConfig = {
+        wiredep: {
+
+            task: {
+
+                // Point to the files that should be updated when
+                // you run `grunt wiredep`
+                src: ['client/*.html'],
+
+                options: {
+                    cwd: 'client',
+                    // See wiredep's configuration documentation for the options
+                    // you may pass:
+                    //bowerJson: "client/bower.json"
+                    // https://github.com/taptapship/wiredep#configuration
+
+                    "overrides": {
+                        "bootstrap":{
+                            "main": "dist/js/bootstrap.js"
+                        },
+                        "fullcalendar":{
+                            "main":["dist/fullcalendar.js",
+                                "dist/locale-all.js"]
+                        },
+                        "font-awesome": {
+                            "main": "js/all.min.js"
+                        },
+                        "jqueryui-timepicker-addon":{
+                            "main":["dist/jquery-ui-timepicker-addon.js",
+                                "dist/i18n/jquery-ui-timepicker-addon-i18n.js"]
+                        }
+                    }
+                }
+            }
+        },
         connect: {
             server: { // <-- This is a Target named 'server'.
                 options: {
@@ -86,20 +120,14 @@ module.exports = function (grunt) {
             }
         },
 
-        open : {
-            doc : {
-                path: 'D:/progetti/jsMetaBackend/docs/index.md',
-                app: 'Google Chrome'  //also FireFox
-            },
-        },
 
         shell: {
-            startNode: {
-                command: 'node server.js'
-            },
-            stopNode: {
-                command: 'taskkill /F /IM node.exe'
-            },
+            // startNode: {
+            //     command: 'node server.js'
+            // },
+            // stopNode: {
+            //     command: 'taskkill /F /IM node.exe'
+            // },
             clientTest: {
                 command: 'npx jasmine test/client/*Spec.js'
             }
@@ -275,6 +303,133 @@ module.exports = function (grunt) {
     // Set the configuration for all the tasks
     grunt.initConfig(gruntConfig);
 
+
+
+    function publish(){
+        fs.readdirSync(path.join(__dirname, 'client',"meta")).forEach(folder => {
+            if (!fs.lstatSync(path.join(__dirname, 'client',"meta", folder) ).isDirectory()) {
+                return;
+            }
+            //console.log("copying folder:",folder);
+
+            fs.cpSync(path.join(__dirname, 'client',"meta",folder),
+                path.join(__dirname,"client", "metadata"),
+                {recursive: true,
+                    preserveTimestamps:true,
+                    filter: function filterMeta(f){
+                        if (fs.lstatSync(f ).isDirectory()) {
+                            return true;
+                        }
+                        return path.basename(f).startsWith("meta_");
+                    },
+                    force:false
+                },
+                (err) => {if (err) {console.error(err);}
+                });
+
+            fs.cpSync(path.join(__dirname, 'client',"meta",folder),
+                path.join(__dirname,"client", "pages"),
+                {recursive: true,
+                    preserveTimestamps:true,
+                    filter: function filterMeta(f){
+                        if (fs.lstatSync(f ).isDirectory()) {
+                            return true;
+                        }
+                        return !path.basename(f).startsWith("meta_");
+                    },
+                    force:false
+                },
+                (err) => {if (err) {console.error(err);}
+                });
+        });
+    }
+
+
+
+    function expandDir(path, cwd, matchPath, tag){
+        let startTag = "\t<-- expand:"+tag+" -->";
+        let stopTag = "\t<!-- expand:"+tag+" -->";
+        const contents = fs.readFileSync(path, 'utf-8');
+        const arrSource = contents.split(/\r?\n/);
+        let arrDest = [];
+        let index=0;
+        while (index < arrSource.length){
+            arrDest.push(arrSource[index]);
+            if (arrSource[index].trim()!==startTag.trim()){
+                index++;
+                continue;
+            }
+            index++;
+            break; //tag found
+        }
+
+
+        if (index === arrSource.length) {
+            //console.log(startTag+" not found");
+            return; //startTag not found
+        }
+
+        while (index < arrSource.length){
+            if (arrSource[index].trim()!==stopTag.trim()){
+                index++;
+                continue;
+            }
+            index++;
+            break; //stopTag found
+        }
+
+        let fileToExpand = grunt.file.expand({
+            filter:"isFile",
+            nonull:true,
+            matchBase:true,
+            cwd:cwd
+        },matchPath);
+
+
+        fileToExpand.forEach(f => {
+            arrDest.push("\t<script src=\""+f+"\"></script>");
+        });
+        arrDest.push(stopTag);
+
+        while (index < arrSource.length){
+            arrDest.push(arrSource[index]);
+            index++;
+        }
+        const buffer = new Buffer.from(
+            arrDest.join("\n"),"utf-8");
+
+        fs.writeFileSync(path, buffer,'utf-8');
+
+    }
+
+    function fixFileIncludes(fName){
+        expandDir(fName,"client",
+            ["components/metadata/thirdpart/*.js"],
+            "metadata_thirdpart");
+        expandDir(fName,"client",
+            ["components/utility/*.js"],
+            "utility");
+        expandDir(fName,"client",
+            ["components/metadata/tree/*.js"],
+            "metadata_tree");
+        expandDir(fName,"client",
+            [
+                "components/metadata/*.js","!MetaApp.js"],
+            "metacomponents");
+        expandDir(fName,"client",
+            [
+                "meta/*/*.js"],
+            "tables");
+    }
+
+
+    grunt.registerTask("publish","Publish meta",()=>{
+        fixFileIncludes("client/index.html");
+        fixFileIncludes("client/indexDebug.html");
+
+        publish();
+    });
+
     // Convert to MD every file under the
     grunt.registerTask("jsDocMD","jsdoc to MD",async function(cfgName){
         let folders = gruntConfig.jsdoc[cfgName].src;
@@ -333,6 +488,7 @@ module.exports = function (grunt) {
     grunt.registerTask('common unit', ['jasmine:common']);
     grunt.registerTask('server unit', ['jasmine:server']);
     grunt.registerTask("server Midway",["NodeStart","jasmine:midway"]); // , "NodeStop"
+
 
     grunt.registerTask("NodeStart", "start Node server.js", function () {
         var done = this.async();

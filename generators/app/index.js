@@ -226,6 +226,7 @@ module.exports = class extends Generator{
             "client/pages", //metapages html & js
             "client/meta",
             "client/assets",
+            "client/metadata",
             "config",
             "Uploads"
             //"routes",
@@ -330,7 +331,7 @@ module.exports = class extends Generator{
         fs.writeFileSync(newFileName, new Buffer(metaPageContent), {encoding: 'utf-8'});
     }
 
-    customizeXApp(){
+    _customizeXApp(oldFileName, newFileName){
         let generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
 
         //generatorPackagePath,"generators","app",
@@ -338,13 +339,26 @@ module.exports = class extends Generator{
         let newFileName = path.join("client", capitalizeFirstLetter(this.metaAppName + ".js"));
 
         //console.log("renaming " + oldFileName + " to " + newFileName);
-        fs.renameSync(oldFileName, newFileName);
+        if (oldFileName!== newFileName){
+            fs.renameSync(oldFileName, newFileName);
+        }
         //console.log("reading from ",oldFileName)
-        let metaPageContent = fs.readFileSync(newFileName, {encoding: 'utf-8'}).toString();
-        metaPageContent = metaPageContent.replaceAll("MetaXApp", this.metaAppName);
+        let fileContent = fs.readFileSync(newFileName, {encoding: 'utf-8'}).toString();
+        fileContent = metaPageContent.replaceAll("MetaXApp", this.metaAppName);
         //console.log("writing to ",newFileName)
-        fs.writeFileSync(newFileName, new Buffer(metaPageContent), {encoding: 'utf-8'});
+        fs.writeFileSync(newFileName, new Buffer(fileContent), {encoding: 'utf-8'});
     }
+
+    customizeXApp(){
+        this._customizeXApp(path.join( "client", "MetaXApp.js"),
+            path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")));
+        this._customizeXApp(path.join( "client", "index.html"),
+            path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")));
+        this._customizeXApp(path.join( "client", "indexDebug.html"),
+            path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")));
+    }
+
+
     runBower(){
         let oldPath=process.cwd();
         let clientPath= path.join(oldPath, "client");

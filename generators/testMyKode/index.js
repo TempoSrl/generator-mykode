@@ -19,7 +19,7 @@ module.exports = class extends Generator {
     init(){
         ["karma.conf.js","karma_midway.conf.js"].forEach(fileName=>{
             fs.copyFileSync(
-                path.join(testPath("test"),fileName),
+                testPath(fileName),
                 path.join("test",fileName)
 
             );
@@ -32,7 +32,7 @@ module.exports = class extends Generator {
                 type: "confirm",
                 name: "confirm",
                 message: "To activate myKode internal test you must supply access to two empties databases"+
-                    "\nDo you wanto to continue?",
+                    "\nDo you want to continue?",
                 choices:["S","N"]
             }
         ]);

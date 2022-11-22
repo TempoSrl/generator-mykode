@@ -12,65 +12,75 @@
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 	<meta name="author" content="">
-	<title>Client side of Portale base project</title>
+	<title>MetaXApp</title>
+
+	<!-- bower:css -->
+	<link rel="stylesheet" href="bower_components/jstree/dist/themes/default/style.css" />
+	<!-- endbower -->
+
 
 	<!-- INIZIO stili librerie terze parti-->
 	<!--<link href="../bower_components/bootstrap4/dist/css/bootstrap.css" rel="stylesheet" type="text/css"> COMMENTATO PERCHE' SOSTITUITO CON QUELLO ITALIA-->
-	<link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.min.css" />
-	<link rel="stylesheet" href="../bower_components/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.css" />
-	<link rel="stylesheet" href="../bower_components/fullcalendar/dist/fullcalendar.min.css" />
-	<link rel="stylesheet" href="../bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print" />
+	<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.min.css" />
+	<link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet" />
 
 	<!-- icone bandiere del mondo, utilizzate nel menù localizzazione -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
 
 	<!-- Stili per jsTree -->
-	<link rel="stylesheet" href="../bower_components/jstree/dist/themes/default/style.min.css">
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" />
 	<!-- FINE Stili per jsTree -->
 	<!-- FINE stili librerie terze parti -->
 	<!-- INIZIO stili framework-->
 	<!-- lib per visualizzazione json -->
-	<script src="../components/styles/json/json-viewer.js"></script>
-	<link rel="stylesheet" href="../components/styles/json/json-viewer.css">
+	<script src="components/styles/json/json-viewer.js"></script>
+	<link rel="stylesheet" href="components/styles/json/json-viewer.css">
 	<!-- FINE lib per visualizzazione json -->
 	<!-- FINE stili framework-->
+
 	<!-- INIZIO Stili della applicazione -->
 	<link rel="stylesheet" href="styles/italia/bootstrap-italia.min.css">
 	<link rel="stylesheet" href="styles/italia/italia-icon-font.css">
 
 
-	<link rel="stylesheet" href="../components/styles/app.css">
+	<link rel="stylesheet" href="components/styles/app.css">
 	<link rel="stylesheet" href="styles/custom.css">
 
 
-	<link rel="stylesheet" href="../components/styles/jquery.toast.css">
-	<link rel="stylesheet" href="../components/styles/select2.min.css">
+	<link rel="stylesheet" href="components/styles/jquery.toast.css">
+	<link rel="stylesheet" href="components/styles/select2.min.css">
 
 
 	<!-- FINE Stili della applicazione -->
+
+	<!-- bower:js -->
+	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="bower_components/font-awesome/js/all.min.js"></script>
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+	<script src="bower_components/jstree/dist/jstree.js"></script>
+	<script src="bower_components/json3/lib/json3.js"></script>
+	<script src="bower_components/es5-shim/es5-shim.js"></script>
+	<script src="bower_components/lodash/lodash.js"></script>
+	<script src="bower_components/observe-js/src/observe.js"></script>
+	<script src="bower_components/moment/moment.js"></script>
+	<script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+	<script src="bower_components/fullcalendar/dist/locale-all.js"></script>
+	<script src="bower_components/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.js"></script>
+	<script src="bower_components/jqueryui-timepicker-addon/dist/i18n/jquery-ui-timepicker-addon-i18n.js"></script>
+	<!-- endbower -->
+
+	<-- expand:metadata_thirdpart -->
+	<!-- expand:metadata_thirdpart -->
+
 	<!-- INIZIO librerie terze parti-->
-	<script src="../bower_components/font-awesome/js/all.min.js"></script>
-	<script src="../bower_components/jquery/dist/jquery.js"></script>
-	<script src="../bower_components/lodash/lodash.js"></script>
-	<script src="../bower_components/observe-js/src/observe.js"></script>
-	<script src="../bower_components/jsDataQuery/src/jsDataQuery.js"></script>
-	<script src="../bower_components/jsDataSet/src/jsDataSet.js"></script>
-	<script src="../bower_components/bootstrap4/dist/js/bootstrap.js"></script>
-	<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
-	<script src="../bower_components/jstree/dist/jstree.js"></script>
-	<script src="../bower_components/moment/min/moment.min.js"></script>
-	<script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
-	<script src="../bower_components/fullcalendar/dist/locale-all.js"></script>
-	<script src="../bower_components/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js"></script>
-	<script src="../bower_components/jqueryui-timepicker-addon/dist/i18n/jquery-ui-timepicker-addon-i18n.js"></script>
-	<script src="../components/utility/jquery.toast.js"></script>
-	<script src="../components/utility/select2.min.js"></script>
-	<script src="../components/metadata/thirdpart/gauge.js"></script>
-	<script src="../components/metadata/thirdpart/chart.min.js"></script>
-	<script src="../components/metadata/thirdpart/jspdf.umd.min.js"></script>
-	<script src="../components/metadata/thirdpart/jspdf.plugin.autotable.js"></script>
+	<script src="components/utility/jquery.toast.js"></script>
+	<script src="components/utility/select2.min.js"></script>
+	<script src="components/metadata/thirdpart/gauge.js"></script>
+	<script src="components/metadata/thirdpart/chart.min.js"></script>
+	<script src="components/metadata/thirdpart/jspdf.umd.min.js"></script>
+	<script src="components/metadata/thirdpart/jspdf.plugin.autotable.js"></script>
 
 	<!-- read excel -->
 	<script src="https://unpkg.com/xlsx/dist/shim.min.js"></script>
@@ -95,16 +105,13 @@
 	<script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.documents.core_openxml.js"></script>
 	<script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
 
-
 	<!-- APP Seg + fmw mdlw -->
 	<script src="../dist/mdlw_bundle_Segreterie_2022_10_28.js"></script> <!--mdlw-bundle-file-->
 
-	<script src="../config/app_segreterie/appMainConfig.js"></script>
-	<script src="../app_segreterie/appMain.js"></script>
+	<script src="config/appMainConfig.js"></script>
+	<script src="appMain.js"></script>
 
-	<!--DEBUG-->
-	<script src="apppages/registry_docenti.js"></script>
-	<!--DEBUG-->
+
 	<!-- dopo load della pagina lancio main -->
 	<script>
 		$(document).ready(function () {
@@ -126,7 +133,7 @@
 			<div class="container">
 				<a class="navbar-brand" href="#">
 					<img class="portale_brand_logo_id" src="" alt="logo" />
-						<span class="portale_brand_name_id">SegreGest</span>
+					<span class="portale_brand_name_id">MetaXApp</span>
 				</a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar11">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -157,9 +164,9 @@
 					<!--<button id="gotoRegister_id" type="button" class="btn btn-primary">Registrati</button>-->
 					<button id="gotoLogin_id" type="button" class="btn btn-primary">Accedi</button>
 					<button id="logoutButton" type="button" class="btn btn-primary">Esci</button>
-                        <a class="navbar-brand" href="#">
-                            <img class="tempo_brand_logo_id" src="" alt="logo" />
-                        </a>
+					<a class="navbar-brand" href="#">
+						<img class="tempo_brand_logo_id" src="" alt="logo" />
+					</a>
 				</div>
 			</div>
 		</nav>
@@ -321,7 +328,7 @@
 	<!-- INIZIO footer -->
 	<div class="footer">
 		<div class="container">
-			<p class="text-center">© 2018-2019 Tempo s.r.l. All rights reserved</p>
+			<p class="text-center">Powered by myKode</p>
 		</div>
 	</div>
 	<!-- FINE footer -->
