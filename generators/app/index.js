@@ -89,8 +89,8 @@ module.exports = class extends Generator{
         super(args, opts);
 
         // Next, add your custom code
-        this.log(args);
-        this.log(opts);
+        //this.log(args);
+        //this.log(opts);
     }
 
     async prompting(){
@@ -246,7 +246,7 @@ module.exports = class extends Generator{
         ["routes", "client", "src", "test"].forEach(folder => {
             copyFolder(backendPath(folder), folder, ["json", "js", "html", "sql","txt"]);
         });
-        fs.unlinkSync(path.join("client","meta","meta_registry.js"));
+
         //Meta folder in client, MetaXData will be successively customized
         copyFolder(appPath(["client", "meta"]), path.join("client","meta"), ["js", "html", "txt"]);
 
@@ -264,7 +264,7 @@ module.exports = class extends Generator{
         copyFolder(appPath(["client", "assets"]),path.join("client", "assets"), ["js", "json"]);
 
         //
-        ["metadata", "styles", "template", "utility"].forEach(folder => {
+        ["metadata", "styles", "template", "utility","userTemplate"].forEach(folder => {
             copyFolder(frontendPath(["components", folder]),
                 path.join("client", "components", folder));
         });
@@ -331,12 +331,8 @@ module.exports = class extends Generator{
         fs.writeFileSync(newFileName, new Buffer(metaPageContent), {encoding: 'utf-8'});
     }
 
-    _customizeXApp(oldFileName, newFileName){
+    _customizeXApp(oldFileName, newFileName, oldText,newText){
         let generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
-
-        //generatorPackagePath,"generators","app",
-        let oldFileName = path.join( "client", "MetaXApp.js");
-        let newFileName = path.join("client", capitalizeFirstLetter(this.metaAppName + ".js"));
 
         //console.log("renaming " + oldFileName + " to " + newFileName);
         if (oldFileName!== newFileName){
@@ -344,18 +340,22 @@ module.exports = class extends Generator{
         }
         //console.log("reading from ",oldFileName)
         let fileContent = fs.readFileSync(newFileName, {encoding: 'utf-8'}).toString();
-        fileContent = metaPageContent.replaceAll("MetaXApp", this.metaAppName);
+        fileContent = fileContent.replaceAll(oldText, newText);
         //console.log("writing to ",newFileName)
         fs.writeFileSync(newFileName, new Buffer(fileContent), {encoding: 'utf-8'});
     }
 
     customizeXApp(){
-        this._customizeXApp(path.join( "client", "MetaXApp.js"),
-            path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")));
-        this._customizeXApp(path.join( "client", "index.html"),
-            path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")));
-        this._customizeXApp(path.join( "client", "indexDebug.html"),
-            path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")));
+        this._customizeXApp(
+            path.join( "client", "MetaXApp.js"),
+            path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")),
+            "MetaXApp",this.metaAppName);
+        this._customizeXApp(path.join( "client", "indexTemplate.html"),
+            path.join("client", "indexTemplate.html"),
+            "XXXApp",this.answers.name);
+        this._customizeXApp(path.join( "client", "indexDebugTemplate.html"),
+            path.join("client", "indexDebugTemplate.html"),
+            "XXXApp",this.answers.name);
     }
 
 
@@ -401,6 +401,7 @@ module.exports = class extends Generator{
         fs.writeFileSync(secretFileName, new Buffer(secret), {encoding: 'utf-8'});
         console.log(secretFileName+ " created.");
 
+        //Write to tokenConfig
         let tokenConfigFileName = path.join("config","tokenConfig.js");
         let tokenConfigContent = fs.readFileSync(
             tokenConfigFileName,
@@ -411,6 +412,24 @@ module.exports = class extends Generator{
         fs.writeFileSync(tokenConfigFileName,
             new Buffer(tokenConfigContent), {encoding: 'utf-8'});
 
+
+        //Write to Connection.js
+        let connectionFileName = path.join("client","components","metadata","Connection.js");
+        let connectionContent = fs.readFileSync(connectionFileName,
+            {encoding: 'utf-8'}).toString();
+        connectionContent = connectionContent.replace(
+            "AnonymousToken123456789",anonymousToken);
+        fs.writeFileSync(connectionFileName,
+            new Buffer(connectionContent), {encoding: 'utf-8'});
+
+        //Write to ConnWebService.js
+        let webServiceFileName = path.join("client","components","metadata","ConnWebService.js");
+        let webServiceContent = fs.readFileSync(webServiceFileName,
+            {encoding: 'utf-8'}).toString();
+        webServiceContent = webServiceContent.replace(
+            "AnonymousToken123456789",anonymousToken);
+        fs.writeFileSync(webServiceFileName,
+            new Buffer(webServiceContent), {encoding: 'utf-8'});
     }
     generateMasterKey(){
         let JsToken= require("./../../../../src/jsToken.js");

@@ -32,10 +32,10 @@
             // --> set lingua del framework
             appMeta.localResource.setLanguage(this.currLanguage);
 
-            // --> set lingua del main di segreterie, cioè della app specifica. Recupero file di localizzazione
+            // --> set lingua del main della app specifica. Recupero file di localizzazione
             var lbnSuffix = this.currLanguage.charAt(0).toUpperCase() + this.currLanguage.slice(1).toLowerCase();
-            var lngPrototype = 'appMeta.Loc' + lbnSuffix + '.prototype';
-            _.extend(this, eval(lngPrototype));
+            let lngPrototype = appMeta["Loc" + lbnSuffix].prototype;
+            _.extend(this, lngPrototype);
 
             // localizza gli oggetti esterni che gestiscono i controlli data
             this.localizeDatePicker(this.currLanguage);
@@ -47,7 +47,9 @@
             this.localizeMenuOnTheFly();
 
             // localizzo pagina corrente. controlli standard (tab, label, nomi colonna...)
-            this.localizePage(appMeta.currentMetaPage);
+            if (appMeta.currApp.currentMetaPage){
+                this.localizePage(appMeta.currApp.currentMetaPage);
+            }
 
         },
 
@@ -73,7 +75,7 @@
         /**
          * Clean eventually the lang, and if it is not supported return default lang
          * @param {string} lang
-         * @returns {string}
+         * @returns string
          */
         getAppLanguage:function (lang) {
             if (lang) {
@@ -135,14 +137,14 @@
         divGeneralLocalize:function(metapage) {
             var self = this;
             $(metapage.rootElement)
-                .find('.custom_lng_div')
-                .each(function () {
-                    // recupero chiave
-                    var lockey = $(this).data('langkey');
-                    // prendo valore della traduzione
-                    var valueTranslated = self[lockey];
-                    if(valueTranslated !== null && valueTranslated !== undefined) $(this).html(valueTranslated);
-                });
+            .find('.custom_lng_div')
+            .each(function () {
+                // recupero chiave
+                var lockey = $(this).data('langkey');
+                // prendo valore della traduzione
+                var valueTranslated = self[lockey];
+                if(valueTranslated !== null && valueTranslated !== undefined) $(this).html(valueTranslated);
+            });
         },
 
         /**
@@ -152,20 +154,20 @@
         tabLocalize:function(metapage) {
             var self = this;
             $(metapage.rootElement)
-                .find('.nav-link')
-                .each(function () {
-                    // recupero chiave
-                    var lockey = $(this).data('target');
-                    // prendo valore della traduzione
-                    var valueTranslated = self[lockey];
+            .find('.nav-link')
+            .each(function () {
+                // recupero chiave
+                var lockey = $(this).data('target');
+                // prendo valore della traduzione
+                var valueTranslated = self[lockey];
 
-                    if(valueTranslated !== null && valueTranslated !== undefined){
-                        // prendo il 3o elemento poichè il primo è svg, il 2o tag "i" commentato, terzo il testo del tab
-                        if ( $(this).contents().get(2)) {
-                            $(this).contents().get(2).nodeValue = valueTranslated;
-                        }
+                if(valueTranslated !== null && valueTranslated !== undefined){
+                    // prendo il 3o elemento poichè il primo è svg, il 2o tag "i" commentato, terzo il testo del tab
+                    if ( $(this).contents().get(2)) {
+                        $(this).contents().get(2).nodeValue = valueTranslated;
                     }
-                });
+                }
+            });
         },
 
         /**
@@ -175,14 +177,14 @@
         labelPageLocalize:function(metapage) {
             var self = this;
             $(metapage.rootElement)
-                .find('label')
-                .each(function () {
-                    // recupero chiave
-                    var lockey = $(this).attr('for');
-                    // prendo valore della traduzione
-                    var valueTranslated = self[lockey];
-                    if(valueTranslated !== null && valueTranslated !== undefined) $(this).text(valueTranslated);
-                });
+            .find('label')
+            .each(function () {
+                // recupero chiave
+                var lockey = $(this).attr('for');
+                // prendo valore della traduzione
+                var valueTranslated = self[lockey];
+                if(valueTranslated !== null && valueTranslated !== undefined) $(this).text(valueTranslated);
+            });
         },
 
 
@@ -242,16 +244,16 @@
         menuLocalize:function() {
             var self = this;
             $("#menu")
-                .find('.nav-link > span')
-                .each(function () {
-                    // recupero chiave
-                    var lockey = $(this).attr('id');
-                    // prendo valore della traduzione
-                    var valueTranslated = self[lockey];
-                    if(valueTranslated !== null && valueTranslated !== undefined){
-                        $(this).text(valueTranslated);
-                    }
-                });
+            .find('.nav-link > span')
+            .each(function () {
+                // recupero chiave
+                var lockey = $(this).attr('id');
+                // prendo valore della traduzione
+                var valueTranslated = self[lockey];
+                if(valueTranslated !== null && valueTranslated !== undefined){
+                    $(this).text(valueTranslated);
+                }
+            });
         },
 
         /**
@@ -260,16 +262,16 @@
         menuRootLocalize:function() {
             var self = this;
             $("#menu")
-                .find('.nav-item')
-                .each(function () {
-                    // recupero chiave
-                    var lockey = $(this).attr('id');
-                    // prendo valore della traduzione
-                    var valueTranslated = self[lockey];
-                    if(valueTranslated !== null && valueTranslated !== undefined){
-                        $(this).find(".mdl_title_class").text(valueTranslated);
-                    }
-                });
+            .find('.nav-item')
+            .each(function () {
+                // recupero chiave
+                var lockey = $(this).attr('id');
+                // prendo valore della traduzione
+                var valueTranslated = self[lockey];
+                if(valueTranslated !== null && valueTranslated !== undefined){
+                    $(this).find(".mdl_title_class").text(valueTranslated);
+                }
+            });
         },
 
         /**
@@ -296,10 +298,10 @@
             var def = appMeta.Deferred("translateApp");
 
             appMeta.getData.launchCustomServerMethod("getAllFilesToTranslate")
-                .then(function (res) {
-                    alert(res);
-                    def.resolve();
-                });
+            .then(function (res) {
+                alert(res);
+                def.resolve();
+            });
 
             return def.promise();
         },

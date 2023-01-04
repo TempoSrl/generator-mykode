@@ -56,10 +56,10 @@
             this.fillAnniCombo();
 
             // gestisce localizzazione e cambio lingua
-			this.localize();
+            this.localize();
 
-			//TEST registrazone
-			//appMeta.callPage('registrationuser', 'usr', false);
+            //TEST registrazone
+            //appMeta.callPage('registrationuser', 'usr', false);
             this.tryAutomaticLogin();
 
         },
@@ -71,9 +71,9 @@
             _.forEach(anni, function(anno) {
                 const opt = document.createElement("option");
                 opt.textContent = anno;
-                    opt.value = anno;
-                    $("#yearsComboId").append(opt);
-                });
+                opt.value = anno;
+                $("#yearsComboId").append(opt);
+            });
         },
 
         tryAutomaticLogin: function() {
@@ -120,9 +120,9 @@
             }
         },
 
-         checkResetPwd:function() {
-             const tokenresetpwd = this.getUrlVars().tokenresetpwd;
-             if (!!tokenresetpwd) {
+        checkResetPwd:function() {
+            const tokenresetpwd = this.getUrlVars().tokenresetpwd;
+            if (!!tokenresetpwd) {
                 $("#nuovaPasswordFormdId").show();
                 $("#login").hide();
                 $("#loginldap").hide();
@@ -130,7 +130,7 @@
         },
 
         resetPwdMailIdClick:function() {
-           $("#resetPasswordMailId").show();
+            $("#resetPasswordMailId").show();
         },
 
         newPwdButtonClick:function(that) {
@@ -149,17 +149,17 @@
 
             that.showWaitingIndicator('Salvataggio nuova password');
             appMeta.authManager.nuovaPassword(token, password1)
-                .then(function (res) {
-                    that.hideWaitingIndicator();
-                    if (res) {
-                        $("#login").show();
-                        $("#resetPasswordMailId").hide();
-                        $("#nuovaPasswordFormdId").hide();
-                        that.showInfoMsg("Password salvata correttamente. Effettua nuovo login");
-                    } else {
-                        console.log("C'è stato qualche problema nel nuova pwd");
-                    }
-                });
+            .then(function (res) {
+                that.hideWaitingIndicator();
+                if (res) {
+                    $("#login").show();
+                    $("#resetPasswordMailId").hide();
+                    $("#nuovaPasswordFormdId").hide();
+                    that.showInfoMsg("Password salvata correttamente. Effettua nuovo login");
+                } else {
+                    console.log("C'è stato qualche problema nel nuova pwd");
+                }
+            });
         },
 
         showInfoMsg:function(msg) {
@@ -167,7 +167,7 @@
                 msg,
                 [appMeta.localResource.ok],
                 appMeta.localResource.cancel)
-                .show(null);
+            .show(null);
         },
 
         validateEmail:function(email) {
@@ -190,14 +190,14 @@
 
             that.showWaitingIndicator('invio mail');
             appMeta.authManager.resetPassword(email)
-                .then(function (res) {
-                    that.hideWaitingIndicator();
-                    if (res) {
-                        that.showInfoMsg("Abbiamo inviato un link alla tua mail per il recupero password");
-                    } else {
-                        console.log("C'è stato qualche problema nel reset pwd");
-                    }
-                });
+            .then(function (res) {
+                that.hideWaitingIndicator();
+                if (res) {
+                    that.showInfoMsg("Abbiamo inviato un link alla tua mail per il recupero password");
+                } else {
+                    console.log("C'è stato qualche problema nel reset pwd");
+                }
+            });
 
         },
 
@@ -230,22 +230,22 @@
             that.stringOriginal  = appMeta.localResource.modalLoader_wait_insert;
             appMeta.localResource.modalLoader_wait_insert = loc.retrieveDataForRegistration;
 
-            appMeta.callPage(appMeta.appMainConfig.registrationUserTableName,
+            appMeta.currApp.callPage(appMeta.appMainConfig.registrationUserTableName,
                 appMeta.appMainConfig.registrationUserEditType, false)
-                .then(function () {
-                    // mostro login, quando la pag di registrazione viene chiusa
-                    if (appMeta.appMainConfig.ssoEnable) {
-                        return;
-                    }
+            .then(function () {
+                // mostro login, quando la pag di registrazione viene chiusa
+                if (appMeta.appMainConfig.ssoEnable) {
+                    return;
+                }
 
-                    if (appMeta.appMainConfig.ldapEnabled) {
-                        $("#loginldap").show();
-                    }
-                    $("#login").show();
-                    $("#gotoLogin_id").hide();
-                    $("#gotoRegister_id").show();
-                    that.checkshowSSOLogin();
-                });
+                if (appMeta.appMainConfig.ldapEnabled) {
+                    $("#loginldap").show();
+                }
+                $("#login").show();
+                $("#gotoLogin_id").hide();
+                $("#gotoRegister_id").show();
+                that.checkshowSSOLogin();
+            });
         },
 
         hideLoginForm:function() {
@@ -289,7 +289,7 @@
             $(this).html(htmlLangOld);
             // set della nuova lingua
             loc.setLanguage(lang);
-           
+
         },
 
         /**
@@ -297,41 +297,42 @@
          */
         doLogout:function (that) {
 
-            const winModal = new appMeta.BootstrapModal("logout", appMeta.localResource.logoutMsg,
-                [appMeta.localResource.yes, appMeta.localResource.no], appMeta.localResource.no);
+            const winModal = new appMeta.BootstrapModal("logout", appMeta.currApp.localResource.logoutMsg,
+                [appMeta.currApp.localResource.yes, appMeta.currApp.localResource.no],
+                appMeta.currApp.localResource.no);
             return winModal.show(null)
-                .then(function (res) {
-                    if (res === appMeta.localResource.yes) {
-                        appMeta.authManager.logout()
-                            .then(function () {
+            .then(function (res) {
+                if (res === appMeta.currApp.localResource.yes) {
+                    appMeta.authManager.logout()
+                    .then(function () {
 
-                                // NON fa logout SSO ad es. se non funziona la url di logout
-                                if (appMeta.appMainConfig.ssoEnable && appMeta.appMainConfig.SSOSingleCheckLogout){
-                                    that.goToLogin(that, true);
-                                    return;
-                                }
+                        // NON fa logout SSO ad es. se non funziona la url di logout
+                        if (appMeta.appMainConfig.ssoEnable && appMeta.appMainConfig.SSOSingleCheckLogout){
+                            that.goToLogin(that, true);
+                            return;
+                        }
 
-                                if (appMeta.appMainConfig.ssoEnable && appMeta.appMainConfig.SSODoubleCheckLogout) {
-                                    const winModal = new appMeta.BootstrapModal("logout SSO",
-                                        appMeta.localResource.logoutSSOMsg,
-                                        [appMeta.localResource.yes, appMeta.localResource.no],
-                                        appMeta.localResource.no);
-                                    return winModal.show(null)
-                                        .then(function (res) {
-                                            if (res === appMeta.localResource.yes) {
-                                                appMeta.authManager.logoutSSO();
-                                            } else {
-                                                that.goToLogin(that, true);
-                                            }
-                                        });
-                                } else if (appMeta.appMainConfig.ssoEnable && !appMeta.appMainConfig.SSODoubleCheckLogout){
+                        if (appMeta.appMainConfig.ssoEnable && appMeta.appMainConfig.SSODoubleCheckLogout) {
+                            const winModal = new appMeta.BootstrapModal("logout SSO",
+                                appMeta.localResource.logoutSSOMsg,
+                                [appMeta.localResource.yes, appMeta.localResource.no],
+                                appMeta.localResource.no);
+                            return winModal.show(null)
+                            .then(function (res) {
+                                if (res === appMeta.localResource.yes) {
                                     appMeta.authManager.logoutSSO();
                                 } else {
                                     that.goToLogin(that, true);
                                 }
                             });
-                    }
-                });
+                        } else if (appMeta.appMainConfig.ssoEnable && !appMeta.appMainConfig.SSODoubleCheckLogout){
+                            appMeta.authManager.logoutSSO();
+                        } else {
+                            that.goToLogin(that, true);
+                        }
+                    });
+                }
+            });
         },
 
         /**
@@ -355,7 +356,7 @@
                 self.enableMenu();
                 // nasconde indicatore di attesa
                 self.hideWaitingIndicator();
-                
+
                 self.openPageByQueryUrl();
 
                 appMeta.Toast.showNotification(loc.toast_login_success);
@@ -367,7 +368,7 @@
             let tableName = this.getUrlVars().tablename;
             let editType = this.getUrlVars().edittype;
             if (!!tableName && !!editType) {
-                appMeta.callPage(tableName, editType, false);
+                appMeta.currApp.callPage(tableName, editType, false);
             }
         },
 
@@ -386,14 +387,14 @@
             if (username && password) {
                 that.showWaitingIndicator(loc.loginRunning);
                 appMeta.authManager.loginLDAP(username, password, datacontabile)
-                    .then(function (res) {
-                        if (res) {
-                            that.doActionsAfterLoginSuccess();
-                        } else {
-                            console.log("C'è stato qualche problema nel login");
-                            that.hideWaitingIndicator();
-                        }
-                    });
+                .then(function (res) {
+                    if (res) {
+                        that.doActionsAfterLoginSuccess();
+                    } else {
+                        console.log("C'è stato qualche problema nel login");
+                        that.hideWaitingIndicator();
+                    }
+                });
             } else {
                 that.showInfoMsg("Inserisci username e password");
             }
@@ -412,14 +413,14 @@
             if (username && password) {
                 that.showWaitingIndicator(loc.loginRunning);
                 appMeta.authManager.login(username, password, datacontabile)
-                    .then(function (res) {
-                        if (res) {
-                            that.doActionsAfterLoginSuccess();
-                        } else {
-                            console.log("C'è stato qualche problema nel login");
-                            that.hideWaitingIndicator();
-                        }
-                    });
+                .then(function (res) {
+                    if (res) {
+                        that.doActionsAfterLoginSuccess();
+                    } else {
+                        console.log("C'è stato qualche problema nel login");
+                        that.hideWaitingIndicator();
+                    }
+                });
             } else {
                 that.showInfoMsg("Inserisci username e password");
             }
@@ -437,14 +438,14 @@
             } else {
                 that.showWaitingIndicator("Login SSO");
                 appMeta.authManager.loginSSO(username, session, datacontabile)
-                    .then(function (res) {
-                        that.hideWaitingIndicator();
-                        if (res === true) {
-                            that.doActionsAfterLoginSuccess();
-                        } else if (res === false) {
-                            that.showInfoMsg("C'è stato qualche problema nella login per il Single  Sign On!");
-                        }
-                    });
+                .then(function (res) {
+                    that.hideWaitingIndicator();
+                    if (res === true) {
+                        that.doActionsAfterLoginSuccess();
+                    } else if (res === false) {
+                        that.showInfoMsg("C'è stato qualche problema nella login per il Single  Sign On!");
+                    }
+                });
             }
         },
 
@@ -470,13 +471,13 @@
             $("#metaRoot").hide();
             $("#toolbar").hide();
             that.disableMenu();
-            appMeta.forceClosePopupDialog();
+            appMeta.currApp.forceClosePopupDialog();
             // chiudi pagina corrente
-            if (appMeta.currentMetaPage && closePage){
-				appMeta.currentMetaPage.cmdClose()
-					.then(function () {
-						that.hideWaitingIndicator(that);
-					});
+            if (appMeta.currApp.currentMetaPage && closePage){
+                appMeta.currApp.currentMetaPage.cmdClose()
+                .then(function () {
+                    that.hideWaitingIndicator(that);
+                });
             } else{
                 that.hideWaitingIndicator(that);
             }
@@ -498,17 +499,17 @@
 
             this.showWaitingIndicator(loc.menuLoading);
             return appMeta.getData.runSelect("menuweb" , "*" , null, null)
-                .then(function (dtMenuWeb) {
-                    // salvo in una variabile sotto security, perché poi la utilizzo nella
-                    //  gestione dei bottoni nelle pagine base
-                    appMeta.security.dtMenuWeb = dtMenuWeb;
-                    loc.localizeMenu(dtMenuWeb);
-                    self.menuBuilder.buildMenu(dtMenuWeb);
-                    return def.resolve();
-                })
-                .fail(function () {
-                    self.menuBuilder = null;
-                });
+            .then(function (dtMenuWeb) {
+                // salvo in una variabile sotto security, perché poi la utilizzo nella
+                //  gestione dei bottoni nelle pagine base
+                appMeta.security.dtMenuWeb = dtMenuWeb;
+                loc.localizeMenu(dtMenuWeb);
+                self.menuBuilder.buildMenu(dtMenuWeb);
+                return def.resolve();
+            })
+            .fail(function () {
+                self.menuBuilder = null;
+            });
         },
 
         /**
@@ -516,23 +517,24 @@
          */
         initAppMainVariables:function () {
             // download logo
-            appMeta.routing.builderConnObj("downloadLogo", 'GET', 'file', false, true);
+            appMeta.routing.registerService("downloadLogo", 'GET', 'file', false, true);
             // registro chiamate per comandi di admin
-            appMeta.routing.builderConnObj("adminregisteruser", 'POST', 'admin', false, true);
-            appMeta.routing.builderConnObj("clearCache", 'GET', 'admin', false, true);
-            appMeta.routing.builderConnObj("clearSessions", 'GET', 'admin', false, true);
-            appMeta.routing.builderConnObj("cryptSystemConfig", 'POST', 'admin', false, true);
+            appMeta.routing.registerService("adminregisteruser", 'POST', 'admin', false, true);
+            appMeta.routing.registerService("clearCache", 'GET', 'admin', false, true);
+            appMeta.routing.registerService("clearSessions", 'GET', 'admin', false, true);
+            appMeta.routing.registerService("cryptSystemConfig", 'POST', 'admin', false, true);
             // metodi custom per segreterie
 
-            appMeta.routing.builderConnObj("importExcel", 'POST', 'data', false, true);
+            appMeta.routing.registerService("importExcel", 'POST', 'data', false, true);
 
-            appMeta.basePath = appMeta.appMainConfig.basePath;
+            appMeta.basePath = "/"+window.location.pathname.split("/")[1]+"/";
+            //appMeta.appMainConfig.basePath;
             appMeta.basePathMetadata = appMeta.appMainConfig.basePathMetadata;
-            appMeta.rootElement = appMeta.appMainConfig.rootElement;
+            appMeta.currApp.rootElement = appMeta.appMainConfig.rootElement;
             // copio i valori di configurazione utilizzati
             _.extend(appMeta.config, appMeta.appMainConfig);
             appMeta.routing.setUrlPrefix(appMeta.appMainConfig.backendUrl);
-            appMeta.start();
+            appMeta.currApp.start();
             // reagisco all'evento di nuova pagina mostrata, così eventualmente posso fare delle azioni sul menu esterno
             appMeta.globalEventManager.subscribe(appMeta.EventEnum.showPage, this.showPage, this);
             appMeta.globalEventManager.subscribe(appMeta.EventEnum.expiredCredential, this.expiredCredential, this);
@@ -566,19 +568,19 @@
             this.hideLoginForm();
             // salvo info globali per sso, per popolare html della pag di registrazione
             appMeta.ssoPrms = ssoPrms;
-            appMeta.callPage(appMeta.appMainConfig.registrationUserTableName, appMeta.appMainConfig.registrationUserEditType, false)
-                .then(function () {
-                    appMeta.connection.unsetToken();
+            appMeta.currApp.callPage(appMeta.appMainConfig.registrationUserTableName, appMeta.appMainConfig.registrationUserEditType, false)
+            .then(function () {
+                appMeta.connection.unsetToken();
 
-                    if (appMeta.appMainConfig.ldapEnabled) {
-                        $("#loginldap").show();
-                    }
-                    // mostro login, quando la pag di registrazione viene chiusa
-                    $("#login").show();
+                if (appMeta.appMainConfig.ldapEnabled) {
+                    $("#loginldap").show();
+                }
+                // mostro login, quando la pag di registrazione viene chiusa
+                $("#login").show();
 
-                    $("#gotoLogin_id").hide();
-                    that.checkshowSSOLogin();
-                });
+                $("#gotoLogin_id").hide();
+                that.checkshowSSOLogin();
+            });
         },
 
         /**
@@ -604,9 +606,9 @@
                 $("#metaRoot").show();
                 $("#toolbar").show();
                 currPageShowing.doMainCommand("maininsert")
-                    .then(function () {
-                        appMeta.localResource.modalLoader_wait_insert = self.stringOriginal;
-                    });
+                .then(function () {
+                    appMeta.currApp.localResource.modalLoader_wait_insert = self.stringOriginal;
+                });
             } else {
                 if (currPageShowing.detailPage) {
                     return this.disableMenu();
@@ -627,20 +629,20 @@
             if (!isRegUSR) {
                 return false;
             }
-			return mp.state && mp.state.DS &&
+            return mp.state && mp.state.DS &&
                 !mp.state.DS.tables[appMeta.appMainConfig.registrationUserTableName].rows.length;
 
         },
-        
+
 
         /**
          * @param {MetaPage} currMetaPage
          * @param {string} cmd
          */
         buttonClickEnd:function (currMetaPage, cmd) {
-           if (cmd === "mainsetsearch") {
-               this.selectFirstTab();
-           }
+            if (cmd === "mainsetsearch") {
+                this.selectFirstTab();
+            }
         },
 
         /**

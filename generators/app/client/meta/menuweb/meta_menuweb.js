@@ -1,66 +1,78 @@
-(function() {
-    var MetaData = window.appMeta.MetaData;
-    var getData = window.appMeta.getData;
-    var getDataUtils = window.appMeta.getDataUtils;
-    var Deferred = window.appMeta.Deferred;
-    var q = window.jsDataQuery;
-    function meta_menuweb() {
-        MetaData.apply(this, ["menuweb"]);
-        this.name = 'meta_menuweb';
-    }
+(function(MetaData, Deferred) {
 
-    meta_menuweb.prototype = _.extend(
-        new MetaData(),
-        {
-            constructor: meta_menuweb,
+        /** Detect free variable `global` from Node.js. */
+        let freeGlobal = typeof global === 'object' && global && global.Object === Object && global;
+        /** Detect free variable `self`. */
+        let freeSelf = typeof self === 'object' && self && self.Object === Object && self;
+        /** Used as a reference to the global object. */
+        let root = freeGlobal || freeSelf || Function('return this')();
+        /** Detect free variable `exports`. */
+        let freeExports = typeof exports === 'object' && exports && !exports.nodeType && exports;
+        /** Detect free variable `module`. */
+        let freeModule = freeExports && typeof module === 'object' && module && !module.nodeType && module;
 
-            superClass: MetaData.prototype,
 
-            /**
-             * @method describeColumns
-             * @public
-             * @description SYNC
-             * Describes a listing type (captions, column order, formulas, column formats and so on)
-             * @param {DataTable} table
-             * @param {string} listType
-             * @returns {Deferred}
-             */
-            describeTree: function (table, listType) {
-                var def = Deferred("meta_upb-describeTree");
+        //noinspection JSUnresolvedVariable
+        /** Detect free variable `global` from Node.js or Browserified code and use it as `root`. (thanks lodash)*/
+        let moduleExports = freeModule && freeModule.exports === freeExports;
 
-                /* CASO OK prendo describe tree dal server
-                // lato server torna rootcondition e poi vedremo cosa altro
-                var resDef = getData.describeTree(table.name, listType)
-                // N.B: ----> quando ritorno al treeview chiamante, torno le proprietà cusotm che si aspetta.
-                // il default si aspetta solo  "rootCondition"
-                    .then(function (res) {
-                        
-                        var rootCondition = getDataUtils.getJsDataQueryFromJson(res.rootCondition);
 
-                        // instanzio il dispatcher giusto
-                        var nodedispatcher = new appMeta.Menuweb_TreeNode_Dispatcher("label", "idmenuweb");
+        function meta_menuweb() {
+            MetaData.apply(this, ["menuweb"]);
+            this.name = 'meta_menuweb';
+        }
 
-                        // torno al treeviewManger che ha invocato la resove con i prm attesi, che sono tutti e solo quelli che utilizza
-                        def.resolve({
-                            rootCondition:rootCondition,
-                            nodeDispatcher: nodedispatcher
-                        })
-                    });
-                 return def.from(resDef).promise();
+        meta_menuweb.prototype = _.extend(
+            new MetaData(),
+            {
+                constructor: meta_menuweb,
+
+                superClass: MetaData.prototype,
+
+                /**
+                 * @method describeColumns
+                 * @public
+                 * @description SYNC
+                 * Describes a listing type (captions, column order, formulas, column formats and so on)
+                 * @param {DataTable} table
+                 * @param {string} listType
+                 * @returns {Deferred}
                  */
+                describeTree: function (table, listType) {
+                    var def = Deferred("meta_upb-describeTree");
+                    var q = window.jsDataQuery;
 
-                // CASO Describe tree su meta_dato client
-                // instanzio il dispatcher giusto
-                var nodedispatcher = new appMeta.Menuweb_TreeNode_Dispatcher("label", "idmenuweb");
-                var rootCondition = q.eq("idmenuweb", 1);
-                return def.resolve({
-                    rootCondition:rootCondition,
-                    nodeDispatcher: nodedispatcher
-                })
+                    // CASO Describe tree su meta_dato client
+                    // instanzio il dispatcher giusto
+                    var nodedispatcher = new appMeta.Menuweb_TreeNode_Dispatcher("label", "idmenuweb");
+                    var rootCondition = q.eq("idmenuweb", 1);
+                    return def.resolve({
+                        rootCondition:rootCondition,
+                        nodeDispatcher: nodedispatcher
+                    });
 
-               
+
+                }
+            });
+
+
+        if (freeExports && freeModule) {
+            if (moduleExports) { // Export for Node.js or RingoJS.
+                (freeModule.exports = meta_menuweb).meta_menuweb = meta_menuweb;
+            } else { // Export for Narwhal or Rhino -require.
+                freeExports.meta_menuweb = meta_menuweb;
             }
-        });
+        } else {
+            // Export for a browser or Rhino.
+            if (root.appMeta){
+                //root.appMeta.meta = meta_attach;
+                appMeta.addMeta('menuweb', new meta_menuweb('menuweb'));
+            } else {
+                root.meta_menuweb = meta_menuweb;
+            }
+        }
 
-    window.appMeta.addMeta('menuweb', new meta_menuweb('menuweb'));
-}());
+    }(  (typeof appMeta === 'undefined') ? require('../components/metadata/MetaData') : appMeta.MetaData,
+        (typeof appMeta === 'undefined') ? require('../components/metadata/EventManager').Deferred : appMeta.Deferred,
+    )
+);

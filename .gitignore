@@ -1,0 +1,15 @@
+**/node_modules/**
+/.idea
+bower_components
+.idea
+doc
+.git
+**/bin/**
+.bin
+config
+credBack
+scripts
+dist
+webpack
+componentsEasy
+

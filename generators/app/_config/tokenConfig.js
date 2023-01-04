@@ -6,7 +6,7 @@ module.exports = {
 
         authType: "bearer",
         algorithm: "HS512",
-        requestProperty: 'auth',
+        requestProperty: 'Authorization',
         algorithms: ['HS512'],
         //The "exp" (expiration time) claim identifies the expiration time on or after which the JWT MUST NOT
         //  be accepted for processing.

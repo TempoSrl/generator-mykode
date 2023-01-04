@@ -1,86 +1,82 @@
-﻿(function() {
+﻿(function(_, metaModel,MetaData, Deferred) {
 
-    var MetaData = window.appMeta.MetaSegreterieData;
-
-    function meta_attach() {
-        MetaData.apply(this, ["attach"]);
-        this.name = 'meta_attach';
-    }
-
-    meta_attach.prototype = _.extend(
-        new MetaData(),
-        {
-            constructor: meta_attach,
-			superClass: MetaData.prototype,
-
-			describeColumns: function (table, listType) {
-				var nPos=1;
-				var objCalcFieldConfig = {};
-				var self = this;
-				_.forEach(table.columns, function (c) {
-					self.describeAColumn(table, c.name, '', null, -1, null);
-				});
-				switch (listType) {
-					default:
-						return this.superClass.describeColumns(table, listType);
-					case 'default':
-						this.describeAColumn(table, 'filename', 'Nome del file', null, 30, 512);
-						this.describeAColumn(table, 'size', 'Dimensione', null, 50, null);
-//$objCalcFieldConfig_default$
-						break;
-//$objCalcFieldConfig$
-				}
-				table['customObjCalculateFields'] = objCalcFieldConfig;
-				appMeta.metaModel.computeRowsAs(table, listType, this.superClass.calculateFields);
-				return appMeta.Deferred("describeColumns").resolve();
-			},
+		/** Detect free variable `global` from Node.js. */
+		let freeGlobal = typeof global === 'object' && global && global.Object === Object && global;
+		/** Detect free variable `self`. */
+		let freeSelf = typeof self === 'object' && self && self.Object === Object && self;
+		/** Used as a reference to the global object. */
+		let root = freeGlobal || freeSelf || Function('return this')();
+		/** Detect free variable `exports`. */
+		let freeExports = typeof exports === 'object' && exports && !exports.nodeType && exports;
+		/** Detect free variable `module`. */
+		let freeModule = freeExports && typeof module === 'object' && module && !module.nodeType && module;
 
 
-			setCaption: function (table, edittype) {
-				switch (edittype) {
-					case 'default':
-						table.columns["ct"].caption = "Data caricamento";
-//$innerSetCaptionConfig_default$
-						break;
-//$innerSetCaptionConfig$
-				}
-			},
+		//noinspection JSUnresolvedVariable
+		/** Detect free variable `global` from Node.js or Browserified code and use it as `root`. (thanks lodash)*/
+		let moduleExports = freeModule && freeModule.exports === freeExports;
+
+		function meta_attach() {
+			MetaData.apply(this, ["attach"]);
+			this.name = 'meta_attach';
+		}
+
+		meta_attach.prototype = _.extend(
+			new MetaData(),
+			{
+				constructor: meta_attach,
+				superClass: MetaData.prototype,
+
+				getNewRow: function (parentRow, dt){
+					let def = Deferred("getNewRow-meta_attach");
+					let realParentObjectRow = parentRow ? parentRow.current : undefined;
+
+					//$getNewRowInside$
+
+					dt.autoIncrement('idattach', { minimum: 99990001 });
+
+					// torno la dataRow creata
+					this.superClass.getNewRow(parentRow, dt)
+					.then(function (dtRow) {
+						//$getNewRowDefault$
+						def.resolve(dtRow);
+					});
+					return def.promise();
+				},
 
 
-			getNewRow: function (parentRow, dt, editType){
-				var def = appMeta.Deferred("getNewRow-meta_attach");
-				var realParentObjectRow = parentRow ? parentRow.current : undefined;
-
-				//$getNewRowInside$
-
-				dt.autoIncrement('idattach', { minimum: 99990001 });
-
-				// metto i default
-				var objRow = dt.newRow({
-					//$getNewRowDefault$
-				}, realParentObjectRow);
-
-				// torno la dataRow creata
-				return def.resolve(objRow.getRow());
-			},
-
-
-			//$isValidFunction$
-
-			//$getStaticFilter$
-
-			getSorting: function (listType) {
-				switch (listType) {
-					case "default": {
-						return "filename asc ";
+				getSorting: function (listType) {
+					switch (listType) {
+						case "default": {
+							return "title asc ";
+						}
+						//$getSortingin$
 					}
-					//$getSortingin$
+					return this.superClass.getSorting(listType);
 				}
-				return this.superClass.getSorting(listType);
+
+			});
+
+
+		if (freeExports && freeModule) {
+			if (moduleExports) { // Export for Node.js or RingoJS.
+				(freeModule.exports = meta_attach).meta_attach = meta_attach;
+			} else { // Export for Narwhal or Rhino -require.
+				freeExports.meta_attach = meta_attach;
 			}
+		} else {
+			// Export for a browser or Rhino.
+			if (root.appMeta){
+				//root.appMeta.meta = meta_attach;
+				appMeta.addMeta('attach', new meta_attach('attach'));
+			} else {
+				root.meta_attach = meta_attach;
+			}
+		}
 
-        });
-
-    window.appMeta.addMeta('attach', new meta_attach('attach'));
-
-	}());
+	}(  (typeof _ === 'undefined') ? require('lodash') : _,
+		(typeof appMeta === 'undefined') ? require('../components/metadata/MetaModel').metaModel : appMeta.metaModel,
+		(typeof appMeta === 'undefined') ? require('../components/metadata/MetaData') : appMeta.MetaData,
+		(typeof appMeta === 'undefined') ? require('../components/metadata/EventManager').Deferred : appMeta.Deferred,
+	)
+);

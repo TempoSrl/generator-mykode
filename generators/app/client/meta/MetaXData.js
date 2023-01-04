@@ -105,9 +105,9 @@
 		} else {
 			// Export for a browser or Rhino.
 			if (root.appMeta){
-				root.appMeta.MetaEasyData = MetaXData;
+				root.appMeta.MetaXData = MetaXData;
 			} else {
-				root.MetaEasyData=MetaXData;
+				root.MetaXData=MetaXData;
 			}
 		}
 

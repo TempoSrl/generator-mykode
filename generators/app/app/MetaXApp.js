@@ -3,7 +3,7 @@
 (function () {
 
     // Deriva da MetaApp
-    const MetaApp = BaseMetaApp;
+    const MetaApp =  appMeta.MetaApp;
 
     function MetaXApp() {
         MetaApp.apply(this, arguments);
@@ -15,15 +15,23 @@
             constructor: MetaXApp,
             superClass: MetaApp.prototype,
 
-            getMetaDataPath: function (tableName) {
-                if (appMeta.config.env === appMeta.config.envEnum.PROD) {
-                    return this.basePathMetadata ? this.basePathMetadata : this.basePath;
-                }
-                return this.superClass.getMetaDataPath.call(this, tableName);
-            }
-
         });
+    appMeta.currApp = new MetaXApp();
 
-    window.appMeta = new MetaXApp();
+    //We save the original getMetaDataPath function
+    let baseGetPageDataPath = appMeta.getMetaPagePath;
+
+    appMeta.getMetaPagePath = function (tableName) {
+        if (appMeta.config.env === appMeta.config.envEnum.PROD) {
+            return this.basePathMetadata ? this.basePathMetadata : this.basePath;
+        }
+        //We invoke the original function
+        return baseGetPageDataPath.call(this, tableName);
+    }
+
+    appMeta.callWebService = function (method, prms) {
+        return appMeta.currApp.callWebService(method,prms);
+    }
+
 
 }());

@@ -1,4 +1,4 @@
-// Generated on 2014-03-27 using generator-angular-fullstack 1.2.7
+// Rivisto da Nino 04/01/2023
 'use strict';
 /*globals initConfig, appPath */
 /*jshint camelcase: false */
@@ -75,7 +75,7 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
 
-    //this is used with grunt.initConfig(gruntConfig), that is equivalen to grunt.config.init
+    //this is used with grunt.initConfig(gruntConfig), that is equivalent to grunt.config.init
     let gruntConfig = {
         wiredep: {
 
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
 
                 // Point to the files that should be updated when
                 // you run `grunt wiredep`
-                src: ['client/*.html'],
+                src: ['client/index.html','client/indexDebug.html'],
 
                 options: {
                     cwd: 'client',
@@ -176,7 +176,23 @@ module.exports = function (grunt) {
                 configFile: "test/karma.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["spec"],
+                reporters: ["dots"],
+                specReporter: {
+                    maxLogLines: 5, // limit number of lines logged per test
+                    suppressErrorSummary: false, // do not print error summary
+                    suppressFailed: false, // do not print information about failed tests
+                    suppressPassed: true, // do not print information about passed tests
+                    suppressSkipped: true, // do not print information about skipped tests
+                    showSpecTiming: true, // print the time elapsed for each spec
+                    failFast: false // test would finish with error when a first fail occurs.
+                }
+            },
+
+            midway: {
+                configFile: "test/karma_midway.conf.js",
+                autoWatch: true,
+                singleRun: true,
+                reporters: ["dots"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
@@ -192,7 +208,7 @@ module.exports = function (grunt) {
                 configFile: "test/karma_node_server_e2e.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["spec"],
+                reporters: ["dots"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
@@ -202,7 +218,23 @@ module.exports = function (grunt) {
                     showSpecTiming: true, // print the time elapsed for each spec
                     failFast: false // test would finish with error when a first fail occurs.
                 }
-            }
+            },
+
+            e2e_app: {
+                configFile: "test/karma_e2e_app.conf.js",
+                autoWatch: true,
+                singleRun: true,
+                reporters: ["dots"],
+                specReporter: {
+                    maxLogLines: 5, // limit number of lines logged per test
+                    suppressErrorSummary: false, // do not print error summary
+                    suppressFailed: false, // do not print information about failed tests
+                    suppressPassed: true, // do not print information about passed tests
+                    suppressSkipped: true, // do not print information about skipped tests
+                    showSpecTiming: true, // print the time elapsed for each spec
+                    failFast: true // test would finish with error when a first fail occurs.
+                }
+            },
         },
 
         jasmine: {
@@ -306,6 +338,12 @@ module.exports = function (grunt) {
 
 
     function publish(){
+        let  files = glob.sync("client/meta/Meta*.js");
+        files.forEach(file => {
+            fs.copyFileSync(file,
+                path.join("client","metadata",path.basename(file)));
+        });
+
         fs.readdirSync(path.join(__dirname, 'client',"meta")).forEach(folder => {
             if (!fs.lstatSync(path.join(__dirname, 'client',"meta", folder) ).isDirectory()) {
                 return;
@@ -322,7 +360,7 @@ module.exports = function (grunt) {
                         }
                         return path.basename(f).startsWith("meta_");
                     },
-                    force:false
+                    force:true
                 },
                 (err) => {if (err) {console.error(err);}
                 });
@@ -342,13 +380,38 @@ module.exports = function (grunt) {
                 (err) => {if (err) {console.error(err);}
                 });
         });
-    }
 
+    }
+    let metaComponents = [
+        "jsDataQuery","jsDataSet","MetaApp","Enum","LocalResource",
+        "Config","Logger","DbProcedureMessage","Routing","EventManager",
+        "utils","GetDataUtils","GetDataUtilsDotNet","ConnWebService","ConnWebSocket",
+        "Connection","MetaModel",
+        "GetData","Security","AuthManager","PostData","BootstrapContainerTab",
+        "FormProcedureMessages",
+        "LoaderControl","ModalLoaderControl","ListManager","ListManagerCalendar",
+        "CssDefault","TypedObject","MetaPageState","HelpForm",
+        "CheckBoxListControl","GridControl","GridControlX","GridControlXMultiSelect",
+        "ListManagerMultiSelect","GridControlXChild","GridControlXEdit",
+        "CalendarControl","SliderControl","MetaData","MetaPage",
+        "ComboManager","MainToolBarManager","DropDownGridControl", "GridControlXScrollable",
+        "ListManagerScrollable","TreeNode","TreeNode_Dispatcher","TreeViewManager",
+        "TreeNodeUnLeveled","TreeNodeLeveled", "TreeNodeUnLeveled_Dispatcher",
+        "TreeNodeLeveled_Dispatcher",
+        "tree/SimpleUnLeveled_TreeNode","tree/SimpleUnLeveled_TreeNode_Dispatcher",
+        "tree/SimpleUnLeveled_TreeViewManager","tree/TreeControl",
+        "Attachment","BootstrapModal",
+        "ConfigDev","GetDataUtilsNode","GridMultiSelectControl","ModalForm",
+        "MultiSelectControl","PdfExport","UploadControl","UploadControlWin",
+        "tachimetro/TachimetroControl","graph/GraphControl"
+    ].map(x=>{
+        return 'components/metadata/'+x+'.js';
+    });
 
 
     function expandDir(path, cwd, matchPath, tag){
-        let startTag = "\t<-- expand:"+tag+" -->";
-        let stopTag = "\t<!-- expand:"+tag+" -->";
+        let startTag = "\t<!-- expand:"+tag+" -->";
+        let stopTag = "\t<!-- endexpand:"+tag+" -->";
         const contents = fs.readFileSync(path, 'utf-8');
         const arrSource = contents.split(/\r?\n/);
         let arrDest = [];
@@ -377,13 +440,21 @@ module.exports = function (grunt) {
             index++;
             break; //stopTag found
         }
+        let fileToExpand;
 
-        let fileToExpand = grunt.file.expand({
-            filter:"isFile",
-            nonull:true,
-            matchBase:true,
-            cwd:cwd
-        },matchPath);
+        if (tag==="metacomponents"){
+            fileToExpand = metaComponents;
+        }
+        else {
+            fileToExpand = grunt.file.expand({
+                filter:"isFile",
+                nonull:true,
+                matchBase:true,
+                cwd:cwd
+            },matchPath);
+        }
+
+
 
 
         fileToExpand.forEach(f => {
@@ -406,6 +477,7 @@ module.exports = function (grunt) {
         expandDir(fName,"client",
             ["components/metadata/thirdpart/*.js"],
             "metadata_thirdpart");
+
         expandDir(fName,"client",
             ["components/utility/*.js"],
             "utility");
@@ -413,21 +485,41 @@ module.exports = function (grunt) {
             ["components/metadata/tree/*.js"],
             "metadata_tree");
         expandDir(fName,"client",
-            [
-                "components/metadata/*.js","!MetaApp.js"],
+            [],
             "metacomponents");
         expandDir(fName,"client",
             [
                 "meta/*/*.js"],
             "tables");
+        expandDir(fName,"client",
+            [
+                "metadata/meta_*.js"],
+            "metadata");
+        expandDir(fName,"client",
+            [
+                "pages/*.js"],
+            "pages");
+        expandDir(fName,"client",
+            [
+                "assets/**/*.js"],
+            "assets");
     }
 
 
     grunt.registerTask("publish","Publish meta",()=>{
+        //This must be done before compiling index*.html
+        publish();
+
+        fs.copyFileSync(path.join("client","indexTemplate.html"),
+            path.join("client","index.html")
+        );
+        fs.copyFileSync(path.join("client","indexDebugTemplate.html"),
+            path.join("client","indexDebug.html")
+        );
+
         fixFileIncludes("client/index.html");
         fixFileIncludes("client/indexDebug.html");
-
-        publish();
+        grunt.task.run('wiredep');
     });
 
     // Convert to MD every file under the
@@ -437,7 +529,6 @@ module.exports = function (grunt) {
         let processed=0;
         folders.forEach(folder=>{
             let folderComplete = path.join(__dirname,folder);
-            console.log(folder);
 
             glob(folder, {}, (err, files)=>{
                 if (err){
@@ -447,7 +538,6 @@ module.exports = function (grunt) {
                 //console.log(files);
                 files.forEach(file => {
                     if (path.basename(file)[0]==='_') return;
-                    console.log(file);
                     try {
                         let md = jsdoc2md.renderSync({files: file});
                         const basename = path.basename(file, path.extname(file));
@@ -479,7 +569,6 @@ module.exports = function (grunt) {
         }
         done();
     });
-
 
     grunt.registerTask('docMD', ['jsDocMD:dist']);
 
@@ -614,9 +703,6 @@ module.exports = function (grunt) {
             done();
         }, 5000);
     });
-
-
-
 
     grunt.registerTask("e2e", ["createSqlDB", "NodeStart", "karma:spece2e","destroySqlDB"]);
 };
