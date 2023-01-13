@@ -144,6 +144,7 @@ module.exports = class extends Generator{
                 "grunt-keepalive": "^1.0.0",
                 "grunt-open": "^0.2.4",
                 "grunt-shell": "^3.0.1",
+                "grunt-wiredep": "^3.0.1",
                 "jasmine": "^4.5.0",
                 "jasmine-console-reporter": "^3.1.0",
                 "jasmine-core": "3.6.0",
@@ -180,7 +181,7 @@ module.exports = class extends Generator{
         const bowerJson = {
             name: this.answers.name,
             dependencies: {
-                "bootstrap": "5.2.2",
+                "bootstrap": "4.6.2",
                 "font-awesome": "^5.1.1",
                 "jquery": "3.6.1",
                 "jquery-ui": "1.12.1",

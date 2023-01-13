@@ -338,20 +338,20 @@ module.exports = function (grunt) {
 
 
     function publish(){
-        let  files = glob.sync("client/meta/Meta*.js");
+        let  files = glob.sync("client/metadata/Meta*.js");
         files.forEach(file => {
             fs.copyFileSync(file,
-                path.join("client","metadata",path.basename(file)));
+                path.join("client","meta",path.basename(file)));
         });
 
-        fs.readdirSync(path.join(__dirname, 'client',"meta")).forEach(folder => {
-            if (!fs.lstatSync(path.join(__dirname, 'client',"meta", folder) ).isDirectory()) {
+        fs.readdirSync(path.join(__dirname, 'client',"metadata")).forEach(folder => {
+            if (!fs.lstatSync(path.join(__dirname, 'client',"metadata", folder) ).isDirectory()) {
                 return;
             }
             //console.log("copying folder:",folder);
 
-            fs.cpSync(path.join(__dirname, 'client',"meta",folder),
-                path.join(__dirname,"client", "metadata"),
+            fs.cpSync(path.join(__dirname, 'client',"metadata",folder),
+                path.join(__dirname,"client", "meta"),
                 {recursive: true,
                     preserveTimestamps:true,
                     filter: function filterMeta(f){
@@ -365,7 +365,7 @@ module.exports = function (grunt) {
                 (err) => {if (err) {console.error(err);}
                 });
 
-            fs.cpSync(path.join(__dirname, 'client',"meta",folder),
+            fs.cpSync(path.join(__dirname, 'client',"metadata",folder),
                 path.join(__dirname,"client", "pages"),
                 {recursive: true,
                     preserveTimestamps:true,
@@ -704,5 +704,11 @@ module.exports = function (grunt) {
         }, 5000);
     });
 
+    grunt.registerTask("client spec", ["karma:spec"]);
+    grunt.registerTask("client midway", ["karma:midway"]);
+
+    grunt.registerTask("e2e_app", ["NodeStart",  "karma:e2e_app"]);
+
     grunt.registerTask("e2e", ["createSqlDB", "NodeStart", "karma:spece2e","destroySqlDB"]);
+
 };

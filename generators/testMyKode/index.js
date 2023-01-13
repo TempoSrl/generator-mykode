@@ -17,7 +17,7 @@ module.exports = class extends Generator {
 
     }
     init(){
-        ["karma.conf.js","karma_midway.conf.js"].forEach(fileName=>{
+        ["karma.conf.js","karma_midway.conf.js","karma_e2e_App.conf.js"].forEach(fileName=>{
             fs.copyFileSync(
                 testPath(fileName),
                 path.join("test",fileName)
@@ -120,7 +120,8 @@ module.exports = class extends Generator {
             new Buffer(sqlServerDbString), {encoding: 'utf-8'});
 
         sqlConfig.test=true;
-        sqlConfig.defaultSchema="amministrazione";
+        sqlConfig.defaultSchema="DBO";
+        sqlConfig.schema="DBO";
         sqlConfig.EnableSSORegistration=true;
         sqlConfig.userkindSSO=5;
         sqlConfig.userkindUserPassw = 3;
