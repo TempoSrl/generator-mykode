@@ -56,7 +56,7 @@ module.exports = function(config) {
             'client/components/metadata/Connection.js',
             'client/components/metadata/MetaModel.js',
             'client/components/metadata/GetDataUtils.js',
-            'client/components/metadata/GetDataUtilsDotNet.js',
+            // 'client/components/metadata/GetDataUtilsNode.js',
             'client/components/metadata/Security.js',
             'client/components/metadata/GetData.js',
             'client/components/metadata/PostData.js',
@@ -105,11 +105,13 @@ module.exports = function(config) {
             'client/components/template/*.html',
             //'components/styles/bootstrap/css/bootstrap.css'  needed for components/template/*.html
             //'components/styles/app.css',    // needed for components/template/*.html
-            'test/client/app/styles/bootstrap/css/bootstrap.css',
-            'test/client/app/styles/bootstrap/js/bootstrap.js',
+
+            'client/bower_components/bootstrap/dist/css/bootstrap.css',
+            'client/bower_components/bootstrap/dist/js/bootstrap.bundle.js',
             //'test/app/styles/bootstrap/js/jquery-ui.min.js',
             'client/bower_components/jstree/dist/themes/default/style.css',
             'test/client/spec_midway/fixtures/*.html',
+
             { pattern: 'client/components/styles/bootstrap/css/*.css', included: false, served: true },
             { pattern:'client/components/styles/*.css', included: false, served: true },
             { pattern: 'test/client/spec_midway/**/*.js', included: false, served: true },
@@ -122,14 +124,15 @@ module.exports = function(config) {
         ],
         proxies: {
             '/styles/bootstrap/css/': '/base/client/components/styles/bootstrap/css/',
-            '/styles/': '/base/client/components/styles/',
-            '/jstest/': '/base/test/client/spec_midway/jstest/',
-            '/test/styles/bootstrap/css/': '/base/test/client/app/styles/bootstrap/css/',
-            '/test/styles/bootstrap/js/': '/base/test/client/app/styles/bootstrap/js/',
-            '/base/test/app/styles/bootstrap/css/': '/base/test/client/app/styles/bootstrap/css/',
-            '/base/test/app/styles/bootstrap/js/': '/base/test/client/app/styles/bootstrap/js/',
-            '/test/styles/': '/base/test/client/app/styles/',
+            // covers test/client/app/styles/app.css and others 2
+            '/styles/': '/base/test/client/app/styles/',
             '/base/test/app/styles/': '/base/test/client/app/styles/',
+            '/jstest/': '/base/test/client/spec_midway/jstest/',
+            // '/base/test/styles/bootstrap/css/': '/base/test/client/app/styles/bootstrap/css/',
+            // '/base/test/styles/bootstrap/js/': '/base/test/client/app/styles/bootstrap/js/',
+            // '/base/test/client/app/styles/bootstrap/css/': '/base/test/client/app/styles/bootstrap/css/',
+            // '/base/test/app/styles/bootstrap/js/': '/base/test/client/app/styles/bootstrap/js/',
+            // '/base/test/app/styles/': '/base/test/client/app/styles/',
             '/base/bower_components/':'/base/client/bower_components/',
             '/base/components/':'/base/client/components/',
             '/base/test/':'/base/test/client/'
@@ -165,7 +168,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-        logLevel: config.LOG_WARN
+        logLevel: config.LOG_ERROR
 
         // Uncomment the following lines if you are using grunt's server to run the tests
         // proxies: {

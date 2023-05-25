@@ -71,7 +71,7 @@ function backendPath(subfolders){
 }
 
 function frontendPath(subfolders){
-    const basePath=  path.dirname(require.resolve("mykode_frontend/package.json"));
+    const basePath=  path.join(path.dirname(require.resolve("jsmetabackend/package.json"),"client"));
     return pathJoin(basePath, subfolders);
 }
 
@@ -127,11 +127,11 @@ module.exports = class extends Generator{
                 "lodash": "latest",
                 "morgan": "^1.10.0",
                 "multer": "^1.4.3",
+                "nodemailer": "^6.9.1",
                 "request": "^2.88.2",
                 "uuid": "^8.3.2"
             },
             devDependencies: {
-                "generator-mykode": "latest",
                 "jsmetabackend": "latest",
                 "async-exec-cmd": "^2.0.2",
                 "browserify": "^17.0.0",
@@ -146,11 +146,11 @@ module.exports = class extends Generator{
                 "grunt-shell": "^3.0.1",
                 "grunt-wiredep": "^3.0.1",
                 "jasmine": "^4.5.0",
+                "jasmine-collection-matchers":"*",
                 "jasmine-console-reporter": "^3.1.0",
                 "jasmine-core": "3.6.0",
                 "jasmine-node": "^3.0.0",
                 "jasmine-spec-reporter": "^7.0.0",
-                "jasmine-collection-matchers":"*",
                 "jquery": "^3.6.0",
                 "jsdoc": "^3.6.10",
                 "jsdoc-summarize2": "^0.1.4",
@@ -181,9 +181,9 @@ module.exports = class extends Generator{
         const bowerJson = {
             name: this.answers.name,
             dependencies: {
-                "bootstrap": "4.6.2",
+                "bootstrap": "5.2.0",
                 "font-awesome": "^5.1.1",
-                "jquery": "3.6.1",
+                "jquery": "3.6.3",
                 "jquery-ui": "1.12.1",
                 "jstree": "~3.3.6",
                 "json3": "~3.3.1",
@@ -271,15 +271,17 @@ module.exports = class extends Generator{
         });
 
         //Copy test folders
-        ["app", "common", "spec", "spec_midway"].forEach(folder => {
+        ["app", "common", "spec", "spec_midway","spec_e2e","spec_e2e_app"].forEach(folder => {
             copyFolder(frontendPath(["test", folder]), path.join("test", "client", folder));
         });
+
 
         //Copy everything under app/app (file and folders, included MetaXApp
         ["app"].forEach(folder => {
             copyFolder(appPath([folder]),"client");
         });
 
+        //jsSpec, jsDataSetSpec and jsDataQuerySpec
         fs.cpSync(frontendPath(["test"]), path.join("test", "client"),
             {
                 recursive: false,

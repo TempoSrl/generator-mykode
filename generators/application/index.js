@@ -83,7 +83,10 @@ module.exports = class extends Generator{
         else {
             appList.push({
                 dbCode: this.answers.dbCode,
-                route: this.answers.route
+                route: this.answers.route,
+                metaPath:"./../../meta",
+                dsPath:"./client/dataset/"
+
             });
             this.log("Route for "+this.answers.dbCode+" has been created.");
         }

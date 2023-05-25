@@ -12,7 +12,7 @@ module.exports = function(config) {
         usePolling: true,
 
         //dots  progress  junit  growl  coverage kjhtml spec
-        reporters: ['spec'],
+        reporters: ['progress'],
 
 
         // base path, that will be used to resolve files and exclude
@@ -45,7 +45,7 @@ module.exports = function(config) {
             'client/components/metadata/Connection.js',
             'client/components/metadata/jsDataSet.js',
             'client/components/metadata/GetDataUtils.js',
-            'client/components/metadata/GetDataUtilsDotNet.js',
+            //'client/components/metadata/GetDataUtilsNode.js',
             'client/components/metadata/MetaModel.js',
             'client/components/metadata/GetData.js',
             'client/components/metadata/Security.js',
@@ -74,8 +74,8 @@ module.exports = function(config) {
             'test/client/app/styles/fontawesome/fontawesome-all.js',
             'test/client/app/styles/app.css',
             'client/components/template/*.html',
-            'test/client/app/styles/bootstrap/css/bootstrap.css',
-            'test/client/app/styles/bootstrap/js/bootstrap.js',
+            'client/bower_components/bootstrap/dist/css/bootstrap.css',
+            'client/bower_components/bootstrap/dist/js/bootstrap.bundle.js',
             { pattern: 'test/client/spec_midway/**/*.json', included: false, served: true },
         ],
 
@@ -130,7 +130,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-        logLevel: config.LOG_WARN
+        logLevel: config.LOG_ERROR
 
         // Uncomment the following lines if you are using grunt's server to run the tests
         // proxies: {

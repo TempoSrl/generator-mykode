@@ -118,7 +118,7 @@
             appMeta.modalLoaderControl.show("Cambio ruolo in corso", false);
             appMeta.connection.call(objConn)
                 .then(function(data) {
-                        // salvo var ambiente di sicurezza tornate dal server sulla classe scurity
+                        // salvo var ambiente di sicurezza restituite dal server sulla classe scurity
                         that.forceClose();
                         return that.def.resolve(data);
                     },

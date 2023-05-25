@@ -26,9 +26,6 @@ let port = process.argv[2] || process.env.PORT || 54471;
 let GetMeta = require("./client/components/metadata/GetMeta");
 GetMeta.setPath("./../../meta"); //all metadata must be stored here
 
-// let GetDataSet = require("./client/components/metadata/GetDataSet");
-// GetDataSet.setPath("./dataset/"); //all metadata must be stored here
-
 //This must be executed as soon as possible
 JsToken.assureMasterKey();
 let expressApplication = jsExpressApplication.createExpressApplication();
@@ -36,8 +33,9 @@ let expressApplication = jsExpressApplication.createExpressApplication();
 return Deferred.when(appList.map(appCfg=>{
             //for every app configured creates a JsApplication running under "route" path  configured
             let application = new JsApplication();
-            return application.init(appCfg.dbCode)
+            return application.init(appCfg)
                 .then(()=>{
+                    console.log("using route "+appCfg.route);
                   return expressApplication.use(appCfg.route,application.getApp());
                 });
         }))
@@ -45,6 +43,7 @@ return Deferred.when(appList.map(appCfg=>{
         //runs the overall application
         const server = http.createServer(expressApplication);
         server.listen(port); //port is applied to external Application
+        console.log("server listening on port "+port);
     });
 
 

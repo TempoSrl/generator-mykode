@@ -529,6 +529,9 @@
 
             appMeta.basePath = "/"+window.location.pathname.split("/")[1]+"/";
             //appMeta.appMainConfig.basePath;
+
+            appMeta.serviceBasePath = window.location.pathname.split("/")[1]+"/";
+
             appMeta.basePathMetadata = appMeta.appMainConfig.basePathMetadata;
             appMeta.currApp.rootElement = appMeta.appMainConfig.rootElement;
             // copio i valori di configurazione utilizzati
@@ -744,4 +747,5 @@
     };
 
     appMeta.Toast = new Toast();
+
 }());
