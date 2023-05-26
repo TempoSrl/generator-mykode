@@ -145,7 +145,9 @@ module.exports = class extends Generator {
         if (!exist1) {
             dbList.test_sqlServer=Object.assign({}, sqlConfig);
             appList.push( {"dbCode":"test_sqlServer",
-                "route":"/test"
+                "route":"/test",
+                "metaPath": "./../../meta/test",
+                "dsPath": "./client/dataset/test/"
             });
 
         }
@@ -155,9 +157,116 @@ module.exports = class extends Generator {
             sqlConfig.test=false;
             dbList.test_sqlServer_anonymous=Object.assign({}, sqlConfig);
             appList.push( {"dbCode":"test_sqlServer_anonymous",
-                "route":"/testanonymous"
+                "route":"/testanonymous",
+                "metaPath": "./../../meta/test",
+                "dsPath": "./client/dataset/test/"
             });
         }
+
+        let exist3 = dbList["test_client_sqlServer"];
+        if (!exist3) {
+            sqlConfig.test=false;
+            dbList.test_client_sqlServer=Object.assign({}, sqlConfig);
+            appList.push( {"dbCode":"test_client_sqlServer",
+                "route":"/test_client",
+                "metaPath": "./../../meta/test",
+                "dsPath": "./client/dataset/test/"
+            });
+        }
+
+
+        if (!exist1 || !exist2){
+            dbListContent = JSON.stringify(dbList, null, 4);
+            fs.writeFileSync(dbListFileName,
+                new Buffer(dbListContent), {encoding: 'utf-8'});
+
+            appListContent = JSON.stringify(appList, null, 4);
+            fs.writeFileSync(appListFileName,
+                new Buffer(appListContent), {encoding: 'utf-8'});
+        }
+
+    }
+
+    async oracleConfig(){
+        if (!this.mainConfirm.confirm){
+            return;
+        }
+        let sqlConfig = await this.prompt([
+            {
+                type: "input",
+                name: "server",
+                message: "oracle Server name"
+            },
+            {
+                type: "input",
+                name: "dbName",
+                message: "oracle DB name"
+            },
+            {
+                type: "input",
+                name: "user",
+                message: "oracle user name"
+            },
+            {
+                type: "input",
+                name: "pwd",
+                message: "oracle pwd"
+            },
+            {
+                type: "input",
+                name: "port",
+                message: "port (usually 1521)"
+            }
+        ]);
+
+
+
+        sqlConfig.test=false;
+        sqlConfig.defaultSchema="DBO";
+        sqlConfig.schema="DBO";
+        sqlConfig.EnableSSORegistration=true;
+        sqlConfig.userkindSSO=5;
+        sqlConfig.userkindUserPassw = 3;
+        sqlConfig.sqlModule = "jsSqlServerDriver";
+
+        let dbConfigFileName = path.join("test", "dbOracle.json");
+        let dbConfigContent = fs.readFileSync(
+            dbConfigFileName,
+            {encoding: 'utf-8'}).toString();
+        let oracleConfig = JSON.parse(dbConfigContent);
+
+
+        oracleConfig.test_sqlServer=Object.assign({}, sqlConfig);
+        appList.push( {"dbCode":"test_sqlServer",
+            "route":"/test",
+            "metaPath": "./../../meta/test",
+            "dsPath": "./client/dataset/test/"
+        });
+
+
+        let exist2 = dbList["test_sqlServer_anonymous"];
+        if (!exist2) {
+            sqlConfig.test=false;
+            dbList.test_sqlServer_anonymous=Object.assign({}, sqlConfig);
+            appList.push( {"dbCode":"test_sqlServer_anonymous",
+                "route":"/testanonymous",
+                "metaPath": "./../../meta/test",
+                "dsPath": "./client/dataset/test/"
+            });
+        }
+
+        let exist3 = dbList["test_client_sqlServer"];
+        if (!exist3) {
+            sqlConfig.test=false;
+            dbList.test_client_sqlServer=Object.assign({}, sqlConfig);
+            appList.push( {"dbCode":"test_client_sqlServer",
+                "route":"/test_client",
+                "metaPath": "./../../meta/test",
+                "dsPath": "./client/dataset/test/"
+            });
+        }
+
+
         if (!exist1 || !exist2){
             dbListContent = JSON.stringify(dbList, null, 4);
             fs.writeFileSync(dbListFileName,
