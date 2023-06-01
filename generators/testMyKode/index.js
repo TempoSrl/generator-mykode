@@ -31,7 +31,7 @@ module.exports = class extends Generator {
             {
                 type: "confirm",
                 name: "confirm",
-                message: "To activate myKode internal test you must supply access to two empties databases"+
+                message: "To activate myKode internal test you must supply access to three empties databases"+
                     "\nDo you want to continue?",
                 choices:["S","N"]
             }
@@ -120,7 +120,8 @@ module.exports = class extends Generator {
             new Buffer(sqlServerDbString), {encoding: 'utf-8'});
 
         sqlConfig.test=true;
-        sqlConfig.defaultSchema="DBO";
+        sqlConfig.useTrustedConnection = false,
+            sqlConfig.defaultSchema="DBO";
         sqlConfig.schema="DBO";
         sqlConfig.EnableSSORegistration=true;
         sqlConfig.userkindSSO=5;
@@ -155,6 +156,8 @@ module.exports = class extends Generator {
         let exist2 = dbList["test_sqlServer_anonymous"];
         if (!exist2) {
             sqlConfig.test=false;
+            sqlConfig.schema = "DBO";
+            sqlConfig.defaultSchema = sqlConfig.user;
             dbList.test_sqlServer_anonymous=Object.assign({}, sqlConfig);
             appList.push( {"dbCode":"test_sqlServer_anonymous",
                 "route":"/testanonymous",
@@ -166,6 +169,8 @@ module.exports = class extends Generator {
         let exist3 = dbList["test_client_sqlServer"];
         if (!exist3) {
             sqlConfig.test=false;
+            sqlConfig.schema = sqlConfig.user;
+            sqlConfig.defaultSchema = "DBO";
             dbList.test_client_sqlServer=Object.assign({}, sqlConfig);
             appList.push( {"dbCode":"test_client_sqlServer",
                 "route":"/test_client",
@@ -219,63 +224,11 @@ module.exports = class extends Generator {
             }
         ]);
 
-
-
-        sqlConfig.test=false;
-        sqlConfig.defaultSchema="DBO";
-        sqlConfig.schema="DBO";
-        sqlConfig.EnableSSORegistration=true;
-        sqlConfig.userkindSSO=5;
-        sqlConfig.userkindUserPassw = 3;
-        sqlConfig.sqlModule = "jsSqlServerDriver";
-
         let dbConfigFileName = path.join("test", "dbOracle.json");
-        let dbConfigContent = fs.readFileSync(
-            dbConfigFileName,
-            {encoding: 'utf-8'}).toString();
-        let oracleConfig = JSON.parse(dbConfigContent);
 
-
-        oracleConfig.test_sqlServer=Object.assign({}, sqlConfig);
-        appList.push( {"dbCode":"test_sqlServer",
-            "route":"/test",
-            "metaPath": "./../../meta/test",
-            "dsPath": "./client/dataset/test/"
-        });
-
-
-        let exist2 = dbList["test_sqlServer_anonymous"];
-        if (!exist2) {
-            sqlConfig.test=false;
-            dbList.test_sqlServer_anonymous=Object.assign({}, sqlConfig);
-            appList.push( {"dbCode":"test_sqlServer_anonymous",
-                "route":"/testanonymous",
-                "metaPath": "./../../meta/test",
-                "dsPath": "./client/dataset/test/"
-            });
-        }
-
-        let exist3 = dbList["test_client_sqlServer"];
-        if (!exist3) {
-            sqlConfig.test=false;
-            dbList.test_client_sqlServer=Object.assign({}, sqlConfig);
-            appList.push( {"dbCode":"test_client_sqlServer",
-                "route":"/test_client",
-                "metaPath": "./../../meta/test",
-                "dsPath": "./client/dataset/test/"
-            });
-        }
-
-
-        if (!exist1 || !exist2){
-            dbListContent = JSON.stringify(dbList, null, 4);
-            fs.writeFileSync(dbListFileName,
-                new Buffer(dbListContent), {encoding: 'utf-8'});
-
-            appListContent = JSON.stringify(appList, null, 4);
-            fs.writeFileSync(appListFileName,
-                new Buffer(appListContent), {encoding: 'utf-8'});
-        }
-
+        let cfgContent = JSON.stringify(sqlConfig, null, 4);
+        fs.writeFileSync(dbConfigFileName,
+            new Buffer(cfgContent), {encoding: 'utf-8'});
     }
+
 };

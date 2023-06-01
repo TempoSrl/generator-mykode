@@ -44,6 +44,7 @@ module.exports = class extends Generator{
 
     }
 
+    //Add configuration for a new application route, linked to a specified database
     async prompting(){
         this.answers = await this.prompt([
             {
@@ -55,13 +56,14 @@ module.exports = class extends Generator{
             {
                 type: "input",
                 name: "route",
-                message: "route prefix to access application instance (delete to delete application)",
+                message: "route prefix to access application instance (delete to delete the db linked route)",
                 default: "/main"
             },
 
         ]);
     }
 
+    //Creates the route or deletes the route for the specified database
     createAppRoute(){
         let appListFileName = path.join("config","appList.json");
         let appListContent = fs.readFileSync(
@@ -95,6 +97,7 @@ module.exports = class extends Generator{
             new Buffer(appListContent), {encoding: 'utf-8'});
     }
 
+    //Eventually creates a configuration for the database
     async createDbData(){
         let dbListFileName = path.join("config","dbList.json");
         let dbListContent = fs.readFileSync(
@@ -104,7 +107,7 @@ module.exports = class extends Generator{
 
         let exist = dbList[this.answers.dbCode];
         if (exist) {
-            console.log("createDbData: "+this.answers.dbCode+ " already as a configuration.");
+            console.log("createDbData: "+this.answers.dbCode+ " already has a configuration.");
             return;
         }
 
@@ -132,8 +135,13 @@ module.exports = class extends Generator{
             {
                 type: "input",
                 name: "defaultSchema",
-                message: "Default Schema (when available",
+                message: "Default Schema (when available)",
                 default:"DBO"
+            },
+            {
+                type: "input",
+                name: "schema",
+                message: "schema to use",
             },
             {
                 type: "list",

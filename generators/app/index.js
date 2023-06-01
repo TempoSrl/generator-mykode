@@ -1,3 +1,5 @@
+/* Creates the application and customizes data */
+
 const Generator = require('yeoman-generator');
 const path = require('path');
 const fs = require('fs');
@@ -71,7 +73,7 @@ function backendPath(subfolders){
 }
 
 function frontendPath(subfolders){
-    const basePath=  path.join(path.dirname(require.resolve("jsmetabackend/package.json"),"client"));
+    const basePath=  path.join(path.dirname(require.resolve("jsmetabackend/package.json")),"client");
     return pathJoin(basePath, subfolders);
 }
 
@@ -265,14 +267,15 @@ module.exports = class extends Generator{
         copyFolder(appPath(["client", "assets"]),path.join("client", "assets"), ["js", "json"]);
 
         //
-        ["metadata", "styles", "template", "utility","userTemplate"].forEach(folder => {
+        ["i18n", "metadata", "styles", "template", "utility","userTemplate"].forEach(folder => {
             copyFolder(frontendPath(["components", folder]),
                 path.join("client", "components", folder));
         });
 
         //Copy test folders
         ["app", "common", "spec", "spec_midway","spec_e2e","spec_e2e_app"].forEach(folder => {
-            copyFolder(frontendPath(["test", folder]), path.join("test", "client", folder));
+            copyFolder(backendPath(["test", "client", folder]),
+                path.join("test", "client", folder));
         });
 
 
@@ -318,6 +321,20 @@ module.exports = class extends Generator{
 
     }
 
+    //Replaces MetaXData with actual Application MetaData in the template for derived metaData
+    customizeMetaXXData(){
+        let generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
+
+        //generatorPackagePath,"generators","app",
+        let oldFileName = path.join("client","meta", "MetaXXData.js");
+
+        //console.log("reading from ",oldFileName)
+        let metaContent = fs.readFileSync(oldFileName, {encoding: 'utf-8'}).toString();
+        metaContent = metaContent.replaceAll("MetaXData", this.metaName);
+        //console.log("writing to ",newFileName)
+        fs.writeFileSync(oldFileName, new Buffer(metaContent), {encoding: 'utf-8'});
+    }
+
     customizeMetaXPage(){
         let generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
 
@@ -330,6 +347,7 @@ module.exports = class extends Generator{
         //console.log("reading from ",oldFileName)
         let metaPageContent = fs.readFileSync(newFileName, {encoding: 'utf-8'}).toString();
         metaPageContent = metaPageContent.replaceAll("MetaXPage", this.metaPageName);
+        metaPageContent = metaPageContent.replaceAll("MetaXData", this.metaName);
         //console.log("writing to ",newFileName)
         fs.writeFileSync(newFileName, new Buffer(metaPageContent), {encoding: 'utf-8'});
     }
