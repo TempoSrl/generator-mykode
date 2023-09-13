@@ -15,7 +15,7 @@ module.exports = class extends Generator {
         const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf-8');
         const packageJson = JSON.parse(packageJsonContent);
         const appName = packageJson.name;
-        console.log(this.packageJson);
+        //console.log(this.packageJson);
         this.metaPageName = "Meta" + capitalizeFirstLetter(appName) + "Page";
     }
 
@@ -107,8 +107,6 @@ module.exports = class extends Generator {
         jsContent = jsContent.replaceAll("xxxTable", this.answers.tableName);
         jsContent = jsContent.replaceAll("yyyEditType", this.answers.editType);
         jsContent = jsContent.replaceAll("isDetailXXX", this.answers.isDetail);
-
-
 
         let newJsFileName = path.join(destPath, destJsName);
         await this._writeFileWithCheck(jsContent, newJsFileName);
