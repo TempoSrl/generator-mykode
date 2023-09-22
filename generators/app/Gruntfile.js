@@ -411,7 +411,7 @@ module.exports = function (grunt) {
     let metaComponents = [
         "jsDataQuery","jsDataSet","MetaApp","Enum","LocalResource",
         "Config","Logger","DbProcedureMessage","Routing","EventManager",
-        "utils","GetDataUtils","GetDataUtilsNode","ConnWebService","ConnWebSocket",
+        "utils","GetDataUtils","ConnWebService","ConnWebSocket",
         "Connection","MetaModel",
         "GetData","Security","AuthManager","PostData","BootstrapContainerTab",
         "FormProcedureMessages",
@@ -427,7 +427,7 @@ module.exports = function (grunt) {
         "tree/SimpleUnLeveled_TreeNode","tree/SimpleUnLeveled_TreeNode_Dispatcher",
         "tree/SimpleUnLeveled_TreeViewManager","tree/TreeControl",
         "Attachment","BootstrapModal",
-        "ConfigDev","GetDataUtilsNode","GridMultiSelectControl","ModalForm",
+        "ConfigDev","GridMultiSelectControl","ModalForm",
         "MultiSelectControl","PdfExport","UploadControl","UploadControlWin",
         "tachimetro/TachimetroControl","graph/GraphControl"
     ].map(x=>{
@@ -603,32 +603,32 @@ module.exports = function (grunt) {
     grunt.registerTask("client unit", ["karma:spec"]);
     grunt.registerTask("client midway", ["createSqlDB","NodeStart","karma:midway","NodeStop","destroySqlDB"]);
     grunt.registerTask("client e2e", ["createSqlDB", "NodeStart",
-                "karma:client_e2e", "karma:client_e2e_app",
-                "NodeStop","destroySqlDB"]);
+        "karma:client_e2e", "karma:client_e2e_app",
+        "NodeStop","destroySqlDB"]);
     grunt.registerTask("client e2e_app", ["createSqlDB", "NodeStart",
-         "karma:client_e2e_app",
+        "karma:client_e2e_app",
         "NodeStop","destroySqlDB"]);
 
     grunt.registerTask('all server',
-            [ 'jasmine:common_server', "createSqlDB","NodeStart",
-                    "karma:server_e2e",
-                    "destroySqlDB",
-                    "jasmine:midway", //jasmine:midway crea e distrugge il db
-                "NodeStop"
-            ]);
+        [ 'jasmine:common_server', "createSqlDB","NodeStart",
+            "karma:server_e2e",
+            "destroySqlDB",
+            "jasmine:midway", //jasmine:midway crea e distrugge il db
+            "NodeStop"
+        ]);
     grunt.registerTask('all client',['client unit',
-            "createSqlDB", "NodeStart" ,
-                    "karma:midway","karma:client_e2e","karma:client_e2e_app",
-             "NodeStop","destroySqlDB"]);
+        "createSqlDB", "NodeStart" ,
+        "karma:midway","karma:client_e2e","karma:client_e2e_app",
+        "NodeStop","destroySqlDB"]);
     grunt.registerTask("all",
-            ['jasmine:common_server',"karma:spec",
+        ['jasmine:common_server',"karma:spec",
 
-                "createSqlDB", "NodeStart" ,
-                "karma:server_e2e",
-                "karma:midway","karma:client_e2e","karma:client_e2e_app",
-                "destroySqlDB",
-                "jasmine:midway","NodeStop",
-            ]);
+            "createSqlDB", "NodeStart" ,
+            "karma:server_e2e",
+            "karma:midway","karma:client_e2e","karma:client_e2e_app",
+            "destroySqlDB",
+            "jasmine:midway","NodeStop",
+        ]);
 
     grunt.registerTask('docMD', ['jsDocMD:dist']);
 

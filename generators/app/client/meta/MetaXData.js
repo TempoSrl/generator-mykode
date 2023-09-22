@@ -19,10 +19,10 @@
 		let moduleExports = freeModule && freeModule.exports === freeExports;
 
 		function MetaXData() {
-		MetaData.apply(this, arguments);
-		// var di sicurezza notevoli
-		this.q = jsDataQuery;
-	}
+			MetaData.apply(this, arguments);
+			// var di sicurezza notevoli
+			this.q = jsDataQuery;
+		}
 
 		MetaXData.prototype = _.extend(
 		new MetaData(),

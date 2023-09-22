@@ -1,27 +1,44 @@
 /**
  * @class localization
  * @description
- * Contains the logic for the localization
+ * Contains the logic for the localization of visual objects
  */
 (function () {
+
+    function dict(){
+        return appMeta.localResource.dictionary;
+    }
 
     /**
      * @constructor localization
      * @description
      */
     function Localization() {
-        this.defaultLanguage = 'it';
-        this.currLanguage = this.defaultLanguage;
-        this.supportedLanguage  = [this.defaultLanguage, 'en'];
-        this.setLanguage(this.defaultLanguage);
+        Localization.prototype.defaultLanguage = appMeta.LocalResource.prototype.defaultLanguage;
+        this.dictionary = {};
     }
 
     Localization.prototype = {
+        supportedLanguages  : {},
+        defaultLanguage: null,
         constructor: Localization,
+        addSupportedLanguage(lanName, Dict){
+            Localization.prototype.supportedLanguages[lanName]=Dict;
+            if (Localization.prototype.defaultLanguage===lanName){
+                this.setLanguage(lanName);
+            }
+        },
+
+
+        translate: function(str){
+            let res = this.dictionary[str];
+            if (res === undefined) return str;
+            return res;
+        },
 
         /**
          * 1. gets correct lang
-         * 2. sets the lang forthe framewrok mdl
+         * 2. sets the lang for the framework mdl
          * 3. set sthe lang for the html+js of the app. in this[key] I will find the translated string for the kye
          * @param {string} lang
          */
@@ -29,27 +46,48 @@
             // bonifico il linguaggio, per esser sicuro che esista tra quelli supportati
             this.currLanguage = this.getAppLanguage(lang);
 
-            // --> set lingua del framework
-            appMeta.localResource.setLanguage(this.currLanguage);
+            //dictionary dal framework, ossia da LocalResourceXX
+            this.dictionary = _.extend({},
+                        appMeta.localResource.dictionary,
+                        Localization.prototype.supportedLanguages[this.currLanguage]);
 
-            // --> set lingua del main della app specifica. Recupero file di localizzazione
-            var lbnSuffix = this.currLanguage.charAt(0).toUpperCase() + this.currLanguage.slice(1).toLowerCase();
-            let lngPrototype = appMeta["Loc" + lbnSuffix].prototype;
-            _.extend(this, lngPrototype);
+            // creo il nome del prototipo a runtime senza cablare la switch così se aggiungo una lingua
+            // viene automaticamente presa
+            try {
+                if (appMeta){
+                    //executed on client
+                    appMeta.localResource.setLanguage(this.currLanguage);
 
-            // localizza gli oggetti esterni che gestiscono i controlli data
-            this.localizeDatePicker(this.currLanguage);
+                    if (appMeta.currApp && appMeta.currApp.toolBarManager) {
+                        appMeta.currApp.toolBarManager.localize();
+                    }
 
-            // localizza stringhe presenti sul main, custom dell'applicativo
-            this.localizeCustomMain();
+                    // localizza gli oggetti esterni che gestiscono i controlli data
+                    this.localizeDatePicker(this.currLanguage);
 
-            // localizza voci di menù
-            this.localizeMenuOnTheFly();
+                    // localizza stringhe presenti sul main, custom dell'applicativo
+                    this.localizeCustomMain();
 
-            // localizzo pagina corrente. controlli standard (tab, label, nomi colonna...)
-            if (appMeta.currApp.currentMetaPage){
-                this.localizePage(appMeta.currApp.currentMetaPage);
+                    // localizza voci di menù
+                    this.localizeMenuOnTheFly();
+
+                    // localizzo pagina corrente. Controlli standard (tab, label, nomi colonna...)
+                    if (appMeta.currApp && appMeta.currApp.currentMetaPage){
+                        this.localizePage(appMeta.currApp.currentMetaPage);
+                        this.localizeCustomControls(this.currLanguage);
+                    }
+
+                }
+                else {
+                    this.dictionary = this.getDictionary(lang);
+                }
+
+            } catch (e){
+                console.log(e);
+                console.log("Language " + lang + " doesn't exist! Go to i18n folder and create the file localResource " + lang + ".js");
             }
+
+
 
         },
 
@@ -58,22 +96,27 @@
          * @param {string} lng
          */
         localizeDatePicker:function (lng) {
-            $.datepicker.setDefaults({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "1920:2030"
-            });
-            $.timepicker.setDefaults({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "1920:2030"
-            });
-            $.datepicker.setDefaults($.datepicker.regional[lng]);
-            $.timepicker.setDefaults($.timepicker.regional[lng]);
+            if ($.datepicker){
+                $.datepicker.setDefaults({
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "1920:2030"
+                });
+                $.datepicker.setDefaults($.datepicker.regional[lng]);
+            }
+            if ($.timepicker){
+                $.timepicker.setDefaults({
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "1920:2030"
+                });
+
+                $.timepicker.setDefaults($.timepicker.regional[lng]);
+            }
         },
 
         /**
-         * Clean eventually the lang, and if it is not supported return default lang
+         * Clean eventually the lang string, and if it is not supported return default lang
          * @param {string} lang
          * @returns string
          */
@@ -82,7 +125,7 @@
                 // non supporto specifica cultura
                 if (lang.length > 2) lang = lang.substring(0, 2);
                 // metto lingua di default se non presente la traduzione
-                if (!_.includes(this.supportedLanguage, lang)) {
+                if (Localization.prototype.supportedLanguages[lang]===undefined){
                     console.log("Language " + lang + " not supported. Used default " + this.defaultLanguage);
                     lang = this.defaultLanguage;
                 }
@@ -98,8 +141,8 @@
          */
         getBrowserLanguage:function () {
             // cerca di recuperare le info sulla lingia dal browser
-            var lang = window.navigator.userLanguage || window.navigator.language;
-            return this.getAppLanguage(lang)
+            let lang = window.navigator.userLanguage || window.navigator.language;
+            return this.getAppLanguage(lang);
         },
 
         /**
@@ -121,12 +164,28 @@
         },
 
         /**
+         * Client function, only does some work on client environment
+         */
+        localizeCustomControls:function (lng) {
+            if (typeof appMeta === undefined || typeof  $ === undefined){
+                return;
+            }
+            $(appMeta.currApp.rootElement + " [data-custom-control] ")
+            .each(function(index, el) {
+                let ctrl = $(el).data("customController");
+                if (!ctrl) return;
+                if (!ctrl.localize) return;
+                ctrl.localize(lng);
+            });
+        },
+
+        /**
          * titolo metapage
          * @param {MetaPage} metapage
          */
         metaPageNameLocalize:function(metapage) {
-            var nameKey = metapage.primaryTableName.toLowerCase() + "_" + metapage.editType.toLowerCase();
-            var valueTranslated = this[nameKey];
+            let nameKey = metapage.primaryTableName.toLowerCase() + "_" + metapage.editType.toLowerCase();
+            let valueTranslated = this.translate(nameKey);
             metapage.name = valueTranslated || metapage.name;
         },
 
@@ -135,14 +194,14 @@
          * @param {MetaPage} metapage
          */
         divGeneralLocalize:function(metapage) {
-            var self = this;
+            let dict= this.dictionary;
             $(metapage.rootElement)
             .find('.custom_lng_div')
             .each(function () {
                 // recupero chiave
                 var lockey = $(this).data('langkey');
                 // prendo valore della traduzione
-                var valueTranslated = self[lockey];
+                var valueTranslated = dict[lockey];
                 if(valueTranslated !== null && valueTranslated !== undefined) $(this).html(valueTranslated);
             });
         },
@@ -152,14 +211,14 @@
          * @param {MetaPage} metapage
          */
         tabLocalize:function(metapage) {
-            var self = this;
+            let dict= this.dictionary;
             $(metapage.rootElement)
             .find('.nav-link')
             .each(function () {
                 // recupero chiave
-                var lockey = $(this).data('target');
+                let lockey = $(this).data('target');
                 // prendo valore della traduzione
-                var valueTranslated = self[lockey];
+                let valueTranslated = dict[lockey];
 
                 if(valueTranslated !== null && valueTranslated !== undefined){
                     // prendo il 3o elemento poichè il primo è svg, il 2o tag "i" commentato, terzo il testo del tab
@@ -175,14 +234,14 @@
          * @param {MetaPage} metapage
          */
         labelPageLocalize:function(metapage) {
-            var self = this;
+            let dict= this.dictionary;
             $(metapage.rootElement)
             .find('label')
             .each(function () {
                 // recupero chiave
-                var lockey = $(this).attr('for');
+                let lockey = $(this).attr('for');
                 // prendo valore della traduzione
-                var valueTranslated = self[lockey];
+                let valueTranslated = dict[lockey];
                 if(valueTranslated !== null && valueTranslated !== undefined) $(this).text(valueTranslated);
             });
         },
@@ -193,19 +252,19 @@
          * @param {MetaPage} metapage
          */
         gridColumnsLocalize:function(metapage) {
-            var self = this;
+            let dict= this.dictionary;
             _.forEach($("[data-custom-control=gridx]"), function (grid) {
                 // recupero info di che tabella si tratti dal tag
-                var eltag = $(grid).data("tag");
-                var tagArray = eltag.split(".");
-                var tname = tagArray[0];
-                var edittype = tagArray[2];
+                let eltag = $(grid).data("tag");
+                let tagArray = eltag.split(".");
+                let tname = tagArray[0];
+                let edittype = tagArray[2];
                 $(grid).find('th').each(function () {
                     // scorro le celle e recupero quella in cui la colonna è quella corrente sotto esame
-                    var cname = $(this).data("mdlcolumnname");
+                    let cname = $(this).data("mdlcolumnname");
                     if (cname) {
-                        var nameKey = "grid_" + tname + "_" + edittype + "_" + cname;
-                        var valueTranslated = self[nameKey];
+                        let nameKey = "grid_" + tname + "_" + edittype + "_" + cname;
+                        let valueTranslated = dict[nameKey];
                         $(this).text(valueTranslated);
                     }
                 });
@@ -218,12 +277,13 @@
          * @param {DataTable} dt. dt with the rows of the menu
          */
         localizeMenu:function (dt) {
-            var self = this;
+            let dict= this.dictionary;
             _.forEach(dt.rows, function (rowitem) {
                 // le chiavi nel file di risorse, o sono "tableName_editType" oppure "idmenuwebxxx" se non presenti
-                var lockey = "idmenuweb" + rowitem.idmenuweb;
-                if (rowitem.tableName && rowitem.editType) lockey = rowitem.tableName.toLowerCase() + "_" + rowitem.editType.toLowerCase();
-                var valueTranslated = self[lockey];
+                let lockey = "idmenuweb" + rowitem.idmenuweb;
+                if (rowitem.tableName && rowitem.editType) lockey = rowitem.tableName.toLowerCase() +
+                        "_" + rowitem.editType.toLowerCase();
+                let valueTranslated = dict[lockey];
                 rowitem.label = valueTranslated || rowitem.label ;
             })
         },
@@ -242,14 +302,14 @@
          *
          */
         menuLocalize:function() {
-            var self = this;
+            let dict= this.dictionary;
             $("#menu")
             .find('.nav-link > span')
             .each(function () {
                 // recupero chiave
-                var lockey = $(this).attr('id');
+                let lockey = $(this).attr('id');
                 // prendo valore della traduzione
-                var valueTranslated = self[lockey];
+                let valueTranslated = dict[lockey];
                 if(valueTranslated !== null && valueTranslated !== undefined){
                     $(this).text(valueTranslated);
                 }
@@ -260,14 +320,14 @@
          * Localozza le voci root non cliccabili del menu
          */
         menuRootLocalize:function() {
-            var self = this;
+            let dict= this.dictionary;
             $("#menu")
             .find('.nav-item')
             .each(function () {
                 // recupero chiave
-                var lockey = $(this).attr('id');
+                let lockey = $(this).attr('id');
                 // prendo valore della traduzione
-                var valueTranslated = self[lockey];
+                let valueTranslated = dict[lockey];
                 if(valueTranslated !== null && valueTranslated !== undefined){
                     $(this).find(".mdl_title_class").text(valueTranslated);
                 }
@@ -278,16 +338,17 @@
          * Localizes html label and appMain string
          */
         localizeCustomMain:function () {
+            let dict= this.dictionary;
             // inseriamo qui la localizzazione dei controlli esterni al framework. Custom dell'index dell'applicazione
-            $("#menu_search_btn_id").text(this["menu_search_btn_id"]);
-            $("#menu_guide_btn_id").text(this["menu_guide_btn_id"]);
-            $("#menu_info_btn_id").text(this["menu_info_btn_id"]);
+            $("#menu_search_btn_id").text(dict["menu_search_btn_id"]);
+            $("#menu_guide_btn_id").text(dict["menu_guide_btn_id"]);
+            $("#menu_info_btn_id").text(dict["menu_info_btn_id"]);
 
-            $('#logoutButton').text(this["logoutButton"]);
-            $('#welcome_lbl_id').text(this["welcome_lbl_id"]);
-            $('#loginButton').text(this["loginButton"]);
-            $('#gotoLogin_id').text(this["gotoLogin_id"]);
-            $('#gotoRegister_id').text(this["gotoRegister_id"]);
+            $('#logoutButton').text(dict["logoutButton"]);
+            $('#welcome_lbl_id').text(dict["welcome_lbl_id"]);
+            $('#loginButton').text(dict["loginButton"]);
+            $('#gotoLogin_id').text(dict["gotoLogin_id"]);
+            $('#gotoRegister_id').text(dict["gotoRegister_id"]);
         },
 
         /**
@@ -295,7 +356,7 @@
          */
         translateApp:function () {
             // Esempio di chiamata a metodo custom
-            var def = appMeta.Deferred("translateApp");
+            let def = appMeta.Deferred("translateApp");
 
             appMeta.getData.launchCustomServerMethod("getAllFilesToTranslate")
             .then(function (res) {
@@ -348,5 +409,6 @@
 
     };
 
+    appMeta.Localization =  Localization;
     appMeta.localization = new Localization();
 }());

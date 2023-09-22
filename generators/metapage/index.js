@@ -92,7 +92,7 @@ module.exports = class extends Generator {
         //generatorPackagePath,"generators","app",
         let templateMetaPageJsFileName = path.join(generatorPackagePath,"generators", "metapage", "page.js");
 
-        let destPath = path.join("client", "meta", this.answers.mainTable);
+        let destPath = path.join("client", "metadata", this.answers.mainTable);
         let destJsName =  this.answers.tableName+"_"+this.answers.editType+".js";
 
         if (!fs.existsSync(destPath)){

@@ -46,7 +46,7 @@ module.exports = class extends Generator {
         }
         this.name = this.answers.name;
         this.tableName = this.answers.tableName;
-        this.metaDataName = "Meta"+capitalizeFirstLetter(this.name)+"Data";
+        this.metaDataName = "Meta_"+capitalizeFirstLetter(this.name)+"Data";
     }
 
 
@@ -58,7 +58,7 @@ module.exports = class extends Generator {
         let oldFileName = path.join("client", "meta", "MetaXXData.js");
 
 
-        let metaPath = path.join("client", "meta", this.tableName);
+        let metaPath = path.join("client", "metadata", this.tableName);
         if (!fs.existsSync(metaPath)){
             this.log(`The folder '${metaPath}' has been created.`);
             fs.mkdirSync(metaPath, {recursive: true});
@@ -71,7 +71,7 @@ module.exports = class extends Generator {
         let keys = this.answers.keys.split(',').map((key) => '"'+key.trim()+'"').join(',');
         metaContent = metaContent.replaceAll('"idxx"', keys);
 
-        let newFileName = path.join(metaPath, this.metaDataName + ".js");
+        let newFileName = path.join(metaPath, this.metaDataName.toLowerCase() + ".js");
 
 
         if (this.fs.exists(newFileName)){

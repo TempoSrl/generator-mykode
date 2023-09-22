@@ -2,6 +2,10 @@
 (function() {
 
     let loc;
+
+    function dict(){
+        return appMeta.localization.dictionary;
+    },
     function appMain() {
         if (appMeta.appMainConfig.setTheme &&
             appMeta.appMainConfig.cssTheme) {
@@ -19,7 +23,7 @@
 
             // default è italiano, il file italiano avrà sicuramente tutte le stringhe, poiché parto sempre da quello
             // per inserire nuove costanti per le stringhe
-            appMeta.localResource.setLanguage(appMeta.localResource.currLng);
+            appMeta.localResource.setLanguage("it");
 
             $("#redirectSSO").hide();
             this.initWhiteLabeling();
@@ -163,10 +167,9 @@
         },
 
         showInfoMsg:function(msg) {
-            return new appMeta.BootstrapModal(appMeta.localResource.alert,
+            return new appMeta.BootstrapModal(dict().alert,
                 msg,
-                [appMeta.localResource.ok],
-                appMeta.localResource.cancel)
+                [dict().ok], dict().cancel)
             .show(null);
         },
 
@@ -227,8 +230,8 @@
             that.hideLoginForm();
 
             // mostra form per la registrazione
-            that.stringOriginal  = appMeta.localResource.modalLoader_wait_insert;
-            appMeta.localResource.modalLoader_wait_insert = loc.retrieveDataForRegistration;
+            that.stringOriginal  = dict().modalLoader_wait_insert;
+            dict().modalLoader_wait_insert = loc.retrieveDataForRegistration;
 
             appMeta.currApp.callPage(appMeta.appMainConfig.registrationUserTableName,
                 appMeta.appMainConfig.registrationUserEditType, false)
@@ -297,12 +300,11 @@
          */
         doLogout:function (that) {
 
-            const winModal = new appMeta.BootstrapModal("logout", appMeta.currApp.localResource.logoutMsg,
-                [appMeta.currApp.localResource.yes, appMeta.currApp.localResource.no],
-                appMeta.currApp.localResource.no);
+            const winModal = new appMeta.BootstrapModal("logout", dict().logoutMsg,
+                [dict().yes, dict().no],dict().no);
             return winModal.show(null)
             .then(function (res) {
-                if (res === appMeta.currApp.localResource.yes) {
+                if (res === dict().yes) {
                     appMeta.authManager.logout()
                     .then(function () {
 
@@ -314,12 +316,11 @@
 
                         if (appMeta.appMainConfig.ssoEnable && appMeta.appMainConfig.SSODoubleCheckLogout) {
                             const winModal = new appMeta.BootstrapModal("logout SSO",
-                                appMeta.localResource.logoutSSOMsg,
-                                [appMeta.localResource.yes, appMeta.localResource.no],
-                                appMeta.localResource.no);
+                                dict().logoutSSOMsg,
+                                [dict().yes, dict().no],dict().no);
                             return winModal.show(null)
                             .then(function (res) {
-                                if (res === appMeta.localResource.yes) {
+                                if (res === dict().yes) {
                                     appMeta.authManager.logoutSSO();
                                 } else {
                                     that.goToLogin(that, true);

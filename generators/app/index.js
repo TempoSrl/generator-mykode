@@ -107,9 +107,10 @@ module.exports = class extends Generator{
         ]);
 
         this.log("app name", this.answers.name);
-        this.metaName = "Meta" + capitalizeFirstLetter(this.answers.name) + "Data";
-        this.metaPageName = "Meta" + capitalizeFirstLetter(this.answers.name) + "Page";
-        this.metaAppName = "Meta" + capitalizeFirstLetter(this.answers.name) + "App";
+        this.capitalizedName =  capitalizeFirstLetter(this.answers.name);
+        this.metaName = "Meta" + this.capitalizedName + "Data";
+        this.metaPageName = "Meta" + this.capitalizedName + "Page";
+        this.metaAppName = "Meta" + this.capitalizedName + "App";
     }
 
     updateNodeDependencies(){
@@ -328,6 +329,9 @@ module.exports = class extends Generator{
         //generatorPackagePath,"generators","app",
         let oldFileName = path.join("client","meta", "MetaXXData.js");
 
+        fs.unlinkSync(path.join("client","meta", "MetaGoldData.js"));
+        fs.unlinkSync(path.join("client","metadata", "MetaGoldData.js"));
+
         //console.log("reading from ",oldFileName)
         let metaContent = fs.readFileSync(oldFileName, {encoding: 'utf-8'}).toString();
         metaContent = metaContent.replaceAll("MetaXData", this.metaName);
@@ -341,6 +345,7 @@ module.exports = class extends Generator{
         //generatorPackagePath,"generators","app",
         let oldFileName = path.join("client","pages", "MetaXPage.js");
         let newFileName = path.join("client","pages", capitalizeFirstLetter(this.metaPageName + ".js"));
+        fs.unlinkSync(path.join("client","pages", "MetaGoldPage.js"))
 
         //console.log("renaming " + oldFileName + " to " + newFileName);
         fs.renameSync(oldFileName, newFileName);
@@ -373,10 +378,23 @@ module.exports = class extends Generator{
             "MetaXApp",this.metaAppName);
         this._customizeXApp(path.join( "client", "indexTemplate.html"),
             path.join("client", "indexTemplate.html"),
-            "XXXApp",this.answers.name);
+            "XXXApp",this.capitalizedName+"App");
+        this._customizeXApp(path.join( "client", "indexTemplate.html"),
+            path.join("client", "indexTemplate.html"),
+            "XXXData",this.capitalizedName+"Data");
+        this._customizeXApp(path.join( "client", "indexTemplate.html"),
+            path.join("client", "indexTemplate.html"),
+            "XXXPage",this.capitalizedName+"Page");
+
         this._customizeXApp(path.join( "client", "indexDebugTemplate.html"),
             path.join("client", "indexDebugTemplate.html"),
-            "XXXApp",this.answers.name);
+            "XXXApp",this.capitalizedName+"App");
+        this._customizeXApp(path.join( "client", "indexDebugTemplate.html"),
+            path.join("client", "indexDebugTemplate.html"),
+            "XXXData",this.capitalizedName+"Data");
+        this._customizeXApp(path.join( "client", "indexDebugTemplate.html"),
+            path.join("client", "indexDebugTemplate.html"),
+            "XXXPage",this.capitalizedName+"Page");
     }
 
 
