@@ -67,6 +67,8 @@ module.exports = function(config) {
             'client/components/metadata/LoaderControl.js',
             'client/components/metadata/MainToolBarManager.js',
             'client/components/utility/CodiceFiscale.js',
+            'client/Localization.js',
+            'client/assets/i18n/LocalResourceIt.js',
             'test/client/common/common.js',
             'test/client/spec/*.js',
             'test/client/spec/metadata/*.js',

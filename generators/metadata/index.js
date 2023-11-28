@@ -46,7 +46,7 @@ module.exports = class extends Generator {
         }
         this.name = this.answers.name;
         this.tableName = this.answers.tableName;
-        this.metaDataName = "Meta_"+capitalizeFirstLetter(this.name)+"Data";
+        this.metaDataName = "Meta_"+capitalizeFirstLetter(this.name);
     }
 
 
@@ -66,6 +66,9 @@ module.exports = class extends Generator {
 
         let metaContent = fs.readFileSync(oldFileName, {encoding: 'utf-8'}).toString();
         metaContent = metaContent.replaceAll("Meta_XXData", this.metaDataName);
+        metaContent = metaContent.replaceAll("MetaXData", this.metaDataName);
+
+        metaContent = metaContent.replaceAll("'XX'", this.tableName);
         metaContent = metaContent.replaceAll("xxTitle", this.answers.title);
 
         let keys = this.answers.keys.split(',').map((key) => '"'+key.trim()+'"').join(',');

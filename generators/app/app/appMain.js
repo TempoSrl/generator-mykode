@@ -5,7 +5,7 @@
 
     function dict(){
         return appMeta.localization.dictionary;
-    },
+    }
     function appMain() {
         if (appMeta.appMainConfig.setTheme &&
             appMeta.appMainConfig.cssTheme) {

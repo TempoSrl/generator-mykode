@@ -142,6 +142,7 @@ module.exports = class extends Generator{
                 type: "input",
                 name: "schema",
                 message: "schema to use",
+                default:"DBO"
             },
             {
                 type: "list",
@@ -160,6 +161,7 @@ module.exports = class extends Generator{
             pwd:this.dbAnswers.pwd,
             sqlModule:this.dbAnswers.driver,
             defaultSchema:this.dbAnswers.defaultSchema,
+            schema:this.dbAnswers.schema,
         };
 
         this.log("Database for "+this.answers.dbCode+" has been created.");

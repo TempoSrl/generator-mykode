@@ -55,7 +55,7 @@
 						objDefaults[c.name] = new Date();
 					}
 
-					if (dt.isKey(c)) {
+					if (dt.isKey(c.name)) {
 						if (numericColumnsType.includes(c.ctype) && !dt.defaults()[c.name]) {
 							objDefaults[c.name] = 0;
 						}

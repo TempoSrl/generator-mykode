@@ -266,6 +266,7 @@ module.exports = class extends Generator{
 
         copyFolder(appPath(["client", "config"]),path.join("client", "config"), ["js", "json"]);
         copyFolder(appPath(["client", "assets"]),path.join("client", "assets"), ["js", "json"]);
+        copyFolder(appPath(["client", "dataset"]),path.join("client", "dataset"), ["js", "json"]);
 
         //
         ["i18n", "metadata", "styles", "template", "utility","userTemplate"].forEach(folder => {

@@ -120,8 +120,8 @@ module.exports = class extends Generator {
             new Buffer(sqlServerDbString), {encoding: 'utf-8'});
 
         sqlConfig.test=true;
-        sqlConfig.useTrustedConnection = false,
-            sqlConfig.defaultSchema="DBO";
+        sqlConfig.useTrustedConnection = false;
+        sqlConfig.defaultSchema="DBO";
         sqlConfig.schema="DBO";
         sqlConfig.EnableSSORegistration=true;
         sqlConfig.userkindSSO=5;
@@ -220,7 +220,8 @@ module.exports = class extends Generator {
             {
                 type: "input",
                 name: "port",
-                message: "port (usually 1521)"
+                message: "port",
+                default:1521
             }
         ]);
 

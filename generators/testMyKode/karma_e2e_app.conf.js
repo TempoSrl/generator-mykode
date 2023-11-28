@@ -55,6 +55,8 @@ module.exports = function(config) {
             'client/components/metadata/GetData.js',
             'client/components/metadata/PostData.js',
             'client/components/i18n/*.js',
+            'client/Localization.js',
+            'client/assets/i18n/LocalResourceIt.js',
 
             'client/components/metadata/LoaderControl.js',
             'client/components/metadata/ModalLoaderControl.js',

@@ -63,7 +63,7 @@ module.exports = class extends Generator {
             {
                 type: 'input',
                 name: 'mainTable',
-                message: 'Main table (table, not view)'
+                message: 'Main table (table, not view), leave blank if same as tableName'
             },
             {
                 type: "input",

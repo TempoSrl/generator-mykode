@@ -332,5 +332,44 @@
 
 </div>
 
+<script>
+	$(document).on('DOMNodeInserted', function(event) {
+// Rileva quando viene aggiunta una nuova porzione di HTML alla pagina
+		let newNode = event.target;
+
+		// Verifica se il nodo appena inserito è del tipo desiderato (ad esempio, un elemento div)
+		if (newNode.nodeType === Node.ELEMENT_NODE && newNode.tagName === 'DIV') {
+			let parentElement = newNode.parentNode;
+			if (parentElement && parentElement.id === 'metaRoot') {
+				// Trova tutti gli elementi con l'attributo datePickerFormat nella porzione aggiunta
+				let newElementsWithDatePicker = $(event.target).find('[data-datePickerFormat]');
+
+				// Applica il datepicker a ciascun elemento trovato
+				newElementsWithDatePicker.each(function() {
+					let datePickerFormat = $(this).data().datepickerformat;
+					$(this).datepicker({dateFormat: datePickerFormat});
+				});
+			}
+		}
+
+		// Verifica se il nodo appena inserito è del tipo desiderato (ad esempio, un elemento div)
+		if (newNode.nodeType === Node.ELEMENT_NODE && newNode.tagName === 'DIV') {
+			let parentElement = newNode.parentNode;
+			if (parentElement && parentElement.id === 'metaRoot') {
+				// Trova tutti gli elementi con l'attributo datePickerFormat nella porzione aggiunta
+				let newElementsWithDateTimePicker = $(event.target).find('[data-dateTimePickerFormat]');
+
+				// Applica il datepicker a ciascun elemento trovato
+				newElementsWithDateTimePicker.each(function() {
+					let datePickerFormat = $(this).data().datetimepickerformat;
+					$(this).datetimepicker({dateFormat: datePickerFormat});
+				});
+			}
+		}
+	});
+
+
+</script>
 </body>
+
 </html>

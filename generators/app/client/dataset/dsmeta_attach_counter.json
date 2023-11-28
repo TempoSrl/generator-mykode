@@ -1,0 +1,1 @@
+{"name":"dsmeta_attach_counter","relations":{},"tables":{"attach":{"key":"idattach","rows":[],"columns":{"idattach":{"ctype":"Int32","allowNull":false},"counter":{"ctype":"Int32"}},"tableForReading":"","tableForWriting":"","skipSecurity":true}}}

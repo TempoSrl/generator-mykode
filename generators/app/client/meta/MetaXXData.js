@@ -33,9 +33,64 @@
 				return ["idxx"]; //idxx to be replaced with actual key
 			},
 
+			/**
+			 *
+			 * @param {DataRow} r
+			 * @return promise({
+			 * 				[string warningMsg],
+			 * 				[string errMsg],
+			 *				string errField,
+			 *				string outCaption,
+			 *			    {DataRow} row
+			 * 			})
+			 */
+			isValid: function(r){
+				// Implementation example
+				//let def = appMeta.Deferred("isValid-Meta_XXData");
+				//to signal errors:
+				//def.resolve(this.createIsValidResult (errMessage, colname, outCaption, row));
+				//to signal warnings
+				//def.resolve(this.createIsValidResult (null, colname, outCaption, row, warningMessage));
+				//to call the base class when every check made has passed
+				//def.resolve(this.superClass.isValid(r));
+				//return def.promise();
+
+				return this.superClass.isValid(r);
+			},
+
 			getNewRow: function (parentRow, dt, editType) {
 				let def = Deferred("getNewRow-Meta_XXData");
 
+				/**
+				 Possible autoincrement properties:
+				 {string[]} [selector]
+				 Array of column names of selector fields. The max() is evaluating filtering the values of those fields
+
+				 {number[]} [selectorMask]
+				 Array of bit mask to use for comparing selector. If present, only corresponding bits will be compared,
+				   i.e. instead of sel=value it will be compared (sel & mask) = value
+
+				 {string} [prefixField]
+				 A field to use as prefix for the evaluated field
+
+				 {string} [middleConst]
+				 String literal to be appended to the prefix before the evaluated max
+
+				 {number} [idLen=0]
+				 for string id, the len of the evaluated max. It is not the overall size of the evaluated id, because a
+				 prefix and a middle const might be present
+				 If idLen = 0 and there is no prefix, the field is assumed to be a number, otherwise a 0 prefixed string-number
+
+				 {boolean} [linearField=false]
+				 Indicates that numbering does NOT depend on prefix value, I.e. is linear in every section of the calculated field
+
+				 {number} [minimum=0]
+				 Minimum temporary value for in-memory rows
+
+				 {number} [isNumber=false]
+				 true if this field is a number
+
+				 **/
 				//dt.autoIncrement('idxx', { minimum: 990000 });
 
 				return this.superClass.getNewRow(parentRow, dt, editType)
@@ -49,31 +104,39 @@
 			 * @param {DataTable} table
 			 */
 			setDefaults: function (table) {
+				// table.defaults({
+				// 	"field1":value1,
+				// 	"field2":value2,
+				// 	"fieldN":"N"
+				// });
 				this.superClass.setDefaults(table);
-			}
+			},
+
+			/**
+			 * @method describeColumns
+			 * @public
+			 * @description ASYNC
+			 * Describes a listing type (captions, column order, formulas, column formats and so on)
+			 * @param {DataTable} table
+			 * @param {string} listType
+			 * @returns {Promise<DataTable>}
+			 */
+			describeColumns: function (table, listType) {
+				let def = Deferred("describeColumns");
+				// if (listType==="default"){
+				// 	for (colName in table.columns){
+				// 		this.describeAColumn(table, colName,"",null,-1,null);
+				// 	}
+				// 	//this.describeAColumn(table, "nome campo","Intestazione", "formato", 1, 100);
+				// }
+				return def.resolve(table).promise();
+			},
 
 		});
 
-		// Some AMD build optimizers like r.js check for condition patterns like the following:
-		//noinspection JSUnresolvedVariable
-		if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
-			// Expose lodash to the global object when an AMD loader is present to avoid
-			// errors in cases where lodash is loaded by a script tag and not intended
-			// as an AMD module. See http://requirejs.org/docs/errors.html#mismatch for
-			// more details.
-			root.Meta_XXData = Meta_XXData;
-
-			// Define as an anonymous module so, through path mapping, it can be
-			// referenced as the "underscore" module.
-			//noinspection JSUnresolvedFunction
-			define(function () {
-				return Meta_XXData;
-			});
-		}
-		// Check for `exports` after `define` in case a build optimizer adds an `exports` object.
-		else if (freeExports && freeModule) {
+		if (freeExports && freeModule) {
 			if (typeof root.appMeta !== "undefined") {
-				root.appMeta.Meta_XXData = Meta_XXData;
+				appMeta.addMeta('XX', new Meta_XXData('XX'));
 			}
 			else{
 				if (moduleExports){ // Export for Node.js or RingoJS.
@@ -86,11 +149,12 @@
 		} else {
 			// Export for a browser or Rhino.
 			if (root.appMeta){
-				root.appMeta.Meta_XXData = Meta_XXData;
+				appMeta.addMeta('XX', new Meta_XXData('XX'));
 			} else {
 				root.Meta_XXData=Meta_XXData;
 			}
 		}
+
 
 	}(  (typeof _ === 'undefined') ? require('lodash') : _,
 		(typeof appMeta === 'undefined') ? require('./../components/metadata/MetaModel').metaModel : appMeta.metaModel,
