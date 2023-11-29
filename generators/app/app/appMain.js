@@ -2,7 +2,6 @@
 (function() {
 
     let loc;
-
     function dict(){
         return appMeta.localization.dictionary;
     }
@@ -20,7 +19,6 @@
          * Initializes the App that uses "MDWL" library
          */
         init: function () {
-
             // default è italiano, il file italiano avrà sicuramente tutte le stringhe, poiché parto sempre da quello
             // per inserire nuove costanti per le stringhe
             appMeta.localResource.setLanguage("it");
@@ -44,6 +42,7 @@
 
             // ldap
             if (appMeta.appMainConfig.ldapEnabled) {
+                $("#login").hide();
                 $("#loginldap").show();
                 $("#btnshowPassword4").on("click", _.partial(this.showHidePassword, this, 4 ));
                 $("#loginButtonLDAP").on("click", _.partial(this.doLoginLDAP, this ) );
@@ -240,14 +239,7 @@
                 if (appMeta.appMainConfig.ssoEnable) {
                     return;
                 }
-
-                if (appMeta.appMainConfig.ldapEnabled) {
-                    $("#loginldap").show();
-                }
-                $("#login").show();
-                $("#gotoLogin_id").hide();
-                $("#gotoRegister_id").show();
-                that.checkshowSSOLogin();
+                that.showLoginForm(that);
             });
         },
 
@@ -269,6 +261,7 @@
          */
         localize:function () {
             loc = appMeta.localization;
+            appMeta.Localization.prototype.defaultLanguage = "it";
             // per ora assegna la lingua del browser
             const lang = loc.getBrowserLanguage();
             // metodo per cambiare lingua (app + mdlw fmw)
@@ -565,6 +558,17 @@
 
         },
 
+        showLoginForm: function (that) {
+            if (appMeta.appMainConfig.ldapEnabled) {
+                $("#loginldap").show();
+            } else {
+                $("#login").show();
+            }
+            $("#gotoLogin_id").hide();
+            $("#gotoRegister_id").show();
+            that.checkshowSSOLogin();
+        },
+
         /**
          * invoca la pagina per la richiesta di registrazione, quando si proviene da un sso
          */
@@ -576,14 +580,8 @@
             .then(function () {
                 appMeta.connection.unsetToken();
 
-                if (appMeta.appMainConfig.ldapEnabled) {
-                    $("#loginldap").show();
-                }
-                // mostro login, quando la pag di registrazione viene chiusa
-                $("#login").show();
-
-                $("#gotoLogin_id").hide();
-                that.checkshowSSOLogin();
+                // mostra il login
+                that.showLoginForm(that);
             });
         },
 

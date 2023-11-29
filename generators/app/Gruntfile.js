@@ -8,26 +8,40 @@
 // 'test/spec/**/*.js'
 /*globals initConfig, appPath */
 /*jshint camelcase: false */
+const path = require("path");
 
 const jasmineEnv=  {
     // Whether to fail a spec that ran no expectations
     failSpecWithNoExpectations: true,
 
     // Stop execution of a spec after the first expectation failure in it
-    stopSpecOnExpectationFailure: false,
+    stopSpecOnExpectationFailure: true,
 
     // Stop execution of the suite after the first spec failure
-    stopOnSpecFailure: false,
+    stopOnSpecFailure: true,
+
+    stopOnFailure: true,
 
     // Run specs in semi-random order
     random: false
 };
 
+let secret = require('./config/secret');
+const DBList = require("./src/jsDbList");
+
+DBList.init({
+    encrypt: false,
+    decrypt: false,
+    fileName:path.join('config','dbList.json'), //rimuovere e cancellare in produzione
+    //encryptedFileName: path.join('config','dbList.bin'), //questa è l'unica che deve rimanere
+    secret:secret
+});
+
 const glob = require('glob');
 const jsdoc2md = require('jsdoc-to-markdown');
 
 const fs = require("fs");
-const path = require("path");
+
 const asyncCmd = require("async-exec-cmd");
 
 const JasmineClass = require('jasmine');
@@ -99,18 +113,29 @@ module.exports = function (grunt) {
 
                     "overrides": {
                         "bootstrap":{
-                            "main": "dist/js/bootstrap.js"
+                            "main": "dist/js/bootstrap.bundle.js"
+                        },
+                        "jquery-ui":{
+                            "main": ["jquery-ui.min.js","themes/base/jquery-ui.min.css"]
+                        },
+                        "moment":{
+                            "main": "min/moment.min.js"
+                        },
+                        "jstree":{
+                            "main":["dist/jstree.js","dist/themes/default/style.min.css"]
                         },
                         "fullcalendar":{
                             "main":["dist/fullcalendar.js",
-                                "dist/locale-all.js"]
+                                "dist/locale-all.js",
+                                "dist/fullcalendar.min.css"]
                         },
                         "font-awesome": {
                             "main": "js/all.min.js"
                         },
                         "jqueryui-timepicker-addon":{
                             "main":["dist/jquery-ui-timepicker-addon.js",
-                                "dist/i18n/jquery-ui-timepicker-addon-i18n.js"]
+                                "dist/i18n/jquery-ui-timepicker-addon-i18n.js",
+                                "dist/jquery-ui-timepicker-addon.css"]
                         }
                     }
                 }
@@ -155,16 +180,16 @@ module.exports = function (grunt) {
         },
 
         yuidoc: {
-            compile: {
-                name: '<%= pkg.name %>',
-                description: '<%= pkg.description %>',
-                version: '<%= pkg.version %>',
-                url: '<%= pkg.homepage %>',
-                options: {
-                    paths: ['./src'],
-                    outdir: 'docs'
-                }
+          compile: {
+            name: '<%= pkg.name %>',
+            description: '<%= pkg.description %>',
+            version: '<%= pkg.version %>',
+            url: '<%= pkg.homepage %>',
+            options: {
+              paths: ['./src'],
+              outdir: 'docs'
             }
+          }
         },
 
         watch_common: {
@@ -181,7 +206,7 @@ module.exports = function (grunt) {
                 configFile: "test/karma.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["dots"],
+                reporters: ["spec"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
@@ -197,15 +222,16 @@ module.exports = function (grunt) {
                 configFile: "test/karma_midway.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["dots"],
+                reporters: ["spec"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
+                    parallel: false,
                     suppressErrorSummary: false, // do not print error summary
                     suppressFailed: false, // do not print information about failed tests
                     suppressPassed: true, // do not print information about passed tests
                     suppressSkipped: true, // do not print information about skipped tests
                     showSpecTiming: true, // print the time elapsed for each spec
-                    failFast: false // test would finish with error when a first fail occurs.
+                    failFast: true // test would finish with error when a first fail occurs.
                 }
             },
 
@@ -213,7 +239,7 @@ module.exports = function (grunt) {
                 configFile: "test/karma_node_server_e2e.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["dots"],
+                reporters: ["spec"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
@@ -229,7 +255,7 @@ module.exports = function (grunt) {
                 configFile: "test/karma_e2e_app.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["dots"],
+                reporters: ["spec"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
@@ -244,9 +270,25 @@ module.exports = function (grunt) {
                 configFile: "test/karma_e2e.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["dots"],
+                reporters: ["spec"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
+                    suppressErrorSummary: false, // do not print error summary
+                    suppressFailed: false, // do not print information about failed tests
+                    suppressPassed: false, // do not print information about passed tests
+                    suppressSkipped: true, // do not print information about skipped tests
+                    showSpecTiming: true, // print the time elapsed for each spec
+                    failFast: true // test would finish with error when a first fail occurs.
+                }
+            },
+            client_e2e_pages: {
+                configFile: "test/karma_e2e_pages.conf.js",
+                autoWatch: true,
+                singleRun: true,
+                reporters: ["spec"],
+                specReporter: {
+                    maxLogLines: 5, // limit number of lines logged per test
+                    parallel: false,
                     suppressErrorSummary: false, // do not print error summary
                     suppressFailed: false, // do not print information about failed tests
                     suppressPassed: false, // do not print information about passed tests
@@ -292,6 +334,22 @@ module.exports = function (grunt) {
     let classesClient = [];
     let classesMidway = [];
 
+    function setTestE2e(dbCode,value){
+        let dbInfo = DBList.getDbInfo(dbCode);
+        dbInfo.createTestSession=value;
+        DBList.setDbInfo(dbCode,dbInfo);
+    }
+
+    function setTestE2eOn(){
+        setTestE2e("main",true);
+    }
+
+    function setTestE2eOff(){
+        setTestE2e("main",false);
+    }
+
+    grunt.registerTask("loginON", "set test ON", setTestE2eOn);
+    grunt.registerTask("loginOFF","set test OFF", setTestE2eOff);
 
     gruntConfig.jasmine["all_e2e_app"] = {
         spec_dir: './test/spec_e2e_app/',
@@ -399,7 +457,7 @@ module.exports = function (grunt) {
                         }
                         return !path.basename(f).startsWith("meta_");
                     },
-                    force:false
+                    force:true
                 },
                 (err) => {if (err) {console.error(err);}
                 });
@@ -519,7 +577,7 @@ module.exports = function (grunt) {
             "tables");
         expandDir(fName,"client",
             [
-                "metadata/meta_*.js"],
+                "meta/meta_*.js"],
             "metadata");
         expandDir(fName,"client",
             [
@@ -622,13 +680,20 @@ module.exports = function (grunt) {
         "NodeStop","destroySqlDB"]);
     grunt.registerTask("all",
         ['jasmine:common_server',"karma:spec",
-
             "createSqlDB", "NodeStart" ,
             "karma:server_e2e",
             "karma:midway","karma:client_e2e","karma:client_e2e_app",
             "destroySqlDB",
             "jasmine:midway","NodeStop",
         ]);
+
+    grunt.registerTask('client pages e2e',[
+        "loginOFF",
+         "NodeStart" ,
+        "karma:client_e2e_pages",
+        "NodeStop",
+        "loginON"
+    ]);
 
     grunt.registerTask('docMD', ['jsDocMD:dist']);
 

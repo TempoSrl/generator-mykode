@@ -15,20 +15,16 @@
 	<title>MetaXApp</title>
 
 	<!-- bower:css -->
-	<link rel="stylesheet" href="bower_components/jstree/dist/themes/default/style.css" />
 	<!-- endbower -->
 
-
-	<!-- INIZIO stili librerie terze parti-->
-	<!--<link href="../bower_components/bootstrap4/dist/css/bootstrap.css" rel="stylesheet" type="text/css"> COMMENTATO PERCHE' SOSTITUITO CON QUELLO ITALIA-->
-	<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.min.css" />
+	<!-- INIZIO stili aggiuntivi librerie terze parti-->
 	<link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet" />
 
 	<!-- icone bandiere del mondo, utilizzate nel menù localizzazione -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
 
-	<!-- Stili per jsTree -->
+	<!-- Stili aggiuntivi per jsTree -->
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" />
 	<!-- FINE Stili per jsTree -->
 	<!-- FINE stili librerie terze parti -->
@@ -104,8 +100,15 @@
 
 	<script src="custom.js"></script>
 	<script src="cambioruolo.js"></script>
+	<script src="components/i18n/LocalResourceIt.js"></script>
 	<script src="Localization.js"></script>
+	<script src="assets/i18n/LocalResourceIt.js"></script>
+	<script src="assets/i18n/LocalResourceEn.js"></script>
 	<script src="config/appMainConfig.js"></script>
+
+	<!-- utility per costruzione del menu -->
+	<script src="menubuilder/menuBuilder.js"></script>
+
 	<script src="appMain.js"></script>
 
 
@@ -129,9 +132,9 @@
 		<nav class="navbar-institutional navbar navbar-expand-lg navbar-dark">
 			<div class="container">
 				<a class="navbar-brand" href="#">
-					<img class="portale_brand_logo_id" src="" alt="logo" />
+					<img class="portale_brand_logo_id" src="" alt="logo" style="max-height: 40px; height: auto; width: auto;/>
 					<span class="portale_brand_name_id">MetaGoldApp</span>
-				</a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar11">
+				</a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar11">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 				<div class="collapse navbar-collapse" id="navbar11">
@@ -147,7 +150,7 @@
                         <li class="nav-item"> <a class="nav-link" href="#" id="menu_guide_btn_id">Guida</a> </li>-->
 						<!-- Inizio menù scelta lingua -->
 						<li class="nav-item">
-							<a class="nav-link dropdown-toggle" id="langctrl_id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<a class="nav-link dropdown-toggle" id="langctrl_id" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="flag-icon flag-icon-it" data-lang="it"></span> Italian
 							</a>
 							<div class="dropdown-menu">
@@ -162,7 +165,7 @@
 					<button id="gotoLogin_id" type="button" class="btn btn-primary">Accedi</button>
 					<button id="logoutButton" type="button" class="btn btn-primary">Esci</button>
 					<a class="navbar-brand" href="#">
-						<img class="tempo_brand_logo_id" src="" alt="logo" />
+						<img class="tempo_brand_logo_id" src="" alt="logo" style="max-height: 40px; height: auto; width: auto;"/>
 					</a>
 				</div>
 			</div>
@@ -332,9 +335,12 @@
 
 </div>
 
+</body>
+
+
 <script>
 	$(document).on('DOMNodeInserted', function(event) {
-// Rileva quando viene aggiunta una nuova porzione di HTML alla pagina
+		// Rileva quando viene aggiunta una nuova porzione di HTML alla pagina
 		let newNode = event.target;
 
 		// Verifica se il nodo appena inserito è del tipo desiderato (ad esempio, un elemento div)
@@ -370,6 +376,6 @@
 
 
 </script>
-</body>
 
 </html>
+

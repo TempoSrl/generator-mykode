@@ -93,6 +93,9 @@ module.exports = function(config) {
             //'client/components/metadata/MetaApp.js',
 
             'client/components/i18n/LocalResourceIt.js',
+            'client/Localization.js',
+            'client/assets/i18n/LocalResourceIt.js',
+            'client/assets/i18n/LocalResourceEn.js',
             'client/components/metadata/thirdpart/gauge.js',
             'client/components/metadata/tachimetro/TachimetroControl.js',
             'client/components/metadata/thirdpart/chart.min.js',

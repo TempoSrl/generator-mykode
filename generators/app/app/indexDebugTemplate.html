@@ -12,26 +12,23 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <meta name="author" content="">
-    <title>Client side of Portale base project</title>
+    <title>MetaXApp</title>
 
-    <!-- bower:js -->
+    <!-- bower:css -->
     <!-- endbower -->
 
-    <!-- INIZIO stili librerie terze parti-->
-
-
+    <!-- INIZIO stili aggiuntivi librerie terze parti-->
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet" />
 
     <!-- icone bandiere del mondo, utilizzate nel menù localizzazione -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
 
-    <!-- Stili per jsTree -->
-    <link rel="stylesheet" href="bower_components/jstree/dist/themes/default/style.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" />
-    <!-- FINE Stili per jsTree -->
-
-    <!-- FINE stili librerie terze parti -->
+	<!-- Stili aggiuntivi per jsTree -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" />
+	<!-- FINE Stili per jsTree -->
+	<!-- FINE stili librerie terze parti -->
+	
     <!-- INIZIO stili framework-->
     <!-- lib per visualizzazione json -->
     <script src="components/styles/json/json-viewer.js"></script>
@@ -39,15 +36,18 @@
     <!-- FINE lib per visualizzazione json -->
     <!-- FINE stili framework-->
 
+
     <!-- INIZIO Stili della applicazione -->
     <link rel="stylesheet" href="styles/italia/bootstrap-italia.min.css">
     <link rel="stylesheet" href="styles/italia/italia-icon-font.css">
     <link rel="stylesheet" href="components/styles/app.css">
     <link rel="stylesheet" href="styles/custom.css">
-    <link rel="stylesheet" href="components/styles/jquery.toast.css">
-    <link rel="stylesheet" href="components/styles/select2.min.css">
+    <script src="components/utility/jquery.toast.js"></script>
+    <script src="components/utility/select2.min.js"></script>
 
     <!-- FINE Stili della applicazione -->
+
+  
     <!-- INIZIO librerie terze parti-->
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
 
@@ -91,9 +91,6 @@
     <script src="MetaXXXApp.js"></script>
 
 
-    <!-- File per la localizzazione -->
-    <script src="components/i18n/LocalResourceIt.js"></script>
-    <!-- fine file di risorse per localizzazione -->
 
     <!-- FINE librerie framework -->
 
@@ -119,6 +116,19 @@
 
     <script src="cambioruolo.js"></script>
     <script src="custom.js"></script>
+
+    <!-- File per la localizzazione del framework-->
+    <script src="components/i18n/LocalResourceIt.js"></script>
+    <!-- fine file di risorse per localizzazione -->
+
+
+    <!-- File per la localizzazione del framework-->
+    <script src="Localization.js"></script>
+    <script src="assets/i18n/LocalResourceIt.js"></script>
+    <script src="assets/i18n/LocalResourceEn.js"></script>
+    <!-- fine file di risorse per localizzazione dell'applicazione-->
+
+
     <!-- utility per costruzione del menu -->
     <script src="menubuilder/menuBuilder.js"></script>
 
@@ -151,7 +161,7 @@
                 <a class="navbar-brand" href="#">
                     <img class="portale_brand_logo_id" src="" alt="logo" />
                     <span class="portale_brand_name_id">SegreGest</span>
-                </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar11">
+                </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-bs-toggle="collapse" data-target="#navbar11">
                 <span class="navbar-toggler-icon"></span>
             </button>
                 <div class="collapse navbar-collapse" id="navbar11">
@@ -167,7 +177,7 @@
                         <li class="nav-item"> <a class="nav-link" href="#" id="menu_guide_btn_id">Guida</a> </li>-->
                         <!-- Inizio menù scelta lingua -->
                         <li class="nav-item">
-                            <a class="nav-link dropdown-toggle" id="langctrl_id" data-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle" id="langctrl_id" data-bs-toggle="dropdown">
                                 <span class="flag-icon flag-icon-it" data-lang="it"></span> Italian
                             </a>
                             <div class="dropdown-menu">
@@ -360,7 +370,6 @@
 </div>
 
 </body>
-
 
 <script>
     $(document).on('DOMNodeInserted', function(event) {

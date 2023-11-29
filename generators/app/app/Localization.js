@@ -1,3 +1,4 @@
+/**global appMeta  **/
 /**
  * @class localization
  * @description
@@ -110,7 +111,6 @@
                     changeYear: true,
                     yearRange: "1920:2030"
                 });
-
                 $.timepicker.setDefaults($.timepicker.regional[lng]);
             }
         },
