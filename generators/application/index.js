@@ -158,10 +158,11 @@ module.exports = class extends Generator{
             database:this.dbAnswers.database,
             useTrustedConnection:useTrustedConnection,
             user:this.dbAnswers.user,
-            pwd:this.dbAnswers.pwd,
+            pwd:this.dbAnswers.password,
             sqlModule:this.dbAnswers.driver,
             defaultSchema:this.dbAnswers.defaultSchema,
             schema:this.dbAnswers.schema,
+            createTestSession:false
         };
 
         this.log("Database for "+this.answers.dbCode+" has been created.");
