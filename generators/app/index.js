@@ -250,29 +250,31 @@ module.exports = class extends Generator{
         ["routes", "client", "src", "test"].forEach(folder => {
             copyFolder(backendPath(folder), folder, ["json", "js", "html", "sql","txt"]);
         });
+        fs.unlinkSync(path.join("client", "MetaGoldApp.js"));
 
-        //Meta folder in client, MetaXData will be successively customized
-        copyFolder(appPath(["client", "meta"]), path.join("client","meta"), ["js", "html", "txt"]);
 
-        //Pages folder in client, MetaXPage will be successively customized
-        copyFolder(appPath(["client", "pages"]), path.join("client","pages"), ["js", "html", "txt"]);
-
-        //copyFolder(appPath(["_config"]), "config", ["js", "json"]);
+        // //Meta folder in client, MetaXData will be successively customized
+        // copyFolder(appPath(["client", "meta"]), path.join("client","meta"), ["js", "html", "txt"]);
+        //
+        // //Pages folder in client, MetaXPage will be successively customized
+        // copyFolder(appPath(["client", "pages"]), path.join("client","pages"), ["js", "html", "txt"]);
+        //
+        // //copyFolder(appPath(["_config"]), "config", ["js", "json"]);
 
         ["anonymousPermissions.js","appList.json", "dbList.json","tokenConfig.js"].forEach((f)=>{
             fs.copyFileSync(path.join(appPath(["_config",f])),
                 path.join("config",f));
         });
 
-        copyFolder(appPath(["client", "config"]),path.join("client", "config"), ["js", "json"]);
-        copyFolder(appPath(["client", "assets"]),path.join("client", "assets"), ["js", "json"]);
-        copyFolder(appPath(["client", "dataset"]),path.join("client", "dataset"), ["js", "json"]);
+        // copyFolder(appPath(["client", "config"]),path.join("client", "config"), ["js", "json"]);
+        // copyFolder(appPath(["client", "assets"]),path.join("client", "assets"), ["js", "json"]);
+        // copyFolder(appPath(["client", "dataset"]),path.join("client", "dataset"), ["js", "json"]);
 
         //
-        ["i18n", "metadata", "styles", "template", "utility","userTemplate"].forEach(folder => {
-            copyFolder(frontendPath(["components", folder]),
-                path.join("client", "components", folder));
-        });
+        // ["i18n", "metadata", "styles", "template", "utility","userTemplate"].forEach(folder => {
+        //     copyFolder(frontendPath(["components", folder]),
+        //         path.join("client", "components", folder));
+        // });
 
         //Copy test folders
         ["app", "common", "spec", "spec_midway","spec_e2e","spec_e2e_app"].forEach(folder => {
@@ -346,7 +348,7 @@ module.exports = class extends Generator{
         //generatorPackagePath,"generators","app",
         let oldFileName = path.join("client","pages", "MetaXPage.js");
         let newFileName = path.join("client","pages", capitalizeFirstLetter(this.metaPageName + ".js"));
-        fs.unlinkSync(path.join("client","pages", "MetaGoldPage.js"))
+        fs.unlinkSync(path.join("client","pages", "MetaGoldPage.js"));
 
         //console.log("renaming " + oldFileName + " to " + newFileName);
         fs.renameSync(oldFileName, newFileName);
@@ -434,7 +436,6 @@ module.exports = class extends Generator{
                 message: "Enter a strong password, it will be used to crypt some application file",
             },
         ]);
-
 
         secret = secret.replace("<pwd>",this.pwdResp.pwd);
 

@@ -136,7 +136,7 @@
 
 		if (freeExports && freeModule) {
 			if (typeof root.appMeta !== "undefined") {
-				appMeta.addMeta('XX', new Meta_XXData('XX'));
+				appMeta.addMeta('xx', new Meta_XXData());
 			}
 			else{
 				if (moduleExports){ // Export for Node.js or RingoJS.
@@ -149,7 +149,7 @@
 		} else {
 			// Export for a browser or Rhino.
 			if (root.appMeta){
-				appMeta.addMeta('XX', new Meta_XXData('XX'));
+				appMeta.addMeta('xx', new Meta_XXData());
 			} else {
 				root.Meta_XXData=Meta_XXData;
 			}

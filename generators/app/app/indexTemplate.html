@@ -27,14 +27,15 @@
 	<!-- Stili aggiuntivi per jsTree -->
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" />
 	<!-- FINE Stili per jsTree -->
-	<!-- FINE stili librerie terze parti -->
+	<!-- FINE stili librerie terze parti -->	
 
-	<!-- INIZIO stili framework-->
-	<!-- lib per visualizzazione json -->
-	<script src="components/styles/json/json-viewer.js"></script>
-	<link rel="stylesheet" href="components/styles/json/json-viewer.css">
-	<!-- FINE lib per visualizzazione json -->
-	<!-- FINE stili framework-->
+    <!-- INIZIO stili framework-->
+    <!-- lib per visualizzazione json -->
+    <link rel="stylesheet" href="components/styles/json/json-viewer.css">
+    <script src="components/styles/json/json-viewer.js"></script>
+    <!-- FINE lib per visualizzazione json -->
+    <!-- FINE stili framework-->
+
 
 	<!-- INIZIO Stili della applicazione -->
 	<link rel="stylesheet" href="styles/italia/bootstrap-italia.min.css">
@@ -78,14 +79,20 @@
 	<script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.documents.core_openxml.js"></script>
 	<script type="text/javascript" src="https://cdn-na.infragistics.com/igniteui/2020.1/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
 
+    <!-- FINE librerie terze parti -->
+
 	<!-- APP Seg + fmw mdlw -->
 	<!--mdlw-bundle-file-->
 
-	<!-- expand:metacomponents -->
+    <!-- INIZIO librerie framework -->
+ 
+ 	<!-- expand:metacomponents -->
 	<!-- endexpand:metacomponents -->
 
 	<script src="MetaXXXApp.js"></script>
 
+    <!-- FINE librerie framework -->
+    
 	<!-- classi derivazione del framework -->
 
 	<script src="meta/MetaXXXData.js"></script>
@@ -98,16 +105,25 @@
 	<!-- expand:pages -->
 	<!-- endexpand:pages -->
 
+    <!-- INIZIO librerie della applicazione  -->
+    <!-- localizzazione main -->
+    <!-- File per la localizzazione del framework-->
+    <script src="components/i18n/LocalResourceIt.js"></script>    
+    <!-- fine file di risorse per localizzazione -->
+	<script src="Localization.js"></script>
+    <!-- fine file di risorse per localizzazione dell'applicazione-->
+
 	<script src="custom.js"></script>
 	<script src="cambioruolo.js"></script>
-	<script src="components/i18n/LocalResourceIt.js"></script>
-	<script src="Localization.js"></script>
-	<script src="assets/i18n/LocalResourceIt.js"></script>
-	<script src="assets/i18n/LocalResourceEn.js"></script>
+
+    <!-- expand:assets -->
+    <!-- endexpand:assets -->
+
 	<script src="config/appMainConfig.js"></script>
 
 	<!-- utility per costruzione del menu -->
 	<script src="menubuilder/menuBuilder.js"></script>
+    <!-- FINE librerie della applicazione  -->
 
 	<script src="appMain.js"></script>
 
@@ -133,7 +149,7 @@
 			<div class="container">
 				<a class="navbar-brand" href="#">
 					<img class="portale_brand_logo_id" src="" alt="logo" style="max-height: 40px; height: auto; width: auto;/>
-					<span class="portale_brand_name_id">MetaGoldApp</span>
+					<span class="portale_brand_name_id">MetaXXXApp</span>
 				</a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar11">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -372,6 +388,7 @@
 				});
 			}
 		}
+
 	});
 
 

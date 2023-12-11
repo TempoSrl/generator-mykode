@@ -19,31 +19,31 @@ module.exports = class extends Generator {
             {
                 type: "input",
                 name: "name",
-                message: "Nome della tabella o vista del metadato"
+                message: "Name of the physical table or view"
             },
             {
                 type: "input",
                 name: "tableName",
-                message: "Nome della tabella se il metadato si riferisce ad una vista, o niente se non è una vista"
+                message: "Name of the main table of the view, or nothing"
             },
             {
                 type: "input",
                 name: "title",
-                message: "Nome descrittivo dell'oggetto della tabella"
+                message: "Descriptive name of the table"
             },
             {
                 type: "input",
                 name: "keys",
-                message: "Nomi dei campi della chiave separati da virgole"
+                message: "Key fields separated by commas"
             }
 
         ]);
 
         this.log("name", this.answers.name);
-        this.log("table name", this.answers.tableName);
         if (!this.answers.tableName) {
             this.answers.tableName=  this.answers.name;
         }
+        this.log("table name", this.answers.tableName);
         this.name = this.answers.name;
         this.tableName = this.answers.tableName;
         this.metaDataName = "Meta_"+capitalizeFirstLetter(this.name);
@@ -68,7 +68,7 @@ module.exports = class extends Generator {
         metaContent = metaContent.replaceAll("Meta_XXData", this.metaDataName);
         metaContent = metaContent.replaceAll("MetaXData", this.metaDataName);
 
-        metaContent = metaContent.replaceAll("'XX'", this.tableName);
+        metaContent = metaContent.replaceAll("'xx'", "'"+this.tableName+"'");
         metaContent = metaContent.replaceAll("xxTitle", this.answers.title);
 
         let keys = this.answers.keys.split(',').map((key) => '"'+key.trim()+'"').join(',');

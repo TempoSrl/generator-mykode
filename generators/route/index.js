@@ -21,12 +21,12 @@ module.exports = class extends Generator {
             {
                 type: "input",
                 name: "name",
-                message: "Nome della route da creare"
+                message: "Name of the route to be created"
             },
             {
                 type: "input",
                 name: "folder",
-                message: "Folder della route da creare (es. data, auth, file)"
+                message: "Folder of the new route (ex. data, auth, file)"
             },
             {
                 type: "list",
@@ -37,13 +37,13 @@ module.exports = class extends Generator {
             {
                 type: 'confirm',
                 name: 'multipleResult',
-                message: 'Il servizio funziona in modalità web socket con risultati multipli?',
+                message: 'Is the route based on socket with multiple results?',
                 default: false,
             },
             {
                 type: 'confirm',
                 name: 'authRequired',
-                message: 'Il servizio necessita di un utente autenticato?',
+                message: 'Does the route needs an authenticated user?',
                 default: true,
             },
         ]);
