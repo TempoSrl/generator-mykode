@@ -32,6 +32,7 @@ const jasmineEnv=  {
 let secret = require('./config/secret');
 const DBList = require("./src/jsDbList");
 
+
 DBList.init({
     encrypt: false,
     decrypt: false,
@@ -222,7 +223,7 @@ module.exports = function (grunt) {
                 configFile: "test/karma.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["dots"],
+                reporters: ["spec"],
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
@@ -857,6 +858,9 @@ module.exports = function (grunt) {
     });
 
     function registerUser(DA, idflowchart, userName,  password){
+        let AA = new Date().getFullYear().toString().slice(-2);
+        let idcustomuser;
+        let existed = false;
         return DA.open().then(()=>{
             return DA.selectCount(
                     {tableName:"flowchart",
@@ -872,21 +876,46 @@ module.exports = function (grunt) {
                              1,'0',idflowchart, 'node']
                         );
             }
-        ).then( ()=>{
+        ).then( ()=> {
+            return DA.readSingleValue({tableName:"customuser",
+                expr:"idcustomuser",
+                filter: $dq.eq("username", userName)});
+        }).then( (_idcustomuser) =>{
+            idcustomuser = _idcustomuser;
+            if (idcustomuser){
+                existed = true;
+                return  true;
+            }
+            idcustomuser = userName;
             //Aggiungiamo un utente virtuale al database
             return DA.doSingleInsert("customuser",
                 ["idcustomuser","ct","cu","lt","lu","username"],
                 [userName,new Date(),'setup',new Date(),'setup',userName]);
         }).then (()=>{
+            return DA.readSingleValue({tableName:"customusergroup",expr:"idcustomuser",
+                    filter: $dq.mcmpEq({idcustomgroup:"ORGANIGRAMMA", idcustomuser:idcustomuser})});
+        }).then ((_idcustomuser)=>{
+
+            if (_idcustomuser) {
+                grunt.log.writeln("idcustomuser "+ _idcustomuser+" found in table customusergroup");
+                return true;
+            }
             //Associamo l'utente virtuale al gruppo di sicurezza
             return DA.doSingleInsert("customusergroup",
                 ["idcustomgroup","idcustomuser", "ct","cu","lt","lu"],
-                ["ORGANIGRAMMA",userName, new Date(),'setup',new Date(),'setup']);
+                ["ORGANIGRAMMA",idcustomuser, new Date(),'setup',new Date(),'setup']);
         }).then (()=>{
+            return DA.readSingleValue({tableName:"flowchartuser",expr:"idcustomuser",
+                    filter: $dq.mcmpEq({"idcustomuser": idcustomuser, idflowchart:idflowchart})});
+        }).then ((_idcustomuser)=>{
+            if (_idcustomuser) {
+                grunt.log.writeln("idcustomuser "+ _idcustomuser+" found in table flowchartuser");
+                return true;
+            }
             //Associamo l'utente alla voce di organigramma
             return DA.doSingleInsert("flowchartuser",
                 ["idcustomuser","idflowchart","ndetail", "flagdefault", "ct","cu","lt","lu"],
-                [userName,idflowchart, 1, "S",  new Date(),'setup',new Date(),'setup']);
+                [idcustomuser,idflowchart, 1, "S",  new Date(),'setup',new Date(),'setup']);
         }).then (()=> {
             //Aggiungiamo tutte le password allo stesso utente di codice 1
             return DA.readSingleValue(
@@ -895,19 +924,25 @@ module.exports = function (grunt) {
                     filter: $dq.eq("idreg",1)
                 });
         }).then ((idregistryreference)=>{
+            grunt.log.writeln("idregistryreference in table registryreference was "+idregistryreference);
             //Ed infine associamo una password all'utente
             let salt = Password.generateSalt();
             let now = new Date();
             const iterations = now.getMilliseconds() * now.getSeconds() + 10;
             var hash = Password.generateHash(password, salt, iterations);
+            if (!idregistryreference){
+                idregistryreference=1;
+            }
             return DA.doSingleInsert("registryreference",
                 ["idreg","idregistryreference", "referencename", "ct","cu","lt","lu",
-                            "userweb","passwordweb","saltweb"],
+                            "userweb","passwordweb","saltweb","iterweb"],
                 [1,idregistryreference, userName, new Date(),'setup',new Date(),'setup',
                             userName,
                                 hash.toString("hex").toUpperCase(),
-                                salt.toString("hex").toUpperCase()]);
-        });
+                                salt.toString("hex").toUpperCase(),
+                                iterations
+                ]);
+        }).fail(err=>grunt.log.writeln(err));
     }
 
     grunt.registerTask("addUser","Aggiungi utente a db",function(){
