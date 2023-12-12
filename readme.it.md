@@ -993,6 +993,21 @@ tenendo conto che i campi dotati di un data-tag saranno poi memorizzati nei camp
 mentre gli altri sono puramente visuali, come abbiamo appena visto con taxabletotal e total.
 
 
+## Esecuzione del programma
+
+Per vedere il programma in esecuzione si può richiamare il task "publish" di grunt e poi eseguire il file
+ server.js nella cartella principale. 
+Il programma rimarrà in ascolto su tutte le routes registrate con mykode:application
+
+
 ###  test delle pagine 
-TODO
+
+Per effettuare dei test e2e sulle pagine appena create, possiamo creare una cartella pages_e2e in test/client e 
+copiarvi il file mandate_default_Spec.js presente nella cartella demo.
+
+Poi si potrà eseguire il task client pages e2e che è già configurato allo scopo.
+
+Nei task di grunt si troveranno altri task di test client e server di vario livello per le componenti della libreria.
+
+
 

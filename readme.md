@@ -965,6 +965,19 @@ add many others, of any complexity, as if it were an Excel sheet. Keep in mind t
 will be stored in the row's fields, while others are purely visual, as we just saw with `taxabletotal` and `total`.
 
 
-###  Page testing
-TODO
+### Running the application
+
+To see the application in action, you can invoke the "publish" task of Grunt and then run the `server.js` file 
+in the main folder. The program will listen on all routes registered with `mykode:application`.
+
+
+### Testing the Pages
+
+To perform end-to-end tests on the newly created pages, we can create a folder named `pages_e2e` in 
+    `test/client` and copy the `mandate_default_Spec.js` file from the demo folder into it.
+
+Then, you can run the `client pages e2e` task, which is already configured for this purpose.
+
+In the Grunt tasks, you will find other client and server test tasks at various levels for the components 
+of the library.
 
