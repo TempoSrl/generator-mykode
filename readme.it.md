@@ -1,4 +1,4 @@
-[![en](https://img.shields.io/badge/lang-en-green.svg)](https://github.com/TempoSrl/generator-mykode/tree/main/readme.md)
+[![en](https://img.shields.io/badge/lang-en-green.svg)](https://github.com/TempoSrl/generator-mykode/blob/master/readme.md)
 
 
 # myKode generator
