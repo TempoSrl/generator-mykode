@@ -1,0 +1,388 @@
+{
+	"name": "dsmeta_mandatedetail_detail",
+	"relations": {
+		"mandatekind_mandatedetail": {
+			"parentTable": "mandatekind",
+			"parentCols": "idmankind",
+			"childTable": "mandatedetail"
+		}
+	},
+	"tables": {
+		"mandatekind": {
+			"key": "idmankind",
+			"rows": [],
+			"columns": {
+				"idmankind": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"active": {
+					"ctype": "String"
+				},
+				"ct": {
+					"ctype": "DateTime",
+					"allowNull": false
+				},
+				"cu": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"deltaamount": {
+					"ctype": "Decimal"
+				},
+				"deltapercentage": {
+					"ctype": "Decimal"
+				},
+				"description": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"email": {
+					"ctype": "String"
+				},
+				"faxnumber": {
+					"ctype": "String"
+				},
+				"idupb": {
+					"ctype": "String"
+				},
+				"linktoasset": {
+					"ctype": "String"
+				},
+				"linktoinvoice": {
+					"ctype": "String"
+				},
+				"lt": {
+					"ctype": "DateTime",
+					"allowNull": false
+				},
+				"lu": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"multireg": {
+					"ctype": "String"
+				},
+				"office": {
+					"ctype": "String"
+				},
+				"phonenumber": {
+					"ctype": "String"
+				},
+				"rtf": {
+					"ctype": "Byte[]"
+				},
+				"txt": {
+					"ctype": "String"
+				},
+				"flag_autodocnumbering": {
+					"ctype": "String"
+				},
+				"flagactivity": {
+					"ctype": "Int16"
+				},
+				"name_c": {
+					"ctype": "String"
+				},
+				"name_l": {
+					"ctype": "String"
+				},
+				"name_r": {
+					"ctype": "String"
+				},
+				"notes1": {
+					"ctype": "String"
+				},
+				"notes2": {
+					"ctype": "String"
+				},
+				"notes3": {
+					"ctype": "String"
+				},
+				"title_c": {
+					"ctype": "String"
+				},
+				"title_l": {
+					"ctype": "String"
+				},
+				"title_r": {
+					"ctype": "String"
+				},
+				"warnmail": {
+					"ctype": "String"
+				},
+				"isrequest": {
+					"ctype": "String"
+				},
+				"idsor01": {
+					"ctype": "Int32"
+				},
+				"idsor02": {
+					"ctype": "Int32"
+				},
+				"idsor03": {
+					"ctype": "Int32"
+				},
+				"idsor04": {
+					"ctype": "Int32"
+				},
+				"idsor05": {
+					"ctype": "Int32"
+				},
+				"assetkind": {
+					"ctype": "Byte",
+					"allowNull": false
+				},
+				"dangermail": {
+					"ctype": "String"
+				},
+				"address": {
+					"ctype": "String"
+				},
+				"header": {
+					"ctype": "String"
+				},
+				"flag": {
+					"ctype": "Int32"
+				},
+				"touniqueregister": {
+					"ctype": "String"
+				},
+				"ipa_fe": {
+					"ctype": "String"
+				},
+				"riferimento_amministrazione": {
+					"ctype": "String"
+				},
+				"flagcreatedoubleentry": {
+					"ctype": "String"
+				},
+				"idivakind_forced": {
+					"ctype": "Int32"
+				},
+				"idreg_rupanac": {
+					"ctype": "Int32"
+				},
+				"requested_doc": {
+					"ctype": "Int32"
+				}
+			}
+		},
+		"mandatedetail": {
+			"key": "idmankind,yman,nman,rownum",
+			"rows": [],
+			"columns": {
+				"idmankind": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"yman": {
+					"ctype": "Int16",
+					"allowNull": false
+				},
+				"nman": {
+					"ctype": "Int32",
+					"allowNull": false
+				},
+				"rownum": {
+					"ctype": "Int32",
+					"allowNull": false
+				},
+				"annotations": {
+					"ctype": "String"
+				},
+				"assetkind": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"competencystart": {
+					"ctype": "DateTime"
+				},
+				"competencystop": {
+					"ctype": "DateTime"
+				},
+				"ct": {
+					"ctype": "DateTime",
+					"allowNull": false
+				},
+				"cu": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"detaildescription": {
+					"ctype": "String"
+				},
+				"discount": {
+					"ctype": "Double"
+				},
+				"flagmixed": {
+					"ctype": "String"
+				},
+				"idaccmotive": {
+					"ctype": "String"
+				},
+				"idgroup": {
+					"ctype": "Int32"
+				},
+				"idreg": {
+					"ctype": "Int32"
+				},
+				"idupb": {
+					"ctype": "String"
+				},
+				"lt": {
+					"ctype": "DateTime",
+					"allowNull": false
+				},
+				"lu": {
+					"ctype": "String",
+					"allowNull": false
+				},
+				"ninvoiced": {
+					"ctype": "Decimal"
+				},
+				"number": {
+					"ctype": "Decimal"
+				},
+				"start": {
+					"ctype": "DateTime"
+				},
+				"stop": {
+					"ctype": "DateTime"
+				},
+				"tax": {
+					"ctype": "Decimal"
+				},
+				"taxable": {
+					"ctype": "Decimal"
+				},
+				"taxrate": {
+					"ctype": "Double"
+				},
+				"toinvoice": {
+					"ctype": "String"
+				},
+				"unabatable": {
+					"ctype": "Decimal"
+				},
+				"idexp_taxable": {
+					"ctype": "Int32"
+				},
+				"idexp_iva": {
+					"ctype": "Int32"
+				},
+				"idinv": {
+					"ctype": "Int32"
+				},
+				"idivakind": {
+					"ctype": "Int32"
+				},
+				"idsor1": {
+					"ctype": "Int32"
+				},
+				"idsor2": {
+					"ctype": "Int32"
+				},
+				"idsor3": {
+					"ctype": "Int32"
+				},
+				"idaccmotiveannulment": {
+					"ctype": "String"
+				},
+				"flagactivity": {
+					"ctype": "Int16"
+				},
+				"va3type": {
+					"ctype": "String"
+				},
+				"ivanotes": {
+					"ctype": "String"
+				},
+				"applierannotations": {
+					"ctype": "String"
+				},
+				"idlist": {
+					"ctype": "Int32"
+				},
+				"idpackage": {
+					"ctype": "Int32"
+				},
+				"idunit": {
+					"ctype": "Int32"
+				},
+				"npackage": {
+					"ctype": "Decimal"
+				},
+				"unitsforpackage": {
+					"ctype": "Int32"
+				},
+				"cupcode": {
+					"ctype": "String"
+				},
+				"cigcode": {
+					"ctype": "String"
+				},
+				"flagto_unload": {
+					"ctype": "String"
+				},
+				"epkind": {
+					"ctype": "String"
+				},
+				"rownum_origin": {
+					"ctype": "Int32"
+				},
+				"avcp_description": {
+					"ctype": "String"
+				},
+				"avcp_startcontract": {
+					"ctype": "DateTime"
+				},
+				"avcp_stopcontract": {
+					"ctype": "DateTime"
+				},
+				"contractamount": {
+					"ctype": "Decimal"
+				},
+				"idavcp": {
+					"ctype": "Int32"
+				},
+				"idavcp_choice": {
+					"ctype": "Int32"
+				},
+				"idcostpartition": {
+					"ctype": "Int32"
+				},
+				"idpccdebitmotive": {
+					"ctype": "String"
+				},
+				"idpccdebitstatus": {
+					"ctype": "String"
+				},
+				"expensekind": {
+					"ctype": "String"
+				},
+				"idepexp": {
+					"ctype": "Int32"
+				},
+				"idepacc": {
+					"ctype": "Int32"
+				},
+				"idlocation": {
+					"ctype": "Int32"
+				},
+				"idupb_iva": {
+					"ctype": "String"
+				},
+				"idsor_siope": {
+					"ctype": "Int32"
+				},
+				"idepexp_pre": {
+					"ctype": "Int32"
+				},
+				"rownum_main": {
+					"ctype": "Int32"
+				}
+			}
+		}
+	}
+}

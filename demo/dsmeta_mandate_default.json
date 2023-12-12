@@ -1,0 +1,165 @@
+{
+  "name": "dsmeta_mandate_default",
+  "relations": {
+    "mandatekind_mandate": {
+      "parentTable": "mandatekind",
+      "parentCols": "idmankind",
+      "childTable": "mandate"
+    },
+    "mandate_mandatedetail": {
+      "parentTable": "mandate",
+      "parentCols": "idmankind,yman,nman",
+      "childTable": "mandatedetail"
+    }
+  },
+  "tables": {
+    "mandate": {
+      "key": "idmankind,nman,yman",
+      "rows": [],
+      "columns": {
+        "idmankind": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "nman": {
+          "ctype": "Int32",
+          "allowNull": false
+        },
+        "yman": {
+          "ctype": "Int16",
+          "allowNull": false
+        },
+        "active": {
+          "ctype": "String"
+        },
+        "adate": {
+          "ctype": "DateTime",
+          "allowNull": false
+        },
+        "ct": {
+          "ctype": "DateTime",
+          "allowNull": false
+        },
+        "cu": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "description": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "idreg": {
+          "ctype": "Int32"
+        },
+        "lt": {
+          "ctype": "DateTime",
+          "allowNull": false
+        },
+        "lu": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "idman": {
+          "ctype": "Int32"
+        }
+      },
+
+      "skipSecurity": true
+    },
+    "mandatekind": {
+      "key": "idmankind",
+      "rows": [],
+      "columns": {
+        "idmankind": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "active": {
+          "ctype": "String"
+        },
+        "ct": {
+          "ctype": "DateTime",
+          "allowNull": false
+        },
+        "cu": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "description": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "lt": {
+          "ctype": "DateTime",
+          "allowNull": false
+        },
+        "lu": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "header": {
+          "ctype": "String"
+        }
+      }
+    },
+    "mandatedetail": {
+      "key": "idmankind,yman,nman,rownum",
+      "rows": [],
+      "columns": {
+        "!mandatekind": {
+          "ctype": "String"
+        },
+        "idmankind": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "yman": {
+          "ctype": "Int16",
+          "allowNull": false
+        },
+        "nman": {
+          "ctype": "Int32",
+          "allowNull": false
+        },
+        "rownum": {
+          "ctype": "Int32",
+          "allowNull": false
+        },
+        "ct": {
+          "ctype": "DateTime",
+          "allowNull": false
+        },
+        "cu": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "detaildescription": {
+          "ctype": "String"
+        },
+        "discount": {
+          "ctype": "Double"
+        },
+        "lt": {
+          "ctype": "DateTime",
+          "allowNull": false
+        },
+        "lu": {
+          "ctype": "String",
+          "allowNull": false
+        },
+        "number": {
+          "ctype": "Decimal"
+        },
+        "tax": {
+          "ctype": "Decimal"
+        },
+        "taxable": {
+          "ctype": "Decimal"
+        },
+        "taxrate": {
+          "ctype": "Double"
+        }
+      }
+    }
+  }
+}
