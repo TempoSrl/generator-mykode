@@ -165,7 +165,7 @@ module.exports = class extends Generator{
             createTestSession:false
         };
 
-        this.log("Database for "+this.answers.dbCode+" has been created.");
+        this.log("Database entry for "+this.answers.dbCode+" has been created.");
 
         dbListContent = JSON.stringify(dbList,null,4);
         fs.writeFileSync(dbListFileName,

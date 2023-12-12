@@ -248,18 +248,18 @@ module.exports = class extends Generator{
         // });
         //Server folders
         ["routes", "client", "src", "test"].forEach(folder => {
-            copyFolder(backendPath(folder), folder, ["json", "js", "html", "sql","txt"]);
+            copyFolder(backendPath(folder), folder, ["json", "js", "html", "sql","txt","css","png","md"]);
         });
         fs.unlinkSync(path.join("client", "MetaGoldApp.js"));
 
 
-        // //Meta folder in client, MetaXData will be successively customized
-        // copyFolder(appPath(["client", "meta"]), path.join("client","meta"), ["js", "html", "txt"]);
-        //
-        // //Pages folder in client, MetaXPage will be successively customized
-        // copyFolder(appPath(["client", "pages"]), path.join("client","pages"), ["js", "html", "txt"]);
-        //
-        // //copyFolder(appPath(["_config"]), "config", ["js", "json"]);
+        //Meta folder in client, MetaXData will be successively customized
+        copyFolder(appPath(["client", "meta"]), path.join("client","meta"), ["js", "html", "txt"]);
+
+        //Pages folder in client, MetaXPage will be successively customized
+        copyFolder(appPath(["client", "pages"]), path.join("client","pages"), ["js", "html", "txt"]);
+
+        //copyFolder(appPath(["_config"]), "config", ["js", "json"]);
 
         ["anonymousPermissions.js","appList.json", "dbList.json","tokenConfig.js"].forEach((f)=>{
             fs.copyFileSync(path.join(appPath(["_config",f])),
@@ -289,19 +289,19 @@ module.exports = class extends Generator{
         });
 
         //jsSpec, jsDataSetSpec and jsDataQuerySpec
-        fs.cpSync(frontendPath(["test"]), path.join("test", "client"),
-            {
-                recursive: false,
-                force: false,
-                filter: allFile
-            },
-            (err) => {
-                if (err){
-                    console.error(err);
-                }
-            }
-        );
-        ["Gruntfile.js","server.js"].forEach(
+        // fs.cpSync(frontendPath(["test"]), path.join("test", "client"),
+        //     {
+        //         recursive: false,
+        //         force: false,
+        //         filter: allFile
+        //     },
+        //     (err) => {
+        //         if (err){
+        //             console.error(err);
+        //         }
+        //     }
+        // );
+        ["Gruntfile.js","server.js","setup_mysql.sql","setup_sqlserver.sql"].forEach(
             (f)=>{
                 fs.copyFileSync(appPath(f),f);
             }
