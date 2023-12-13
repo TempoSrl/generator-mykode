@@ -379,25 +379,20 @@ module.exports = class extends Generator{
             path.join( "client", "MetaXApp.js"),
             path.join("client", capitalizeFirstLetter(this.metaAppName + ".js")),
             "MetaXApp",this.metaAppName);
+
+
         this._customizeXApp(path.join( "client", "indexTemplate.html"),
             path.join("client", "indexTemplate.html"),
-            "XXXApp",this.capitalizedName+"App");
-        this._customizeXApp(path.join( "client", "indexTemplate.html"),
-            path.join("client", "indexTemplate.html"),
-            "XXXData",this.capitalizedName+"Data");
-        this._customizeXApp(path.join( "client", "indexTemplate.html"),
-            path.join("client", "indexTemplate.html"),
-            "XXXPage",this.capitalizedName+"Page");
+            "XXX",this.capitalizedName);
 
         this._customizeXApp(path.join( "client", "indexDebugTemplate.html"),
             path.join("client", "indexDebugTemplate.html"),
-            "XXXApp",this.capitalizedName+"App");
-        this._customizeXApp(path.join( "client", "indexDebugTemplate.html"),
-            path.join("client", "indexDebugTemplate.html"),
-            "XXXData",this.capitalizedName+"Data");
-        this._customizeXApp(path.join( "client", "indexDebugTemplate.html"),
-            path.join("client", "indexDebugTemplate.html"),
-            "XXXPage",this.capitalizedName+"Page");
+            "XXX",this.capitalizedName);
+
+        this._customizeXApp(path.join( "client", "index_e2e_Template.html"),
+            path.join("client", "index_e2e.html"),
+            "XXX",this.capitalizedName);
+
     }
 
 
