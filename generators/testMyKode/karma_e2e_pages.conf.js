@@ -30,6 +30,7 @@ module.exports = function(config) {
              'client/bower_components/jasmine-jquery/lib/jasmine-jquery.js', //necessary for testHelper (getFixtures)
              'client/components/metadata/jsDataSet.js',  //necessary for eventManager
              'client/components/metadata/MetaApp.js',
+             'client/components/metadata/LocalResource.js',
              'client/components/metadata/Logger.js', //necessary for mandate_default_Spec
              'client/components/metadata/EventManager.js',
              'client/components/metadata/Utils.js',
