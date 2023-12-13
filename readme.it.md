@@ -21,6 +21,7 @@ Questo generatore serve ad aiutare a creare un'applicazione con il framework myK
 Se non è presente yeoman nel sistema è necessario eseguire:
 >npm install --global yo
 
+Per installare il generatore eseguire quindi:
 > npm install generator-mykode
 
 ## Creazione scheletro applicazione (yo mykode)

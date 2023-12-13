@@ -68,7 +68,7 @@ module.exports = class extends Generator {
         metaContent = metaContent.replaceAll("Meta_XXData", this.metaDataName);
         metaContent = metaContent.replaceAll("MetaXData", this.metaDataName);
 
-        metaContent = metaContent.replaceAll("'xx'", "'"+this.tableName+"'");
+        metaContent = metaContent.replaceAll("'xx'", "'"+this.name+"'");
         metaContent = metaContent.replaceAll("xxTitle", this.answers.title);
 
         let keys = this.answers.keys.split(',').map((key) => '"'+key.trim()+'"').join(',');

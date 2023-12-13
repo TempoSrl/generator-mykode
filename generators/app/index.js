@@ -266,7 +266,7 @@ module.exports = class extends Generator{
                 path.join("config",f));
         });
 
-        // copyFolder(appPath(["client", "config"]),path.join("client", "config"), ["js", "json"]);
+        copyFolder(appPath(["client", "config"]),path.join("client", "config"), ["js", "json"]);
         // copyFolder(appPath(["client", "assets"]),path.join("client", "assets"), ["js", "json"]);
         // copyFolder(appPath(["client", "dataset"]),path.join("client", "dataset"), ["js", "json"]);
 

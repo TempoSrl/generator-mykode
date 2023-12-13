@@ -19,6 +19,7 @@ This generator is designed to assist in creating an application using the myKode
 If Yeoman is not already installed on your system, run:
 > `npm install --global yo`
 
+To install the generator run:
 > `npm install generator-mykode`
 
 ## Creating the application skeleton (`yo mykode`)
