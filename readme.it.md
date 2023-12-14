@@ -50,16 +50,13 @@ A questo punto è stato creato uno scheletro vuoto del programma, con le cartell
 - client\assets\i18n : le risorse necessarie per avere un programma multilingua, sarà poi da integrare in base alle 
    proprie esigenze
 
-- client\components : i file del framework
-
-- client\config :  i file di configurazione
-
-- client\dataset : i dataset delle maschere, quelle dei test sono nella sottocartella test
-
-- menubuilder: dei file per la gestione del menu
-
+- client\components: i file del framework
+- client\config: i file di configurazione
+- client\dataset: i dataset delle maschere, quelle dei test sono nella sottocartella test
+- client\menubuilder: dei file per la gestione del menu
 - client\metadata\"nome tabella"\: meta_tabella.js e metapage relativi alla tabella "nome tabella"
-
+- client\meta: qui il task publish copierà i metadati dell'applicazione prendendoli da client\metadata\...
+- client\pages: qui il task publish copierà le pagine dell'applicazione prendendoli da client\metadata\...
 
 
 ## Creazione routes di primo livello (yo mykode:application)

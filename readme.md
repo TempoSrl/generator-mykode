@@ -45,9 +45,11 @@ At this point, an empty program skeleton has been created, with the following fo
 - `client\assets\i18n`: resources necessary for creating a multilingual program, to be integrated based on your needs
 - `client\components`: framework files
 - `client\config`: configuration files
-- `client\dataset`: mask datasets; those for testing are in the subfolder `test`
-- `menubuilder`: files for menu management
+- `client\dataset`: pages' datasets; those for testing are in the subfolder `test`
+- `client\menubuilder`: files for menu management
 - `client\metadata\"table name"`: `meta_tabella.js` and `metapage` related to the "table name"
+- `client\meta`: here, the "publish" task will copy the application's metadata from  client\metadata\...
+- `client\pages`: here, the "publish" task will copy the application's pages from  da client\metadata\...
 
 ## Creating top-level routes (`yo mykode:application`)
 

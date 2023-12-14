@@ -8,8 +8,12 @@
 // 'test/spec/**/*.js'
 /*globals initConfig, appPath */
 /*jshint camelcase: false */
+import fs from "fs";
+
 const path = require("path");
 const readline = require('readline');
+const chalk = import('chalk');
+
 
 const Deferred = require("JQDeferred");
 
@@ -155,12 +159,6 @@ module.exports = function (grunt) {
             }
         },
 
-        open : {
-            doc : {
-                path: 'D:/progetti/jsMetaBackend/docs/index.md',
-                app: 'Google Chrome'  //also FireFox
-            },
-        },
 
         shell: {
             startNode: {
@@ -171,12 +169,6 @@ module.exports = function (grunt) {
             },
             clientTest: {
                 command: 'npx jasmine test/client/*Spec.js'
-            },
-            jsdoc:{
-                command: 'jsdoc src'
-            },
-            jsdocToMD:{
-                command: 'jsdoc2md src/*.js'
             }
         },
 
@@ -197,16 +189,16 @@ module.exports = function (grunt) {
         },
 
         yuidoc: {
-          compile: {
-            name: '<%= pkg.name %>',
-            description: '<%= pkg.description %>',
-            version: '<%= pkg.version %>',
-            url: '<%= pkg.homepage %>',
-            options: {
-              paths: ['./src'],
-              outdir: 'docs'
+            compile: {
+                name: '<%= pkg.name %>',
+                description: '<%= pkg.description %>',
+                version: '<%= pkg.version %>',
+                url: '<%= pkg.homepage %>',
+                options: {
+                    paths: ['./src'],
+                    outdir: 'docs'
+                }
             }
-          }
         },
 
         watch_common: {
@@ -245,7 +237,7 @@ module.exports = function (grunt) {
                     parallel: false,
                     suppressErrorSummary: false, // do not print error summary
                     suppressFailed: false, // do not print information about failed tests
-                    suppressPassed: true, // do not print information about passed tests
+                    suppressPassed: false, // do not print information about passed tests
                     suppressSkipped: true, // do not print information about skipped tests
                     showSpecTiming: true, // print the time elapsed for each spec
                     failFast: true // test would finish with error when a first fail occurs.
@@ -261,7 +253,7 @@ module.exports = function (grunt) {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
                     suppressFailed: false, // do not print information about failed tests
-                    suppressPassed: true, // do not print information about passed tests
+                    suppressPassed: false, // do not print information about passed tests
                     suppressSkipped: false, // do not print information about skipped tests
                     showSpecTiming: true, // print the time elapsed for each spec
                     failFast: false // test would finish with error when a first fail occurs.
@@ -679,7 +671,7 @@ module.exports = function (grunt) {
     grunt.registerTask("client midway", ["createSqlDB","NodeStart","karma:midway","NodeStop","destroySqlDB"]);
     grunt.registerTask("client e2e", ["createSqlDB", "NodeStart",
         "karma:client_e2e", "karma:client_e2e_app",
-        "NodeStop","destroySqlDB"]);
+        "destroySqlDB","NodeStop"]);
     grunt.registerTask("client e2e_app", ["createSqlDB", "NodeStart",
         "karma:client_e2e_app",
         "NodeStop","destroySqlDB"]);
@@ -706,7 +698,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('client pages e2e',[
         "loginOFF",
-         "NodeStart" ,
+        "NodeStart" ,
         "karma:client_e2e_pages",
         "NodeStop",
         "loginON"
@@ -725,6 +717,7 @@ module.exports = function (grunt) {
             "node",
             ["--inspect", "server.js"],
             function (err, res, code, buffer) {
+                writeOutput(err,res,code,buffer);
                 if (err) {
                     grunt.log.writeln("NodeStart error");
                     grunt.log.writeln(err, code);
@@ -748,6 +741,7 @@ module.exports = function (grunt) {
             "npx",
             ["jasmine", "test/client/jsDataSetSpec.js"],
             function (err, res, code, buffer) {
+                writeOutput(err,res,code,buffer);
                 if (err) {
                     grunt.log.writeln("Node Version error");
                     grunt.log.writeln(err, code);
@@ -773,6 +767,7 @@ module.exports = function (grunt) {
             "taskkill",
             ["/F", "/IM", "node.exe"],
             function (err, res, code, buffer) {
+                writeOutput(err,res,code,buffer);
                 if (err) {
                     grunt.log.writeln("NodeStop error");
                     grunt.log.writeln(err, code);
@@ -789,6 +784,17 @@ module.exports = function (grunt) {
         }, 5000);
     });
 
+    function writeOutput(err, res, code, buffer){
+        //if (err) grunt.log.writeln(chalk.red('Error: ') + err);
+
+        chalk.then((c)=> {
+            c = new c.Chalk();
+            if (res) grunt.log.writeln(c.green('Output:\n') + res);
+            if (code) grunt.log.writeln(c.yellow('Exit Code:\n') + code);
+            //if (buffer) grunt.log.writeln(c.blue('Buffer: ') + buffer);
+        })
+    }
+
     //grunt.registerTask('serverStart', ['shell:startNode']);
     //grunt.registerTask('serverStop', ['shell:stopNode']);
 
@@ -803,6 +809,8 @@ module.exports = function (grunt) {
                 "test_sqlServer"
             ],
             function (err, res, code, buffer) {
+                writeOutput(err,res,code,buffer);
+
                 if (err) {
                     grunt.log.writeln("createSqlDB error");
                     grunt.log.writeln(err, code);
@@ -835,6 +843,7 @@ module.exports = function (grunt) {
                 "test_sqlServer"
             ],
             function (err, res, code, buffer) {
+                writeOutput(err,res,code,buffer);
                 if (err) {
                     grunt.log.writeln("destroySqlDB error");
                     grunt.log.writeln(err, code);
@@ -863,18 +872,18 @@ module.exports = function (grunt) {
         let existed = false;
         return DA.open().then(()=>{
             return DA.selectCount(
-                    {tableName:"flowchart",
-                     filter:$dq.eq("idflowchart",idflowchart)
-                    });
+                {tableName:"flowchart",
+                    filter:$dq.eq("idflowchart",idflowchart)
+                });
         }).then(
             (n)=>{
                 if (n>0)return Deferred().resolve(true);
                 return DA.doSingleInsert("flowchart",
                     ["idflowchart","ayear","codeflowchart","ct","cu","lt","lu",
-                            "nlevel","paridflowchart","printingorder","title"],
-                         [idflowchart,2023,'00'+idflowchart,new Date(),'setup',new Date(),'setup',
-                             1,'0',idflowchart, 'node']
-                        );
+                        "nlevel","paridflowchart","printingorder","title"],
+                    [idflowchart,2023,'00'+idflowchart,new Date(),'setup',new Date(),'setup',
+                        1,'0',idflowchart, 'node']
+                );
             }
         ).then( ()=> {
             return DA.readSingleValue({tableName:"customuser",
@@ -893,7 +902,7 @@ module.exports = function (grunt) {
                 [userName,new Date(),'setup',new Date(),'setup',userName]);
         }).then (()=>{
             return DA.readSingleValue({tableName:"customusergroup",expr:"idcustomuser",
-                    filter: $dq.mcmpEq({idcustomgroup:"ORGANIGRAMMA", idcustomuser:idcustomuser})});
+                filter: $dq.mcmpEq({idcustomgroup:"ORGANIGRAMMA", idcustomuser:idcustomuser})});
         }).then ((_idcustomuser)=>{
 
             if (_idcustomuser) {
@@ -906,7 +915,7 @@ module.exports = function (grunt) {
                 ["ORGANIGRAMMA",idcustomuser, new Date(),'setup',new Date(),'setup']);
         }).then (()=>{
             return DA.readSingleValue({tableName:"flowchartuser",expr:"idcustomuser",
-                    filter: $dq.mcmpEq({"idcustomuser": idcustomuser, idflowchart:idflowchart})});
+                filter: $dq.mcmpEq({"idcustomuser": idcustomuser, idflowchart:idflowchart})});
         }).then ((_idcustomuser)=>{
             if (_idcustomuser) {
                 grunt.log.writeln("idcustomuser "+ _idcustomuser+" found in table flowchartuser");
@@ -935,12 +944,12 @@ module.exports = function (grunt) {
             }
             return DA.doSingleInsert("registryreference",
                 ["idreg","idregistryreference", "referencename", "ct","cu","lt","lu",
-                            "userweb","passwordweb","saltweb","iterweb"],
+                    "userweb","passwordweb","saltweb","iterweb"],
                 [1,idregistryreference, userName, new Date(),'setup',new Date(),'setup',
-                            userName,
-                                hash.toString("hex").toUpperCase(),
-                                salt.toString("hex").toUpperCase(),
-                                iterations
+                    userName,
+                    hash.toString("hex").toUpperCase(),
+                    salt.toString("hex").toUpperCase(),
+                    iterations
                 ]);
         }).fail(err=>grunt.log.writeln(err));
     }
