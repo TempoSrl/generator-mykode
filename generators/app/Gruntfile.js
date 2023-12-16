@@ -1,5 +1,4 @@
-// Rivisto da Nino 04/01/2023
-'use strict';
+const dbModel = "main";
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -8,8 +7,6 @@
 // 'test/spec/**/*.js'
 /*globals initConfig, appPath */
 /*jshint camelcase: false */
-import fs from "fs";
-
 const path = require("path");
 const readline = require('readline');
 const chalk = import('chalk');
@@ -36,6 +33,7 @@ const jasmineEnv=  {
 let secret = require('./config/secret');
 const DBList = require("./src/jsDbList");
 
+const getDescriptor= require("./src/jsDbList").getDescriptor;
 
 DBList.init({
     encrypt: false,
@@ -45,12 +43,13 @@ DBList.init({
     secret:secret
 });
 
+
 let glob = require('glob');
 let jsdoc2md = require('jsdoc-to-markdown');
 let Password = require("./src/jsPassword");
 let $dq= require("./client/components/metadata/jsDataQuery");
 
-const asyncCmd = require("async-exec-cmd");
+
 
 const JasmineClass = require('jasmine');
 const jasmineObj = new JasmineClass();
@@ -427,6 +426,55 @@ module.exports = function (grunt) {
     // Set the configuration for all the tasks
     grunt.initConfig(gruntConfig);
 
+    function createDatasets(){
+        let dbInfo = getDescriptor(dbModel);
+
+        const mainInfo = grunt.file.readJSON(path.join('config', 'appList.json'));
+        let appInfo;
+        mainInfo.forEach(i=> {if (i.dbCode === dbModel)  {appInfo=i; }});
+        if(appInfo===undefined){
+            grunt.log.writeln("File appList.json does not have an entry for database code "+dbModel);
+            return Deferred().resolve();
+        }
+        let dsPath = appInfo.dsPath;
+
+        const directoryPath = path.join(__dirname, dsPath);
+
+        const allFiles = fs.readdirSync(directoryPath);
+
+        const jsFiles = allFiles.filter(file => path.extname(file) === '.js');
+
+        let allTask = [];
+        jsFiles.forEach(file => {
+            let jsName = path.join(__dirname, dsPath, file);
+            if (!fs.lstatSync(jsName).isFile()){
+                return;
+            }
+            const baseName = path.basename(file, path.extname(file));
+            let jsonBaseName = baseName+'.json';
+            let jsonName = path.join(__dirname, dsPath, jsonBaseName);
+            if (fs.existsSync(jsonName)){
+                // Ottieni i timestamp di creazione o modifica
+                const jsStamp = fs.statSync(jsName).mtime; // o .ctime per il timestamp di creazione
+                const jsonStamp = fs.statSync(jsonName).mtime;
+                if (jsStamp <= jsonStamp) {
+                    return;
+                }
+            }
+            let modDS = require(path.join(__dirname,dsPath,file));
+            allTask.push(modDS(dbInfo).then(ds=>{
+                ds.name= baseName;
+                let jsonData= ds.serialize(true);
+                const json = JSON.stringify(jsonData,null,2);
+                fs.writeFileSync(jsonName, json);
+                console.log("File "+jsonName+" has been updated.");
+            }));
+
+        });
+        return Deferred.when.apply(null,allTask);
+
+    }
+
 
     function publish(){
         let  files = glob.sync("client/metadata/Meta*.js");
@@ -471,7 +519,6 @@ module.exports = function (grunt) {
                 (err) => {if (err) {console.error(err);}
                 });
         });
-
     }
 
 
@@ -599,20 +646,27 @@ module.exports = function (grunt) {
     }
 
 
-    grunt.registerTask("publish","Publish meta",()=>{
+
+    grunt.registerTask("publish","Publish meta", async function (){
         //This must be done before compiling index*.html
+        let done = this.async();
         publish();
+        let d = createDatasets();
 
-        fs.copyFileSync(path.join("client","indexTemplate.html"),
-            path.join("client","index.html")
-        );
-        fs.copyFileSync(path.join("client","indexDebugTemplate.html"),
-            path.join("client","indexDebug.html")
-        );
+        d.then(()=>{
+            fs.copyFileSync(path.join("client","indexTemplate.html"),
+                path.join("client","index.html")
+            );
+            fs.copyFileSync(path.join("client","indexDebugTemplate.html"),
+                path.join("client","indexDebug.html")
+            );
 
-        fixFileIncludes("client/index.html");
-        fixFileIncludes("client/indexDebug.html");
-        grunt.task.run('wiredep');
+            fixFileIncludes("client/index.html");
+            fixFileIncludes("client/indexDebug.html");
+            grunt.task.run('wiredep');
+            done();
+        });
+
     });
 
     // Convert to MD every file under the

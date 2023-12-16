@@ -837,6 +837,41 @@ Il json risultante è questo:
 questo e un altro dataset (quello di mandatedetail) sono presenti nella cartella demo ed è necessario 
 copiarli nella cartella client\dataset per visualizzare le pagine di questo esempio.
 
+Non volendo o non potendo usare lo strumento visuale di studio e HDSGene, si può anche creare un modulo nodejs
+ chiamandolo dsmeta_mandate_default.js, il cui scopo sarà creare dinamicamente il dataset. Tale modulo sarà chiamato
+ automaticamente dal task publish di grunt.
+Il corrispondente modulo per il dataset appena visto è
+
+```js
+const jsDataSet = require("./../components/metadata/jsDataSet");
+let ds = new jsDataSet.DataSet("mandate_default");
+const Deferred = require("JQDeferred");
+
+function create(dbDescriptor){
+    let def = Deferred();
+    let tableNames=["mandate","mandatedetail","mandatekind"];
+    //We create all the tables dynamically
+    let tables= tableNames.map(tName=>{return dbDescriptor.createTable(tName);});
+    Deferred.when.apply(Deferred,tables).then(function (){
+        const tt = Array.prototype.slice.call(arguments);
+        tt.map(t=>{
+         ds.addTable(t); /we add the table to the dataset
+        });
+
+        //We add the dataset relations
+        ds.newRelation("mandate_mandatedetail","mandate",null,"mandatedetail");
+        ds.newRelation("mandatekind_mandate","mandatekind",null,"mandate");
+        def.resolve(ds);
+    });
+    return def.promise();
+}
+
+
+module.exports = create;
+```
+
+
+
 Analogamente creiamo la pagina del dettaglio contratto passivo:
 
 > ? Title of page to be created Dettaglio contratto passivo
@@ -888,6 +923,36 @@ Anche per il mandatedetail è necessario creare un dataset, e generare il json.
 In questo caso basterà aggiungere al dataset la tabella mandatedetail e la sua parent mandatekind, 
 qualora ci servissero i campi di mandatekind nella maschera. Il file generato da HDSGene è presente nella 
 cartella demo e va copiato in client\dataset.
+Volendo invece creare il dataset da codice possiamo inserire questo modulo nella cartella client\dataset, 
+ chiamandolo dsmeta_mandatedetail_detail.js :
+
+
+```js
+const jsDataSet = require("./../components/metadata/jsDataSet");
+let ds = new jsDataSet.DataSet("mandatedetail_detail");
+const Deferred = require("JQDeferred");
+
+function create(dbDescriptor){
+    let def = Deferred();
+    let tableNames=["mandatedetail","mandatekind"];
+    //We create all the tables dynamically
+    let tables= tableNames.map(tName=>{return dbDescriptor.createTable(tName);});
+    Deferred.when.apply(Deferred,tables).then(function (){
+        const tt = Array.prototype.slice.call(arguments);
+        tt.map(t=>{
+         ds.addTable(t); /we add the table to the dataset
+        });
+
+        //We add the dataset relations
+        ds.newRelation("mandatekind_mandatedetail","mandatekind",null,"mandatedetail");
+        def.resolve(ds);
+    });
+    return def.promise();
+}
+
+
+module.exports = create;
+```
 
 
 In questa maschera vogliamo inserire delle dipendenze tra alcuni campi, ossia delle formule che saranno 
