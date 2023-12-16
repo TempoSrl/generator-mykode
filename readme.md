@@ -923,7 +923,8 @@ function create(dbDescriptor){
         tt.map(t=>{
          ds.addTable(t); /we add the table to the dataset
         });
-
+        ds.tables["mandatedetail"].setDataColumn("!mandatekind","String");
+        
         //We add the dataset relations
         ds.newRelation("mandatekind_mandatedetail","mandatekind",null,"mandatedetail");
         def.resolve(ds);
