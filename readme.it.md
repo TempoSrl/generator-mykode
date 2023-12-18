@@ -7,7 +7,7 @@ Questo generatore serve ad aiutare a creare un'applicazione con il framework myK
 
 
 ## Requisiti: 
-- node version 16-19
+- node version 20+
 - npm 
 - al momento windows per la dipendenza edge-js ma prossimamente sarà disponibile anche su macchine linux
 - un database sql server o mysql o oracle

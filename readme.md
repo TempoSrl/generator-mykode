@@ -5,7 +5,7 @@
 This generator is designed to assist in creating an application using the myKode framework.
 
 ## Requirements:
-- Node version 16-19
+- Node version 20+
 - npm
 - Currently, Windows is required for the edge-js dependency, but support for Linux machines will be available soon.
 - An SQL Server, MySQL, or Oracle database
