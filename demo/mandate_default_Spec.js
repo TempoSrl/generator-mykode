@@ -26,7 +26,7 @@ describe('mandate_default_e2e', function() {
                 testHelper.initAppTestProduction("main");
                 appMeta = window.appMeta;
 
-                appMeta.authManager.login(appMeta.configDev.userName, appMeta.configDev.password, new Date())
+                appMeta.authManager.login("e2euser", "e2epwd", new Date())
                 .then(function (res) {
                     expect(res).toBe(true);
                     done();
