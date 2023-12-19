@@ -1,7 +1,6 @@
---setuser 'amministrazione'
-SET NOCOUNT ON
+/*   SETUP DATA DEMO */
 
---[DBO]--
+SET NOCOUNT ON
 GO
 
 -- CREAZIONE TABELLA web_listredir --
@@ -235,6 +234,8 @@ variablename
 )
 END
 GO
+
+
 -- CREAZIONE TABELLA flowchartrestrictedfunction --
 IF NOT EXISTS(select * from sysobjects where id = object_id(N'[flowchartrestrictedfunction]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 BEGIN
@@ -467,11 +468,11 @@ GO
 
 
 
-if exists (select * from dbo.sysobjects where id = object_id(N'[compute_notable]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [compute_notable]
+if exists (select * from dbo.sysobjects where id = object_id(N'[DBO].[compute_notable]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [DBO].[compute_notable]
 GO
 
-CREATE PROCEDURE compute_notable
+CREATE PROCEDURE [DBO].compute_notable
 (
 	@ayear int,
 	@iduser varchar(10),
@@ -694,6 +695,195 @@ GO
 delete from virtualuser
 GO
 
+IF EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registry]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+DROP TABLE [dbo].[registry]
+END
+
+
+GO
+-- CREAZIONE TABELLA registry --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registry]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registry] (
+idreg int NOT NULL,
+active char(1) NOT NULL,
+annotation varchar(400) NULL,
+authorization_free char(1) NULL,
+badgecode varchar(20) NULL,
+birthdate date NULL,
+ccp varchar(12) NULL,
+cf varchar(16) NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+email_fe varchar(200) NULL,
+extension varchar(200) NULL,
+extmatricula varchar(40) NULL,
+flag_pa char(1) NULL,
+flagbankitaliaproceeds char(1) NULL,
+foreigncf varchar(40) NULL,
+forename varchar(50) NULL,
+gender char(1) NULL,
+idaccmotivecredit varchar(36) NULL,
+idaccmotivedebit varchar(36) NULL,
+idcategory varchar(2) NULL,
+idcentralizedcategory varchar(20) NULL,
+idcity int NULL,
+idexternal int NULL,
+idmaritalstatus varchar(20) NULL,
+idnation int NULL,
+idregistryclass varchar(2) NULL,
+idregistrykind int NULL,
+idtitle varchar(20) NULL,
+ipa_fe varchar(7) NULL,
+ipa_perlapa varchar(100) NULL,
+location varchar(50) NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+maritalsurname varchar(50) NULL,
+multi_cf char(1) NULL,
+p_iva varchar(15) NULL,
+pec_fe varchar(200) NULL,
+residence int NOT NULL,
+rtf image NULL,
+sdi_defrifamm varchar(20) NULL,
+sdi_norifamm char(1) NULL,
+surname varchar(50) NULL,
+title varchar(101) NULL,
+toredirect int NULL,
+txt text NULL,
+ CONSTRAINT xpkregistry PRIMARY KEY (idreg
+)
+)
+END
+GO
+
+delete from registry
+GO
+
+
+-- CREAZIONE TABELLA registryclass --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registryclass]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registryclass] (
+idregistryclass varchar(2) NOT NULL,
+active char(1) NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+description varchar(150) NOT NULL,
+flagbadgecode char(1) NOT NULL,
+flagbadgecode_forced char(1) NOT NULL,
+flagCF char(1) NOT NULL,
+flagcf_forced char(1) NOT NULL,
+flagcfbutton char(1) NULL,
+flagextmatricula char(1) NOT NULL,
+flagextmatricula_forced char(1) NOT NULL,
+flagfiscalresidence char(1) NOT NULL,
+flagfiscalresidence_forced char(1) NOT NULL,
+flagforeigncf char(1) NOT NULL,
+flagforeigncf_forced char(1) NOT NULL,
+flaghuman char(1) NULL,
+flaginfofromcfbutton char(1) NULL,
+flagmaritalstatus char(1) NOT NULL,
+flagmaritalstatus_forced char(1) NOT NULL,
+flagmaritalsurname char(1) NOT NULL,
+flagmaritalsurname_forced char(1) NOT NULL,
+flagothers char(1) NOT NULL,
+flagothers_forced char(1) NOT NULL,
+flagp_iva char(1) NOT NULL,
+flagp_iva_forced char(1) NOT NULL,
+flagqualification char(1) NOT NULL,
+flagqualification_forced char(1) NOT NULL,
+flagresidence char(1) NOT NULL,
+flagresidence_forced char(1) NOT NULL,
+flagtitle char(1) NOT NULL,
+flagtitle_forced char(1) NOT NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+ CONSTRAINT xpkregistryclass PRIMARY KEY (idregistryclass
+)
+)
+END
+GO
+
+delete from registryclass
+GO
+
+
+-- CREAZIONE TABELLA registryreference --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registryreference]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registryreference] (
+idreg int NOT NULL,
+idregistryreference int NOT NULL,
+activeweb char(1) NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+email varchar(200) NULL,
+faxnumber varchar(50) NULL,
+flagdefault char(1) NULL,
+iterweb int NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+mobilenumber varchar(20) NULL,
+msnnumber varchar(50) NULL,
+passwordweb varchar(40) NULL,
+pec varchar(200) NULL,
+phonenumber varchar(50) NULL,
+referencename varchar(50) NOT NULL,
+registryreferencerole varchar(50) NULL,
+rtf image NULL,
+saltweb varchar(20) NULL,
+skypenumber varchar(50) NULL,
+txt text NULL,
+userweb varchar(40) NULL,
+website varchar(512) NULL,
+ CONSTRAINT xpkregistryreference PRIMARY KEY (idreg,
+idregistryreference
+)
+)
+END
+GO
+
+delete from registryreference
+GO
+
+
+
+-- CREAZIONE TABELLA registryaddress --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registryaddress]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registryaddress] (
+idreg int NOT NULL,
+start date NOT NULL,
+idaddresskind int NOT NULL,
+active char(1) NULL,
+address varchar(100) NULL,
+annotations varchar(400) NULL,
+cap varchar(20) NULL,
+ct datetime NULL,
+cu varchar(64) NULL,
+flagforeign char(1) NULL,
+idcity int NULL,
+idnation int NULL,
+location varchar(50) NULL,
+lt datetime NULL,
+lu varchar(64) NULL,
+officename varchar(50) NULL,
+recipientagency varchar(50) NULL,
+stop date NULL,
+ CONSTRAINT xpkregistryaddress PRIMARY KEY (idreg,
+start,
+idaddresskind
+)
+)
+END
+GO
+
+delete from registryaddress
+GO
+
 --[DBO]--
 -- FINE GENERAZIONE SCRIPT --
 
@@ -751,6 +941,3 @@ insert into [menuweb] (idmenuweb, edittype, idmenuwebparent, sort,tablename, lab
 
 
 GO
-
-
-
