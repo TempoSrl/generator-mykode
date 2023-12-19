@@ -70,8 +70,8 @@ viste, chiavi, devono essere identiche.
 Dobbiamo creare un database vuoto, e creare un utente amministratore da usare nel prossimo passo.
 
 In seguito aggiungeremo alcune tabelle ed una vista come esempio; possiamo evitare di eseguire i singoli script se 
-eseguiamo direttamente il file setup.sql presente nella cartella test/jsApplication che sarà creata nel passo d' 
-installazione "testMyKode"
+eseguiamo direttamente il file setup_sqlserver.sql o setup_mysql presente nella cartella demo del progetto 
+generator-mykode
 
 > yo mykode:application
 > 
@@ -115,7 +115,7 @@ Questo passo (mykode:application) lo si può ripetere quando si vuole al fine di
 sotto altre routes principali
 
 ### Attenzione
-È necessario per ogni database creato eseguire lo script  setup_mysql.sql o setup_sqlserver.sql presenti 
+È necessario per ogni database creato eseguire lo script setup_mysql.sql o setup_sqlserver.sql presenti 
  nella cartella principale. A breve sarà disponibile anche setup_oracle.sql.
 
 

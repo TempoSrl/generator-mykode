@@ -43,9 +43,6 @@ CREATE TABLE IF NOT EXISTS customuser (
 -- Cancella i dati dalla tabella customuser --
 DELETE FROM customuser;
 
-INSERT INTO customuser (idcustomuser, ct, cu, lastmodtimestamp, lastmoduser, lt, lu, username)
-VALUES ('seg_fcaprilli', '2020-11-26 11:46:14.673', 'xx', NULL, NULL, '2020-11-26 11:46:14.673', 'xxx', 'seg_fcaprilli')
-
 
 
 -- CREAZIONE TABELLA customgroup --
@@ -122,12 +119,7 @@ CREATE TABLE IF NOT EXISTS flowchart (
 -- Cancella i dati dalla tabella flowchart --
 DELETE FROM flowchart;
 
--- GENERAZIONE DATI PER flowchart --
-INSERT INTO flowchart (idflowchart, address, ayear, cap, codeflowchart, ct, cu, fax, idcity, idsor1, idsor2, idsor3, location, lt, lu, nlevel, paridflowchart, phone, printingorder, title)
-VALUES ('232099', NULL, 2023, NULL, 'SEGADM', '2023-01-09 15:47:50.303', 'setup', NULL, NULL, NULL, NULL, NULL, NULL, '2023-01-09 15:47:50.303', 'setup', 1, '23', NULL, '1', 'Segreterie Amministratori');
-
 GO
-
 
 -- CREAZIONE TABELLA flowchartuser --
 CREATE TABLE IF NOT EXISTS flowchartuser (
@@ -188,35 +180,18 @@ DELETE FROM menu;
 
 GO
 
-delete from customuser;
-
--- GENERAZIONE DATI PER customuser --
-INSERT INTO customuser (idcustomuser, ct, cu, lastmodtimestamp, lastmoduser, lt, lu, username)
-	  VALUES ('seg_fcaprilli', '2020-11-26 11:46:14.673', 'seg_psuma', NULL, NULL, '2020-11-26 11:46:14.673', 'seg_psuma', 'seg_fcaprilli');
-
-
-
-
 
 -- Cancella i dati dalla tabella flowchartuser --
 DELETE FROM flowchartuser;
 
-INSERT INTO flowchartuser (idcustomuser, idflowchart, ndetail, all_sorkind01, all_sorkind02, all_sorkind03, all_sorkind04, all_sorkind05, ct, cu,
-    flagdefault, idsor01, idsor02, idsor03, idsor04, idsor05, lt, lu, sorkind01_withchilds, sorkind02_withchilds,
-    sorkind03_withchilds, sorkind04_withchilds, sorkind05_withchilds, start, stop, title)
-	VALUES ('seg_fcaprilli', '232099', '2', NULL, NULL, NULL, NULL, NULL, '2023-01-09 15:47:50.310', 'assistenza', 'N', NULL, NULL, NULL, NULL, NULL, '2023-01-09 15:47:50.310', 'assistenza', NULL, NULL, NULL, NULL, NULL, '1900-01-01', NULL, NULL);
+GO
 
 delete from customgroup;
 
--- GENERAZIONE DATI PER customgroup --
-INSERT INTO customgroup (idcustomgroup, ct, cu, description, groupname, lastmodtimestamp, lastmoduser, lt, lu)
-    VALUES ('ORGANIGRAMMA', '2007-06-22 14:21:39.013', 'sa', 'Organigramma', 'Organigramma', '2007-06-22 14:21:39.013', 'sa', '2007-06-22 14:21:39.013', 'sa');
-
+GO
 
 delete from customusergroup;
 
-INSERT INTO customusergroup (idcustomgroup, idcustomuser, ct, cu, lastmodtimestamp, lastmoduser, lt, lu)
-VALUES ('ORGANIGRAMMA', 'seg_fcaprilli', '2020-11-26 11:46:14.673', 'seg_psuma', '2020-11-26 11:46:14.673', 'seg_psuma', '2020-11-26 11:46:14.673', 'seg_psuma');
 
 -- FINE GENERAZIONE SCRIPT --
 -- CREAZIONE TABELLA userenvironment --

@@ -1,7 +1,6 @@
---setuser 'amministrazione'
-SET NOCOUNT ON
+/*   SETUP DATA DEMO */
 
---[DBO]--
+SET NOCOUNT ON
 GO
 
 -- CREAZIONE TABELLA web_listredir --
@@ -235,6 +234,8 @@ variablename
 )
 END
 GO
+
+
 -- CREAZIONE TABELLA flowchartrestrictedfunction --
 IF NOT EXISTS(select * from sysobjects where id = object_id(N'[flowchartrestrictedfunction]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 BEGIN
@@ -467,11 +468,11 @@ GO
 
 
 
-if exists (select * from dbo.sysobjects where id = object_id(N'[compute_notable]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [compute_notable]
+if exists (select * from dbo.sysobjects where id = object_id(N'[DBO].[compute_notable]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [DBO].[compute_notable]
 GO
 
-CREATE PROCEDURE compute_notable
+CREATE PROCEDURE [DBO].compute_notable
 (
 	@ayear int,
 	@iduser varchar(10),
@@ -694,6 +695,195 @@ GO
 delete from virtualuser
 GO
 
+IF EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registry]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+DROP TABLE [dbo].[registry]
+END
+
+
+GO
+-- CREAZIONE TABELLA registry --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registry]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registry] (
+idreg int NOT NULL,
+active char(1) NOT NULL,
+annotation varchar(400) NULL,
+authorization_free char(1) NULL,
+badgecode varchar(20) NULL,
+birthdate date NULL,
+ccp varchar(12) NULL,
+cf varchar(16) NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+email_fe varchar(200) NULL,
+extension varchar(200) NULL,
+extmatricula varchar(40) NULL,
+flag_pa char(1) NULL,
+flagbankitaliaproceeds char(1) NULL,
+foreigncf varchar(40) NULL,
+forename varchar(50) NULL,
+gender char(1) NULL,
+idaccmotivecredit varchar(36) NULL,
+idaccmotivedebit varchar(36) NULL,
+idcategory varchar(2) NULL,
+idcentralizedcategory varchar(20) NULL,
+idcity int NULL,
+idexternal int NULL,
+idmaritalstatus varchar(20) NULL,
+idnation int NULL,
+idregistryclass varchar(2) NULL,
+idregistrykind int NULL,
+idtitle varchar(20) NULL,
+ipa_fe varchar(7) NULL,
+ipa_perlapa varchar(100) NULL,
+location varchar(50) NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+maritalsurname varchar(50) NULL,
+multi_cf char(1) NULL,
+p_iva varchar(15) NULL,
+pec_fe varchar(200) NULL,
+residence int NOT NULL,
+rtf image NULL,
+sdi_defrifamm varchar(20) NULL,
+sdi_norifamm char(1) NULL,
+surname varchar(50) NULL,
+title varchar(101) NULL,
+toredirect int NULL,
+txt text NULL,
+ CONSTRAINT xpkregistry PRIMARY KEY (idreg
+)
+)
+END
+GO
+
+delete from registry
+GO
+
+
+-- CREAZIONE TABELLA registryclass --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registryclass]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registryclass] (
+idregistryclass varchar(2) NOT NULL,
+active char(1) NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+description varchar(150) NOT NULL,
+flagbadgecode char(1) NOT NULL,
+flagbadgecode_forced char(1) NOT NULL,
+flagCF char(1) NOT NULL,
+flagcf_forced char(1) NOT NULL,
+flagcfbutton char(1) NULL,
+flagextmatricula char(1) NOT NULL,
+flagextmatricula_forced char(1) NOT NULL,
+flagfiscalresidence char(1) NOT NULL,
+flagfiscalresidence_forced char(1) NOT NULL,
+flagforeigncf char(1) NOT NULL,
+flagforeigncf_forced char(1) NOT NULL,
+flaghuman char(1) NULL,
+flaginfofromcfbutton char(1) NULL,
+flagmaritalstatus char(1) NOT NULL,
+flagmaritalstatus_forced char(1) NOT NULL,
+flagmaritalsurname char(1) NOT NULL,
+flagmaritalsurname_forced char(1) NOT NULL,
+flagothers char(1) NOT NULL,
+flagothers_forced char(1) NOT NULL,
+flagp_iva char(1) NOT NULL,
+flagp_iva_forced char(1) NOT NULL,
+flagqualification char(1) NOT NULL,
+flagqualification_forced char(1) NOT NULL,
+flagresidence char(1) NOT NULL,
+flagresidence_forced char(1) NOT NULL,
+flagtitle char(1) NOT NULL,
+flagtitle_forced char(1) NOT NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+ CONSTRAINT xpkregistryclass PRIMARY KEY (idregistryclass
+)
+)
+END
+GO
+
+delete from registryclass
+GO
+
+
+-- CREAZIONE TABELLA registryreference --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registryreference]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registryreference] (
+idreg int NOT NULL,
+idregistryreference int NOT NULL,
+activeweb char(1) NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+email varchar(200) NULL,
+faxnumber varchar(50) NULL,
+flagdefault char(1) NULL,
+iterweb int NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+mobilenumber varchar(20) NULL,
+msnnumber varchar(50) NULL,
+passwordweb varchar(40) NULL,
+pec varchar(200) NULL,
+phonenumber varchar(50) NULL,
+referencename varchar(50) NOT NULL,
+registryreferencerole varchar(50) NULL,
+rtf image NULL,
+saltweb varchar(20) NULL,
+skypenumber varchar(50) NULL,
+txt text NULL,
+userweb varchar(40) NULL,
+website varchar(512) NULL,
+ CONSTRAINT xpkregistryreference PRIMARY KEY (idreg,
+idregistryreference
+)
+)
+END
+GO
+
+delete from registryreference
+GO
+
+
+
+-- CREAZIONE TABELLA registryaddress --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[dbo].[registryaddress]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [dbo].[registryaddress] (
+idreg int NOT NULL,
+start date NOT NULL,
+idaddresskind int NOT NULL,
+active char(1) NULL,
+address varchar(100) NULL,
+annotations varchar(400) NULL,
+cap varchar(20) NULL,
+ct datetime NULL,
+cu varchar(64) NULL,
+flagforeign char(1) NULL,
+idcity int NULL,
+idnation int NULL,
+location varchar(50) NULL,
+lt datetime NULL,
+lu varchar(64) NULL,
+officename varchar(50) NULL,
+recipientagency varchar(50) NULL,
+stop date NULL,
+ CONSTRAINT xpkregistryaddress PRIMARY KEY (idreg,
+start,
+idaddresskind
+)
+)
+END
+GO
+
+delete from registryaddress
+GO
+
 --[DBO]--
 -- FINE GENERAZIONE SCRIPT --
 
@@ -751,6 +941,143 @@ insert into [menuweb] (idmenuweb, edittype, idmenuwebparent, sort,tablename, lab
 
 
 GO
+
+insert into web_listredir(tablename,listtype, newtablename, newlisttype, ct,cu,lt,lu)
+    values('mandate','on_view','mandateview','default',getdate(),'nino',getdate(),'nino')
+
+GO
+
+
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[DBO].[mandate]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [DBO].[mandate] (
+idmankind varchar(20) NOT NULL,
+yman smallint NOT NULL,
+nman int NOT NULL,
+active char(1) NULL,
+adate date NOT NULL,
+description varchar(150) NOT NULL,
+idman int NULL,
+idreg int NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+rtf image NULL,
+ CONSTRAINT xpkmandate PRIMARY KEY (idmankind,yman,nman)
+)
+END
+GO
+
+DELETE FROM MANDATE
+
+GO
+
+
+
+-- CREAZIONE TABELLA mandatekind --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[DBO].[mandatekind]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [DBO].[mandatekind] (
+idmankind varchar(20) NOT NULL,
+active char(1) NULL,
+description varchar(150) NOT NULL,
+header varchar(150) NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL
+ CONSTRAINT xpkmandatekind PRIMARY KEY (idmankind
+)
+)
+END
+GO
+
+DELETE FROM MANDATEKIND
+GO
+
+-- GENERAZIONE DATI PER mandatekind --
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)
+    VALUES ('CICCIO-CP','S',{ts '2013-03-12 10:24:04.593'},'sa',
+            'Contratto Ciccio', 'BL0001',{ts '2018-02-08 12:22:35.623'},'assistenza')
+
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)
+    VALUES ('CICCIO-CP_PCC','S',{ts '2013-03-12 10:24:04.593'},'sa',
+            'Contratto CP_PCC', 'BL0002',{ts '2018-02-08 12:22:35.623'},'assistenza')
+
+
+INSERT INTO [mandatekind]  (idmankind,active,ct,cu,description,header,lt,lu) VALUES
+    ('CP_PCC','S',{ts '2014-12-30 15:54:59.757'},'assistenza',
+     'Documento equivalente di pagamento','123456',{ts '2019-09-03 16:15:19.927'},'nino')
+
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)  VALUES
+    ('GENERALE','S',{ts '2006-01-31 17:12:09.953'},'sa',
+        'Tipo ordine GENERALE','Intestazione da mandatekind.',{ts '2023-06-07 12:43:03.250'},'assistenza')
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)  VALUES
+    ('GIURprova','S',{ts '2015-09-03 16:30:43.140'},'assistenza',
+    'GIUR - Convenzione passiva (Non soggetta ad IVA)',null,{ts '2018-02-12 17:37:44.830'},'assistenza')
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)  VALUES
+    ('NOFATT','S',{ts '2010-03-22 09:35:53.937'},'SARA',
+            'Contratto Passivo  collegabile a Fattura','86',{ts '2016-06-01 14:13:03.877'},'assistenza')
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)  VALUES
+    ('NOFATTURA','S',{ts '2010-06-25 16:06:41.547'},'SA',
+        'Contratto passivo SENZA FATTURA','4',{ts '2010-10-15 13:10:04.573'},'sa')
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)  VALUES
+    ('PRIMO','S',{ts '2006-08-03 10:47:12.703'},'sa',
+        'Tipo ordine test','3654',{ts '2014-03-07 16:07:42.423'},'nino')
+INSERT INTO [mandatekind] (idmankind,active,ct,cu,description,header,lt,lu)   VALUES
+        ('PROVA',null,{ts '2007-11-06 13:53:55.933'},'NINO',
+            'prova','prova',{ts '2014-03-07 16:07:20.283'},'nino')
+GO
+
+-- FINE GENERAZIONE SCRIPT --
+
+
+-- CREAZIONE VISTA mandateview
+IF EXISTS(select * from sysobjects where id = object_id(N'[DBO].[mandateview]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW [DBO].[mandateview]
+GO
+
+
+CREATE VIEW [DBO].mandateview
+	AS SELECT
+	mandate.* ,
+	mandatekind.description as mandatekind
+	from mandate
+	JOIN mandatekind (NOLOCK)
+	ON mandate.idmankind = mandatekind.idmankind
+GO
+
+
+
+-- CREAZIONE TABELLA mandatedetail --
+IF NOT EXISTS(select * from sysobjects where id = object_id(N'[DBO].[mandatedetail]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE [DBO].[mandatedetail] (
+idmankind varchar(20) NOT NULL,
+yman smallint NOT NULL,
+nman int NOT NULL,
+rownum int NOT NULL,
+detaildescription varchar(150) NULL,
+discount float NULL,
+number decimal(19,2) NULL,
+tax decimal(19,2) NULL,
+taxable decimal(19,5) NULL,
+taxrate float NULL,
+ct datetime NOT NULL,
+cu varchar(64) NOT NULL,
+lt datetime NOT NULL,
+lu varchar(64) NOT NULL,
+ CONSTRAINT xpkmandatedetail PRIMARY KEY (idmankind,yman,nman,rownum)
+)
+END
+GO
+
+delete from mandatedetail
+GO
+
+
+
 
 
 

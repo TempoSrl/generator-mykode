@@ -188,16 +188,16 @@ module.exports = function (grunt) {
         },
 
         yuidoc: {
-            compile: {
-                name: '<%= pkg.name %>',
-                description: '<%= pkg.description %>',
-                version: '<%= pkg.version %>',
-                url: '<%= pkg.homepage %>',
-                options: {
-                    paths: ['./src'],
-                    outdir: 'docs'
-                }
+          compile: {
+            name: '<%= pkg.name %>',
+            description: '<%= pkg.description %>',
+            version: '<%= pkg.version %>',
+            url: '<%= pkg.homepage %>',
+            options: {
+              paths: ['./src'],
+              outdir: 'docs'
             }
+          }
         },
 
         watch_common: {
@@ -719,16 +719,16 @@ module.exports = function (grunt) {
     grunt.registerTask('common unit', ['jasmine:common']);
     grunt.registerTask('server unit', ['jasmine:server']);
     grunt.registerTask("server midway",["NodeStart","jasmine:midway","NodeStop"]); // , "NodeStop"
-    grunt.registerTask("server e2e", ["createSqlDB","NodeStart",  "karma:server_e2e","NodeStop","destroySqlDB"]);
+    grunt.registerTask("server e2e", ["createSqlDB","NodeStart",  "karma:server_e2e","destroySqlDB","NodeStop"]);
 
     grunt.registerTask("client unit", ["karma:spec"]);
-    grunt.registerTask("client midway", ["createSqlDB","NodeStart","karma:midway","NodeStop","destroySqlDB"]);
+    grunt.registerTask("client midway", ["createSqlDB","NodeStart","karma:midway","destroySqlDB","NodeStop"]);
     grunt.registerTask("client e2e", ["createSqlDB", "NodeStart",
         "karma:client_e2e", "karma:client_e2e_app",
         "destroySqlDB","NodeStop"]);
     grunt.registerTask("client e2e_app", ["createSqlDB", "NodeStart",
         "karma:client_e2e_app",
-        "NodeStop","destroySqlDB"]);
+        "destroySqlDB", "NodeStop"]);
 
     grunt.registerTask('all server',
         [ 'jasmine:common_server', "createSqlDB","NodeStart",
@@ -740,7 +740,7 @@ module.exports = function (grunt) {
     grunt.registerTask('all client',['client unit',
         "createSqlDB", "NodeStart" ,
         "karma:midway","karma:client_e2e","karma:client_e2e_app",
-        "NodeStop","destroySqlDB"]);
+        "destroySqlDB", "NodeStop"]);
     grunt.registerTask("all",
         ['jasmine:common_server',"karma:spec",
             "createSqlDB", "NodeStart" ,
@@ -751,9 +751,12 @@ module.exports = function (grunt) {
         ]);
 
     grunt.registerTask('client pages e2e',[
+        "createE2eDB",
+        "addUserE2e",
         "loginOFF",
         "NodeStart" ,
         "karma:client_e2e_pages",
+        "destroyE2eDB",
         "NodeStop",
         "loginON"
     ]);
@@ -763,8 +766,6 @@ module.exports = function (grunt) {
     grunt.registerTask('doc', ['jsdoc','shell:jsdoc', 'open:doc']);
 
 
-
-
     grunt.registerTask("NodeStart", "start Node server.js", function () {
         var done = this.async();
         asyncCmd(
@@ -772,6 +773,7 @@ module.exports = function (grunt) {
             ["--inspect", "server.js"],
             function (err, res, code, buffer) {
                 writeOutput(err,res,code,buffer);
+
                 if (err) {
                     grunt.log.writeln("NodeStart error");
                     grunt.log.writeln(err, code);
@@ -796,6 +798,7 @@ module.exports = function (grunt) {
             ["jasmine", "test/client/jsDataSetSpec.js"],
             function (err, res, code, buffer) {
                 writeOutput(err,res,code,buffer);
+
                 if (err) {
                     grunt.log.writeln("Node Version error");
                     grunt.log.writeln(err, code);
@@ -822,6 +825,7 @@ module.exports = function (grunt) {
             ["/F", "/IM", "node.exe"],
             function (err, res, code, buffer) {
                 writeOutput(err,res,code,buffer);
+
                 if (err) {
                     grunt.log.writeln("NodeStop error");
                     grunt.log.writeln(err, code);
@@ -846,11 +850,12 @@ module.exports = function (grunt) {
             if (res) grunt.log.writeln(c.green('Output:\n') + res);
             if (code) grunt.log.writeln(c.yellow('Exit Code:\n') + code);
             //if (buffer) grunt.log.writeln(c.blue('Buffer: ') + buffer);
-        })
+        });
     }
 
     //grunt.registerTask('serverStart', ['shell:startNode']);
     //grunt.registerTask('serverStop', ['shell:stopNode']);
+
 
     grunt.registerTask("createSqlDB","Create Sql DB",function(){
         var done = this.async();
@@ -920,6 +925,122 @@ module.exports = function (grunt) {
         }, 5000);
     });
 
+    grunt.registerTask("createE2eDB","Create E2e tables",function(){
+        var done = this.async();
+
+        const mainInfo = grunt.file.readJSON(path.join('config', 'appList.json'));
+        let appInfo;
+        mainInfo.forEach(i=> {if (i.e2e)  {appInfo=i; }});
+        if(appInfo===undefined){
+            grunt.log.writeln("File appList.json does not have an entry for an e2e test "+dbModel);
+            done();
+            return;
+        }
+
+        let dbInfo = DBList.getDbInfo(appInfo.dbCode);
+        let scriptName;
+        if (dbInfo.sqlModule==='jsSqlServerDriver'){
+            scriptName="setup_sqlserver.sql";
+        }
+        if (dbInfo.sqlModule==='jsMySqlDriver'){
+            scriptName="setup_mysql.sql";
+        }
+        if (scriptName===undefined){
+            grunt.log.writeln("A setup for e2e is not available for "+dbInfo.sqlModule);
+            done();
+            return;
+        }
+        let doneFired = false;
+        console.log( path.join("node_modules","generator-mykode","demo",scriptName));
+        asyncCmd(
+            "node",
+            ["test/runSql",
+                path.join("config","dbList.json"),
+                path.join("node_modules","generator-mykode","demo",scriptName),
+                appInfo.dbCode
+            ],
+            function (err, res, code, buffer) {
+                writeOutput(err,res,code,buffer);
+
+                if (err) {
+                    grunt.log.writeln("createE2eDB error");
+                    grunt.log.writeln(err, code);
+                    doneFired=true;
+                    done();
+                    return;
+                }
+                grunt.log.writeln("createE2eDB ok");
+                doneFired=true;
+                done();
+            }
+        );
+        setTimeout(function () {
+            if (!doneFired){
+                doneFired=true;
+                grunt.log.writeln("createE2eDB timeout");
+                done();
+            }
+        }, 60000);
+    });
+
+    grunt.registerTask("destroyE2eDB","Destroy E2e tables",function(){
+        var done = this.async();
+
+        const mainInfo = grunt.file.readJSON(path.join('config', 'appList.json'));
+        let appInfo;
+        mainInfo.forEach(i=> {if (i.e2e)  {appInfo=i; }});
+        if(appInfo===undefined){
+            grunt.log.writeln("File appList.json does not have an entry for an e2e test "+dbModel);
+            done();
+            return;
+        }
+
+        let dbInfo = DBList.getDbInfo(appInfo.dbCode);
+        let scriptName;
+        if (dbInfo.sqlModule==='jsSqlServerDriver'){
+            scriptName="destroy_sqlserver.sql";
+        }
+        if (dbInfo.sqlModule==='jsMySqlDriver'){
+            scriptName="destroy_mysql.sql";
+        }
+        if (scriptName===undefined){
+            grunt.log.writeln("A destroy for e2e is not available for "+dbInfo.sqlModule);
+            done();
+            return;
+        }
+        let doneFired = false;
+        console.log( path.join("node_modules","generator-mykode","demo",scriptName));
+        asyncCmd(
+            "node",
+            ["test/runSql",
+                path.join("config","dbList.json"),
+                path.join("node_modules","generator-mykode","demo",scriptName),
+                appInfo.dbCode
+            ],
+            function (err, res, code, buffer) {
+                writeOutput(err,res,code,buffer);
+
+                if (err) {
+                    grunt.log.writeln("destroyE2eDB error");
+                    grunt.log.writeln(err, code);
+                    doneFired=true;
+                    done();
+                    return;
+                }
+                grunt.log.writeln("destroyE2eDB ok");
+                doneFired=true;
+                done();
+            }
+        );
+        setTimeout(function () {
+            if (!doneFired){
+                doneFired=true;
+                grunt.log.writeln("destroyE2eDB timeout");
+                done();
+            }
+        }, 60000);
+    });
+
     function registerUser(DA, idflowchart, userName,  password){
         let AA = new Date().getFullYear().toString().slice(-2);
         let idcustomuser;
@@ -935,7 +1056,7 @@ module.exports = function (grunt) {
                 return DA.doSingleInsert("flowchart",
                     ["idflowchart","ayear","codeflowchart","ct","cu","lt","lu",
                         "nlevel","paridflowchart","printingorder","title"],
-                    [idflowchart,2023,'00'+idflowchart,new Date(),'setup',new Date(),'setup',
+                    [idflowchart,new Date().getFullYear(),'00'+idflowchart,new Date(),'setup',new Date(),'setup',
                         1,'0',idflowchart, 'node']
                 );
             }
@@ -956,7 +1077,7 @@ module.exports = function (grunt) {
                 [userName,new Date(),'setup',new Date(),'setup',userName]);
         }).then (()=>{
             return DA.readSingleValue({tableName:"customusergroup",expr:"idcustomuser",
-                filter: $dq.mcmpEq({idcustomgroup:"ORGANIGRAMMA", idcustomuser:idcustomuser})});
+                    filter: $dq.mcmpEq({idcustomgroup:"ORGANIGRAMMA", idcustomuser:idcustomuser})});
         }).then ((_idcustomuser)=>{
 
             if (_idcustomuser) {
@@ -969,7 +1090,7 @@ module.exports = function (grunt) {
                 ["ORGANIGRAMMA",idcustomuser, new Date(),'setup',new Date(),'setup']);
         }).then (()=>{
             return DA.readSingleValue({tableName:"flowchartuser",expr:"idcustomuser",
-                filter: $dq.mcmpEq({"idcustomuser": idcustomuser, idflowchart:idflowchart})});
+                    filter: $dq.mcmpEq({"idcustomuser": idcustomuser, idflowchart:idflowchart})});
         }).then ((_idcustomuser)=>{
             if (_idcustomuser) {
                 grunt.log.writeln("idcustomuser "+ _idcustomuser+" found in table flowchartuser");
@@ -987,7 +1108,7 @@ module.exports = function (grunt) {
                     filter: $dq.eq("idreg",1)
                 });
         }).then ((idregistryreference)=>{
-            grunt.log.writeln("idregistryreference in table registryreference was "+idregistryreference);
+            //grunt.log.writeln("idregistryreference in table registryreference was "+idregistryreference);
             //Ed infine associamo una password all'utente
             let salt = Password.generateSalt();
             let now = new Date();
@@ -1008,6 +1129,37 @@ module.exports = function (grunt) {
         }).fail(err=>grunt.log.writeln(err));
     }
 
+    grunt.registerTask("addUserE2e","Aggiungi utente per test e2e",function(){
+        let done = this.async();
+
+        const mainInfo = grunt.file.readJSON(path.join('config', 'appList.json'));
+        let appInfo;
+        mainInfo.forEach(i=> {if (i.e2e)  {appInfo=i; }});
+        if(appInfo===undefined){
+            grunt.log.writeln("File appList.json does not have an entry for an e2e test "+dbModel);
+            done();
+            return;
+        }
+        let AA = new Date().getFullYear().toString().slice(-2);
+        appInfo.idflowchart_e2e = AA + "0001";
+        if (!appInfo.user_e2e) {
+            appInfo.user_e2e="e2euser";
+        }
+        if (!appInfo.pwd_e2e) {
+            appInfo.pwd_e2e="e2epwd";
+        }
+        fs.writeFileSync(path.join('config', 'appList.json'),
+                JSON.stringify(mainInfo, null, 2));
+        DBList.getDataAccess(appInfo.dbCode).then((DA)=> {
+            return registerUser(DA, appInfo.idflowchart_e2e,
+                "e2euser", //appInfo.user_e2e,
+                "e2epwd" //appInfo.pwd_e2e
+                ).then(() => {
+                done();
+            });
+        });
+
+    });
     grunt.registerTask("addUser","Aggiungi utente a db",function(){
         let done= this.async();
         const rl = readline.createInterface({
@@ -1058,7 +1210,7 @@ module.exports = function (grunt) {
                         return;
                     }
                     else {
-                        grunt.log.writeln('Le password corrispondono.');
+                        //grunt.log.writeln('Le password corrispondono.');
                         faiDomanda(index+1); //go to else section
                     }
                 }
@@ -1075,7 +1227,7 @@ module.exports = function (grunt) {
                     return registerUser(DA, risposte[1], risposte[2], risposte[3]);
                 }).then(()=>{
                     rl.close();
-                    grunt.log.writeln('Risposte inserite:', risposte);
+                    //grunt.log.writeln('Risposte inserite:', risposte);
                     done();
                 })
                 .fail((err)=>{

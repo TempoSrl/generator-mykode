@@ -60,6 +60,10 @@ function pathJoin(basePath, subfolders){
     }
     return path.join.apply(path,[basePath].concat(subfolders));
 }
+function demoPath(){
+    const generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
+    return path.join(generatorPackagePath,"demo");
+}
 
 function appPath(subfolders){
     const generatorPackagePath = path.dirname(require.resolve("generator-mykode/package.json"));
@@ -287,6 +291,8 @@ module.exports = class extends Generator{
         ["app"].forEach(folder => {
             copyFolder(appPath([folder]),"client");
         });
+
+        copyFolder(demoPath(),"demo");
 
         //jsSpec, jsDataSetSpec and jsDataQuerySpec
         // fs.cpSync(frontendPath(["test"]), path.join("test", "client"),

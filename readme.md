@@ -62,8 +62,8 @@ but they cannot have a different structure: tables, views, keys must be identica
 We need to create an empty database and create an administrator user for use in the next step.
 
 Later, we'll add some tables and a view as an example; you can skip running individual scripts 
-if you execute the `setup.sql` file directly in the `test/jsApplication` folder, which will be 
-created in the "testMyKode" installation step.
+if you execute the `setup_mysql.sql` or `setup_sqlserver.sql` file directly in the `demo` folder of the 
+generator-mykode project
 
 > yo mykode:application
 > 
