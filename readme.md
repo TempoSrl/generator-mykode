@@ -28,6 +28,9 @@ This step needs to be done only once.
 
 To create the program, type the following in the terminal:
 
+>yo mykode
+
+
 Answer the questions, for example:
 >? Your project name (must follow identifier name rules) (test3)
 
