@@ -292,7 +292,7 @@ module.exports = class extends Generator{
             copyFolder(appPath([folder]),"client");
         });
 
-        copyFolder(demoPath(),"demo");
+        //copyFolder(demoPath(),"demo");
 
         //jsSpec, jsDataSetSpec and jsDataQuerySpec
         // fs.cpSync(frontendPath(["test"]), path.join("test", "client"),
