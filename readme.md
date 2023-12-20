@@ -11,6 +11,8 @@ This generator is designed to assist in creating an application using the myKode
 - An SQL Server, MySQL, or Oracle database
 - Visual Studio and the hdsgene tool for visually editing datasets
 - Yeoman (run `npm install --global yo`)
+- Bower (run `npm install -g bower`)
+
 
 ## Creating an empty solution
 > Create a new folder (e.g., test)

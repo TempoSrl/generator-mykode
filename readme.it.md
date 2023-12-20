@@ -12,7 +12,8 @@ Questo generatore serve ad aiutare a creare un'applicazione con il framework myK
 - al momento windows per la dipendenza edge-js ma prossimamente sarà disponibile anche su macchine linux
 - un database sql server o mysql o oracle
 - visual studio ed il tool hdsgene per editare visualmente i dataset
-- yeoman (eseguire npm install --global yo)
+- yeoman (eseguire `npm install --global yo`)
+- Bower (eseguire `npm install -g bower`)
 
 ## Creazione solution vuota
 > creare nuova cartella (es.test)
