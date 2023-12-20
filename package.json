@@ -1,9 +1,10 @@
 {
   "name": "generator-mykode",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "description": "Generator for myKode framework applications",
   "files": [
-    "generators"
+    "generators",
+    "demo"
   ],
   "repository": {
     "type": "git",
