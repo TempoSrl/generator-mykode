@@ -904,7 +904,7 @@ INSERT INTO menuweb (idmenuweb, editType, idmenuwebparent, label, sort, tableNam
 VALUES
     (2, NULL, 1, 'Livello 1', 1, NULL),
     (3, NULL, 2, 'Livello 2', 2, NULL),
-    (4, 'edit_type', 3, 'Nome maschera', 1, 'tablenane');
+    (4, 'default', 3, 'mandate', 1, 'Contratti passivi');
 
 
 

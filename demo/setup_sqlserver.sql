@@ -932,13 +932,12 @@ GO
 delete from menuweb
 
 insert into [menuweb] (idmenuweb, edittype, idmenuwebparent, sort,tablename, label)
-    values(2,null, 1, 1, null, 'Livello 1')
+    values(2,null, 1, 1, null, 'Finanziario')
 insert into [menuweb] (idmenuweb, edittype, idmenuwebparent, sort,tablename, label)
-    values(3,null, 2, 2, null, 'Livello 2')
+    values(3,null, 2, 2, null, 'Uscite')
 --insert into [menuweb] (idmenuweb, edittype, idmenuwebparent, sort,tablename, label) values(4,null, 3, 1, null, 'Contratti')
 insert into [menuweb] (idmenuweb, edittype, idmenuwebparent, sort,tablename, label)
-    values(4,'edit_type', 3, 1, 'tablenane', 'Nome maschera')
-
+    values(4,'default', 3, 1, 'mandate', 'Contratti Passivi')
 
 GO
 
