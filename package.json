@@ -1,13 +1,13 @@
 {
   "name": "generator-mykode",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Generator for myKode framework applications",
   "files": [
     "generators"
   ],
   "repository": {
     "type": "git",
-    "url": "generator-mykode"
+    "url": "https://github.com/TempoSrl/generator-mykode.git"
   },
   "keywords": [
     "yeoman-generator",
