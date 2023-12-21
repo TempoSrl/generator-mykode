@@ -73,14 +73,14 @@ BEGIN
 END
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'[compute_environment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [compute_environment]
+if exists (select * from dbo.sysobjects where id = object_id(N'[DBO].[compute_environment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [DBO].[compute_environment]
 GO
 
 
 
-if exists (select * from dbo.sysobjects where id = object_id(N'[compute_allowform]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [compute_allowform]
+if exists (select * from dbo.sysobjects where id = object_id(N'[DBO].[compute_allowform]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [DBO].[compute_allowform]
 GO
 
 
