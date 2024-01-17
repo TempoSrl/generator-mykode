@@ -49,7 +49,7 @@ let jsdoc2md = require('jsdoc-to-markdown');
 let Password = require("./src/jsPassword");
 let $dq= require("./client/components/metadata/jsDataQuery");
 
-
+const asyncCmd = require("async-exec-cmd");
 
 const JasmineClass = require('jasmine');
 const jasmineObj = new JasmineClass();
@@ -214,7 +214,7 @@ module.exports = function (grunt) {
                 configFile: "test/karma.conf.js",
                 autoWatch: true,
                 singleRun: true,
-                reporters: ["spec"],
+                reporters: ["spec"], //dots  progress  junit  growl  coverage kjhtml spec
                 specReporter: {
                     maxLogLines: 5, // limit number of lines logged per test
                     suppressErrorSummary: false, // do not print error summary
