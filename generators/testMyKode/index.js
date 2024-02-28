@@ -121,6 +121,7 @@ module.exports = class extends Generator {
             new Buffer(sqlServerDbString), {encoding: 'utf-8'});
 
         sqlConfig.test=true;
+        sqlConfig.e2e=true;
         sqlConfig.useTrustedConnection = false;
         sqlConfig.defaultSchema="DBO";
         sqlConfig.schema="DBO";
