@@ -1,4 +1,5 @@
 const dbModel = "main";
+const os = require('os');
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -9,7 +10,18 @@ const dbModel = "main";
 /*jshint camelcase: false */
 const path = require("path");
 const readline = require('readline');
-const chalk = import('chalk');
+const chalkModule = import('chalk');
+const platform = os.platform();
+
+
+
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+
+let chalk;
+chalkModule.then((c)=> {
+    chalk = new c.Chalk();
+
+});
 
 const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
@@ -123,10 +135,8 @@ module.exports = function (grunt) {
 
     const path = require("path");
 
-    const os = require('os');
 
-    const platform = os.platform();
-    console.log('Sistema operativo:', platform);
+    grunt.log.writeln('Current OS is '+ platform);
 
     function enrichEnv(env){
         let win32 = false;
@@ -241,16 +251,16 @@ module.exports = function (grunt) {
         },
 
         yuidoc: {
-          compile: {
-            name: '<%= pkg.name %>',
-            description: '<%= pkg.description %>',
-            version: '<%= pkg.version %>',
-            url: '<%= pkg.homepage %>',
-            options: {
-              paths: ['./src'],
-              outdir: 'docs'
+            compile: {
+                name: '<%= pkg.name %>',
+                description: '<%= pkg.description %>',
+                version: '<%= pkg.version %>',
+                url: '<%= pkg.homepage %>',
+                options: {
+                    paths: ['./src'],
+                    outdir: 'docs'
+                }
             }
-          }
         },
 
         watch_common: {
@@ -388,6 +398,7 @@ module.exports = function (grunt) {
                     }
                 },
                 env: jasmineEnv
+
             },
             auto: {
                 options: {
@@ -770,9 +781,9 @@ module.exports = function (grunt) {
         let result = await jasmineObj.execute();
 
         if (result.overallStatus!=="failed") {
-            grunt.log.writeln('No specs has failed');
+            gruntLog('No spec has failed');
         } else {
-            grunt.log.writeln('At least one spec has failed');
+            gruntError('At least one spec has failed');
         }
         done();
     });
@@ -788,7 +799,7 @@ module.exports = function (grunt) {
         "NodeStart",
         "karma:client_e2e", "karma:client_e2e_app",
         "destroySqlDB", "NodeStop"]);
-    grunt.registerTask("client e2e_app", ["createSqlDB", "NodeStart",
+    grunt.registerTask("client e2e_app", ["createSqlDB", "addUserE2e", "NodeStart",
         "karma:client_e2e_app",
         "destroySqlDB", "NodeStop"]);
 
@@ -828,31 +839,73 @@ module.exports = function (grunt) {
     grunt.registerTask('doc', ['jsdoc','shell:jsdoc', 'open:doc']);
 
 
+    let nodeProcess = 0;
+    let launched = false;
+    let terminated = false;
+
+
     grunt.registerTask("NodeStart", "start Node server.js", function () {
         var done = this.async();
         enrichEnv(process.env);
-        asyncCmd(
+        launched=false;
+        terminated = false;
+        nodeProcess=asyncCmd(
             "node",
             [inspectParameter, "server.js"],
             function (err, res, code, buffer) {
-                writeOutput(err,res,code,buffer);
-
+                if (!launched) return;
+                if (terminated)return;
                 if (err) {
-                    grunt.log.writeln("NodeStart error");
+                    gruntError("NodeStart error");
                     grunt.log.writeln(err, code);
+                    terminated=true;
                     done();
                     return;
                 }
-                grunt.log.writeln("Node server running (not err)");
-                console.log(res, code, buffer);
-                done();
+                writeOutput(res,code,buffer);
+
+                if (code===0){
+                    grunt.log.writeln("NodeStart: Node server running (not err), process:",process.pid);
+                    //done();
+                }
+                else {
+                    grunt.log.writeln("NodeStart error code, process:",process.pid);
+                    process.exit(1);
+                }
+
             }
         );
+        //console.log(nodeProcess);
         setTimeout(function () {
-            grunt.log.writeln("Node server running (timeout)");
+            if (!nodeProcess.kill(0)) {
+            	gruntError("Node server failed to start within the specified time.");
+            	return;
+            }
+            launched=true;
+            saveNodePID(nodeProcess.pid);
+            gruntYellow(`Node server started`);
+            //gruntYellow(`Node server running, current process:${process.pid}, child process: ${nodeProcess.pid}`);
             done();
-        }, 5000);
+        }, 10000);
     });
+
+    function getNodePID() {
+        var nodePID=0;
+        if (nodeProcess) nodePID= nodeProcess.pid;
+        return nodePID;
+        // try {
+        //     nodePID = fs.readFileSync(path.join(os.tmpdir(), 'EDGEnodePID'), 'utf8');
+        // } catch (error) {
+        //     //console.error('Errore durante la lettura del file EDGEnodePID.txt:', error);
+        // }
+        // return nodePID;
+    }
+
+    function saveNodePID(pid) {
+        //fs.writeFileSync(path.join(os.tmpdir(), 'EDGEnodePID'), pid? pid.toString():0);
+    }
+
+
 
     grunt.registerTask("test Client", "test client", async function () {
         let done = this.async();
@@ -883,40 +936,71 @@ module.exports = function (grunt) {
 
 
     grunt.registerTask("NodeStop", "stop Node", function () {
-        var done = this.async();
+        let done = this.async();
+        let nodePID = getNodePID();
+        gruntLog("Killing process "+nodePID);
+        if (!nodePID || !launched) {
+            grunt.log.writeln("Node server not running");
+            done();
+            return;
+        }
+
+        var cmd = "kill";
+        var args = ["-TERM",nodePID];
+        var env = process.env;
+
+        if (process.platform === "win32") {
+            // Windows
+            cmd = "taskkill";
+            args = ["/F", "/T", "/PID", nodePID];
+        }
+
+        terminated = true;
         asyncCmd(
-            "taskkill",
-            ["/F", "/IM", "node.exe"],
+            cmd,
+            args,
             function (err, res, code, buffer) {
-                writeOutput(err,res,code,buffer);
+                //writeOutput(err,res,code,buffer);
 
                 if (err) {
-                    grunt.log.writeln("NodeStop error");
-                    grunt.log.writeln(err, code);
+                    gruntError("Node Stop Error:"+err+":"+ code);
                     done();
                     return;
                 }
-                grunt.log.writeln("Node server stopped");
-                grunt.log.writeln(res, code, buffer);
+                gruntYellow("Node server stopped");
+                done();
+                //grunt.log.writeln(res, code, buffer);
             }
         );
-        setTimeout(function () {
-            grunt.log.writeln("Node server stopped (timeout)");
+        /*setTimeout(function () {
+            if(terminated)return;
+            grunt.log.writeln("Node server stopped, process:",process.pid,nodeProcess.pid);
+            terminated = true;
             done();
-        }, 5000);
+        }, 10000);*/
     });
 
-    function writeOutput(err, res, code, buffer){
-        //if (err) grunt.log.writeln(chalk.red('Error: ') + err);
-
-        chalk.then((c)=> {
-            c = new c.Chalk();
-            if (res) grunt.log.writeln(c.green('Output:\n') + res);
-            if (code) grunt.log.writeln(c.yellow('Exit Code:\n') + code);
-            //if (buffer) grunt.log.writeln(c.blue('Buffer: ') + buffer);
-        });
+    function gruntWhite(str){
+        grunt.log.write(chalk.white(str));
     }
 
+    function gruntYellow(str){
+        grunt.log.writeln(chalk.yellow(str));
+    }
+
+    function gruntLog(str){
+        grunt.log.writeln(chalk.green(str));
+    }
+    function gruntError(str){
+        grunt.log.error(chalk.red(str));
+    }
+
+    function writeOutput(err, res, code, buffer){
+        if (err) gruntError(err);
+        if (res) gruntLog(res);
+        if (code) gruntYellow('Exit Code:\n' + code);
+        //if (buffer) grunt.log.writeln(c.blue('Buffer: ') + buffer);
+    }
     //grunt.registerTask('serverStart', ['shell:startNode']);
     //grunt.registerTask('serverStop', ['shell:stopNode']);
 
@@ -927,22 +1011,22 @@ module.exports = function (grunt) {
         enrichEnv(process.env);
         asyncCmd(
             "node",
-            ["test/runSql",
-                "config\\dbList.json",
-                "test\\data\\jsApplication\\setup.sql",
+            [ path.join("test","runSql"),
+                path.join("config","dbList.json"),
+                path.join("test","data","jsApplication","setup.sql"),
                 "test_sqlServer"
             ],
             function (err, res, code, buffer) {
                 writeOutput(err,res,code,buffer);
 
                 if (err) {
-                    grunt.log.writeln("createSqlDB error");
-                    grunt.log.writeln(err, code);
+                    gruntError("createSqlDB error");
+                    gruntError(err +":"+ code);
                     doneFired=true;
                     done();
                     return;
                 }
-                grunt.log.writeln("createSqlDB ok");
+                //grunt.log.writeln("createSqlDB ok","err:",err,"res:",res,"code:",code,"buffer:",buffer);
                 doneFired=true;
                 done();
             }
@@ -962,9 +1046,9 @@ module.exports = function (grunt) {
         enrichEnv(process.env);
         asyncCmd(
             "node",
-            ["test/runSql",
-                "config\\dbList.json",
-                "test\\data\\jsApplication\\Destroy.sql",
+            [path.join("test","runSql"),
+                path.join("config","dbList.json"),
+                path.join("test","data","jsApplication","Destroy.sql"),
                 "test_sqlServer"
             ],
             function (err, res, code, buffer) {
@@ -977,13 +1061,12 @@ module.exports = function (grunt) {
                     return;
                 }
                 doneFired=true;
-                grunt.log.writeln("destroySqlDB ok");
                 done();
             }
         );
         setTimeout(function () {
-            grunt.log.writeln("destroySqlDB timeout");
             if (!doneFired){
+                grunt.log.writeln("destroySqlDB timeout");
                 doneFired=true;
                 done();
             }
@@ -1144,7 +1227,7 @@ module.exports = function (grunt) {
                 [userName,new Date(),'setup',new Date(),'setup',userName]);
         }).then (()=>{
             return DA.readSingleValue({tableName:"customusergroup",expr:"idcustomuser",
-                    filter: $dq.mcmpEq({idcustomgroup:"ORGANIGRAMMA", idcustomuser:idcustomuser})});
+                filter: $dq.mcmpEq({idcustomgroup:"ORGANIGRAMMA", idcustomuser:idcustomuser})});
         }).then ((_idcustomuser)=>{
 
             if (_idcustomuser) {
@@ -1157,7 +1240,7 @@ module.exports = function (grunt) {
                 ["ORGANIGRAMMA",idcustomuser, new Date(),'setup',new Date(),'setup']);
         }).then (()=>{
             return DA.readSingleValue({tableName:"flowchartuser",expr:"idcustomuser",
-                    filter: $dq.mcmpEq({"idcustomuser": idcustomuser, idflowchart:idflowchart})});
+                filter: $dq.mcmpEq({"idcustomuser": idcustomuser, idflowchart:idflowchart})});
         }).then ((_idcustomuser)=>{
             if (_idcustomuser) {
                 grunt.log.writeln("idcustomuser "+ _idcustomuser+" found in table flowchartuser");
@@ -1184,7 +1267,7 @@ module.exports = function (grunt) {
             if (!idregistryreference){
                 idregistryreference=1;
             }
-            grunt.log.writeln("adding user to registryreference with idregistryreference = "+idregistryreference);
+            gruntLog("adding user to registryreference with idregistryreference = "+idregistryreference);
             return DA.doSingleInsert("registryreference",
                 ["idreg","idregistryreference", "referencename", "ct","cu","lt","lu",
                     "userweb","passwordweb","saltweb","iterweb"],
@@ -1194,17 +1277,17 @@ module.exports = function (grunt) {
                     salt.toString("hex").toUpperCase(),
                     iterations
                 ]);
-        }).fail(err=>grunt.log.writeln(err));
+        }).fail(err=>gruntError(err));
     }
 
     function _addUser(dbCode,idFlowChart,userName,password, done){
         DBList.getDataAccess(dbCode).then((DA) => {
             return registerUser(DA, idFlowChart, userName, password);
         }).then(()=>{
-            grunt.log.writeln("User "+userName+" added to db "+dbCode) ;
+            gruntLog("User "+userName+" added to db "+dbCode) ;
             done();
         }).fail((err) => {
-            grunt.log.writeln('Error connecting to db.' + err);
+            gruntError('Error connecting to db.' + err);
             done();
         });
     }
@@ -1221,7 +1304,7 @@ module.exports = function (grunt) {
         let appInfo;
         mainInfo.forEach(i=> {if (i.e2e)  {appInfo=i; }});
         if(appInfo===undefined){
-            grunt.log.writeln("File appList.json does not have an entry for an e2e test "+dbModel);
+            gruntLog("File appList.json does not have an entry for an e2e test "+dbModel);
             done();
             return;
         }
@@ -1234,18 +1317,18 @@ module.exports = function (grunt) {
             appInfo.pwd_e2e="user1user1";
         }
         fs.writeFileSync(path.join('config', 'appList.json'),
-                JSON.stringify(mainInfo, null, 2));
+            JSON.stringify(mainInfo, null, 2));
         DBList.getDataAccess(appInfo.dbCode).then((DA)=> {
             return registerUser(DA, appInfo.idflowchart_e2e,
                 "user1", //appInfo.user_e2e,
                 "user1user1" //appInfo.pwd_e2e
-                ).then(()=>{
-                grunt.log.writeln("User user1 added to db "+dbCode) ;
+            ).then(()=>{
+                gruntLog("User user1 added to db "+appInfo.dbCode) ;
                 done();
             });
         })
         .fail((err) => {
-            grunt.log.writeln('Error connecting to db.' + err);
+            gruntError('Error connecting to db.' + err);
             done();
         });;
 
