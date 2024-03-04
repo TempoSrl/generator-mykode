@@ -33,7 +33,7 @@ module.exports = function(config) {
              'client/components/metadata/LocalResource.js',
              'client/components/metadata/Logger.js', //necessary for mandate_default_Spec
              'client/components/metadata/EventManager.js',
-             'client/components/metadata/Utils.js',
+             'client/components/metadata/utils.js',
              'client/components/metadata/Config.js', //necessary for testHelperPages
              'client/components/metadata/Routing.js', //necessary for testHelperPages
              'client/components/metadata/BootstrapModal.js', //necessary for testHelperPages ($().modal)
@@ -56,7 +56,7 @@ module.exports = function(config) {
         captureTimeout: 60000,
 
         // Start these browsers, currently available:
-        // Chrome, ChromeCanary, Firefox, Opera, Safari (only Mac), PhantomJS, IE (only Windows),
+        // Chrome, ChromeCanary, Firefox, Opera, Safari (only Mac), IE (only Windows),
         //  ChromeDebugging, ChromeHeadless
         browsers: [
             'ChromeDebugging'
@@ -71,7 +71,6 @@ module.exports = function(config) {
 
         // Which plugins to enable
         plugins: [
-            //'karma-phantomjs-launcher',
             'karma-jasmine',
             'karma-jasmine-html-reporter',
             'karma-chrome-launcher',

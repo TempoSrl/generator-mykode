@@ -12,7 +12,7 @@ module.exports = function(config) {
         usePolling: true,
 
         //dots  progress  junit  growl  coverage kjhtml spec
-        reporters: ['progress'],
+        reporters: ['spec'],
 
 
         // base path, that will be used to resolve files and exclude
@@ -56,7 +56,7 @@ module.exports = function(config) {
             'client/components/metadata/ListManager.js',
             'client/components/metadata/TypedObject.js',
             'client/components/metadata/CssDefault.js',
-            'client/components/metadata/Utils.js',
+            'client/components/metadata/utils.js',
             'client/components/metadata/BootstrapContainerTab.js',
             'client/components/metadata/HelpForm.js',
             'client/components/metadata/MetaData.js',

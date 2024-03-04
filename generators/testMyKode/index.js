@@ -182,7 +182,7 @@ module.exports = class extends Generator {
         }
 
 
-        if (!exist1 || !exist2){
+        if (!exist1 || !exist2 || !exist3){
             dbListContent = JSON.stringify(dbList, null, 4);
             fs.writeFileSync(dbListFileName,
                 new Buffer(dbListContent), {encoding: 'utf-8'});

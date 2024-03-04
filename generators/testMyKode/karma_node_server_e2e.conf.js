@@ -32,7 +32,7 @@ module.exports = function(config) {
             'client/components/metadata/jsDataSet.js',
             'node_modules/jquery/dist/jquery.js',
             'client/components/metadata/MetaApp.js',
-            'client/components/metadata/getDataUtils.js',
+            'client/components/metadata/GetDataUtils.js',
             'test/spec_e2e/dummy.spec.js',
             'test/spec_e2e/rest-api.spec.js',
             'client/bower_components/bootstrap/dist/css/bootstrap.css',
@@ -71,7 +71,6 @@ module.exports = function(config) {
         // Which plugins to enable
         plugins: [
             'karma-browserify',
-            'karma-phantomjs-launcher',
             'karma-jasmine',
             'karma-jasmine-html-reporter',
             'karma-chrome-launcher',

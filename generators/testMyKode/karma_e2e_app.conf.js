@@ -12,7 +12,7 @@ module.exports = function(config) {
         usePolling: true,
 
         //dots  progress  junit  growl  coverage kjhtml spec
-        reporters: ['dots'],
+        reporters: ['spec'],
 
 
         // base path, that will be used to resolve files and exclude
@@ -45,7 +45,7 @@ module.exports = function(config) {
             'client/components/metadata/ConnWebService.js',
             'client/components/metadata/ConnWebSocket.js',
             'client/components/metadata/Connection.js',
-            'client/components/metadata/Utils.js',
+            'client/components/metadata/utils.js',
             'client/components/metadata/Security.js',
             'client/components/metadata/AuthManager.js',
             'client/components/metadata/TypedObject.js',
@@ -56,7 +56,7 @@ module.exports = function(config) {
             'client/components/metadata/PostData.js',
             'client/components/i18n/*.js',
             'client/Localization.js',
-            'client/assets/i18n/LocalResourceIt.js',
+            'client/assets/i18n/*.js',
 
             'client/components/metadata/LoaderControl.js',
             'client/components/metadata/ModalLoaderControl.js',
@@ -164,7 +164,7 @@ module.exports = function(config) {
 
         // Which plugins to enable
         plugins: [
-            'karma-phantomjs-launcher', 'karma-jasmine',
+            'karma-jasmine',
             'karma-jasmine-html-reporter',
             'karma-chrome-launcher',
             'karma-junit-reporter',
