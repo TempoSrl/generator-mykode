@@ -123,7 +123,6 @@ module.exports = class extends Generator{
             dependencies: {
                 "async": "^3.2.3",
                 "body-parser": "^1.19.0",
-                "chalk": "^5.3.0",
                 "crypto-js": "^4.1.1",
                 "edge-db": "github:gaelazzo/edge-db",
                 "express": "^4.17.1",
@@ -141,6 +140,9 @@ module.exports = class extends Generator{
                 "uuid": "^8.3.2"
             },
             devDependencies: {
+                "chalk": "^5.3.0",
+                "puppeteer": "^22.3.0",
+                "ps-node": "^0.1.6",
                 "jsmetabackend": "latest",
                 "async-exec-cmd": "^2.0.2",
                 "browserify": "^17.0.0",

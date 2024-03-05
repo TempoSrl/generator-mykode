@@ -891,48 +891,21 @@ module.exports = function (grunt) {
 
     function getNodePID() {
         var nodePID=0;
-        if (nodeProcess) nodePID= nodeProcess.pid;
+        if (nodeProcess) {
+            return nodeProcess.pid;
+        }
+        try {
+            nodePID = fs.readFileSync(path.join(os.tmpdir(), 'EDGEnodePID'), 'utf8');
+        } catch (error) {
+            //console.error('Errore durante la lettura del file EDGEnodePID.txt:', error);
+        }
         return nodePID;
-        // try {
-        //     nodePID = fs.readFileSync(path.join(os.tmpdir(), 'EDGEnodePID'), 'utf8');
-        // } catch (error) {
-        //     //console.error('Errore durante la lettura del file EDGEnodePID.txt:', error);
-        // }
-        // return nodePID;
     }
 
     function saveNodePID(pid) {
-        //fs.writeFileSync(path.join(os.tmpdir(), 'EDGEnodePID'), pid? pid.toString():0);
+        fs.writeFileSync(path.join(os.tmpdir(), 'EDGEnodePID'), pid? pid.toString():0);
     }
 
-
-
-    grunt.registerTask("test Client", "test client", async function () {
-        let done = this.async();
-        enrichEnv(process.env);
-        asyncCmd(
-            "npx",
-            ["jasmine", "test/client/jsDataSetSpec.js"],
-            function (err, res, code, buffer) {
-                writeOutput(err,res,code,buffer);
-
-                if (err) {
-                    grunt.log.writeln("Node Version error");
-                    grunt.log.writeln(err, code);
-                    done();
-                    return;
-                }
-                grunt.log.writeln("Node Version stopped");
-                grunt.log.writeln(res, code, buffer);
-                //done();
-            }
-        );
-        setTimeout(function () {
-            grunt.log.writeln("Node Version stopped (timeout)");
-            done();
-        }, 10000);
-
-    });
 
 
     grunt.registerTask("NodeStop", "stop Node", function () {

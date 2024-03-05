@@ -123,7 +123,7 @@ module.exports = class extends Generator {
         sqlConfig.test=true;
         sqlConfig.e2e=true;
         sqlConfig.useTrustedConnection = false;
-        sqlConfig.defaultSchema="DBO";
+        sqlConfig.defaultSchema=(sqlConfig.user==='sa'?"DBO":sqlConfig.name);
         sqlConfig.schema="DBO";
         sqlConfig.EnableSSORegistration=true;
         sqlConfig.userkindSSO=5;
@@ -159,7 +159,7 @@ module.exports = class extends Generator {
         if (!exist2) {
             sqlConfig.test=false;
             sqlConfig.schema = "DBO";
-            sqlConfig.defaultSchema = sqlConfig.user;
+            sqlConfig.defaultSchema=(sqlConfig.user==='sa'?"DBO":sqlConfig.name);
             dbList.test_sqlServer_anonymous=Object.assign({}, sqlConfig);
             appList.push( {"dbCode":"test_sqlServer_anonymous",
                 "route":"/testanonymous",
