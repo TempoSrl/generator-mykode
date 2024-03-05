@@ -123,7 +123,7 @@ module.exports = class extends Generator {
         sqlConfig.test=true;
         sqlConfig.e2e=true;
         sqlConfig.useTrustedConnection = false;
-        sqlConfig.defaultSchema=(sqlConfig.user==='sa'?"DBO":sqlConfig.name);
+        sqlConfig.defaultSchema=(sqlConfig.user==='sa'?"DBO":sqlConfig.user);
         sqlConfig.schema="DBO";
         sqlConfig.EnableSSORegistration=true;
         sqlConfig.userkindSSO=5;
@@ -159,7 +159,7 @@ module.exports = class extends Generator {
         if (!exist2) {
             sqlConfig.test=false;
             sqlConfig.schema = "DBO";
-            sqlConfig.defaultSchema=(sqlConfig.user==='sa'?"DBO":sqlConfig.name);
+            sqlConfig.defaultSchema=(sqlConfig.user==='sa'?"DBO":sqlConfig.user);
             dbList.test_sqlServer_anonymous=Object.assign({}, sqlConfig);
             appList.push( {"dbCode":"test_sqlServer_anonymous",
                 "route":"/testanonymous",
@@ -171,13 +171,14 @@ module.exports = class extends Generator {
         let exist3 = dbList["test_client_sqlServer"];
         if (!exist3) {
             sqlConfig.test=false;
-            sqlConfig.schema = sqlConfig.user;
-            sqlConfig.defaultSchema = "DBO";
+            sqlConfig.schema = "DBO";
+            sqlConfig.defaultSchema=(sqlConfig.user==='sa'?"DBO":sqlConfig.user);
             dbList.test_client_sqlServer=Object.assign({}, sqlConfig);
             appList.push( {"dbCode":"test_client_sqlServer",
                 "route":"/test_client",
                 "metaPath": "./../../meta/test",
-                "dsPath": "./client/dataset/test/"
+                "dsPath": "./client/dataset/test/",
+                "e2e":true
             });
         }
 
